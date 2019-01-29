@@ -1,13 +1,17 @@
-package edu.brown.cs.jj.stars;
+package edu.brown.cs.vnaraya2.stars;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Map;
 
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import repl.REPL;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.Request;
@@ -18,12 +22,13 @@ import spark.template.freemarker.FreeMarkerEngine;
 
 import com.google.common.collect.ImmutableMap;
 
+import fileReading.CSVReader;
 import freemarker.template.Configuration;
 
 /**
  * The Main class of our project. This is where execution begins.
  *
- * @author jj
+ * @author vnaraya2
  */
 public final class Main {
 
@@ -58,6 +63,7 @@ public final class Main {
     }
 
     // TODO: Process commands in a REPL
+    REPL.runREPL();
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -87,7 +93,7 @@ public final class Main {
   /**
    * Handle requests to the front page of our Stars website.
    *
-   * @author jj
+   * @author vnaraya2
    */
   private static class FrontHandler implements TemplateViewRoute {
     @Override
@@ -101,7 +107,7 @@ public final class Main {
   /**
    * Display an error page when an exception occurs in the server.
    *
-   * @author jj
+   * @author vnaraya2
    */
   private static class ExceptionPrinter implements ExceptionHandler {
     @Override
