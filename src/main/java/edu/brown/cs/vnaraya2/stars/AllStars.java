@@ -52,6 +52,8 @@ public class AllStars {
 	}
 	 
 	public float[] nameToCoordinates(String name) {
+		// Removes quotation marks from either side of the name 
+		name = name.substring(1, name.length() - 1);
 		// Iterates through all Stars in the list
 		for (int i = 0; i < starList.length; i++) {
 			// Checks for matching names

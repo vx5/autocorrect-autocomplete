@@ -1,5 +1,9 @@
 package edu.brown.cs.vnaraya2.stars;
 
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+
+import KDTreePack.KDNode;
 import KDTreePack.KDTree;
 import fileReading.CSVReader;
 
@@ -8,8 +12,7 @@ public class StarsREPLHandler {
 	// Stores the AllStars class being used in the current REPL
 	private AllStars allStars;
 	// Stores the KDTree being used in the current REPL
-	private KDTree kdTree;
-	
+	private KDTree kdTree;	
 	// Constructor that stores instance of AllStars class being used
 	// and of KDTree being used
 	public StarsREPLHandler(AllStars replAllStars, KDTree handlerTree) {
@@ -33,6 +36,9 @@ public class StarsREPLHandler {
 			allStars.addStars(CSVReader.readFile(filename, ","));
 			// Builds KDTree from stars
 			kdTree.build(allStars.getStars());
+			// Prints required line to the REPL
+			System.out.println("Read " + allStars.getStars().length + 
+					" stars from " + filename);
 		}
 		else if (splitLine[0].contentEquals("neighbors")) {
 			// Check for standard number of inputs
@@ -46,14 +52,19 @@ public class StarsREPLHandler {
 				// Stores number of neighbors
 				int numNeighbors = Integer.parseInt(splitLine[1]);
 				// Instantiates array of neighborIDs for output
-				String[] neighborIDs;
+				PriorityQueue<KDNode> neighborNodes;
 				// Check for 3-argument-variant of command line
 				if (splitLine.length == 3) {
 					// Stores name of star whose neighbors are to be found
 					String starName = splitLine[2];
+					// Tells KDTree to not consider the given Star
+					// as a neighbor
+					kdTree.setAvoidName(starName);
 					// Passes to KDTree
-					neighborIDs = kdTree.getNeighbors(numNeighbors, 
+					neighborNodes = kdTree.getNeighbors(numNeighbors, 
 							allStars.nameToCoordinates(starName));
+					// Resets KDTree's avoid string 
+					kdTree.resetAvoidName();
 				}
 				// Assumes 5-argument-variant of command line
 				else {
@@ -63,12 +74,13 @@ public class StarsREPLHandler {
 					float z = Float.parseFloat(splitLine[4]);
 					float[] coordinates = {x, y, z};
 					// Passes to KDTree
-					neighborIDs = kdTree.getNeighbors(numNeighbors,
+					neighborNodes = kdTree.getNeighbors(numNeighbors,
 							coordinates);
 				}
-				// Prints output
-				for (int i = 0; i < neighborIDs.length; i++) {
-					System.out.println(neighborIDs[i]);
+				// Prints all stars by order of nodes in PriorityQueue
+				while (neighborNodes.peek() != null) {
+					System.out.println(
+							neighborNodes.remove().getNodeObject().getID());
 				}
 			}   			
 		}
@@ -86,14 +98,19 @@ public class StarsREPLHandler {
 				// Check for positive radius
 				if (radius >= 0) {
 					// Instantiates array of validIDs for output
-					String[] validIDs;
+					PriorityQueue<KDNode> validNodes;
 					// Check for 3-argument-variant of command line
     				if (splitLine.length == 3) {
     					// Stores name of star whose neighbors are to be found
     					String starName = splitLine[2];
+    					// Tells KDTree not to consider the given Star 
+    					// as an eligible Spatial to consider 
+    					kdTree.setAvoidName(starName);
     					// Passes to KDTree
-    					validIDs = kdTree.searchRadius(radius, 
+    					validNodes = kdTree.searchRadius(radius, 
     							allStars.nameToCoordinates(starName));
+    					// Resets KDTree's avoid name
+    					kdTree.resetAvoidName();
     				}
     				// Assumes 5-argument-variant of command line
     				else {
@@ -103,11 +120,12 @@ public class StarsREPLHandler {
     					float z = Float.parseFloat(splitLine[4]);
     					float[] coordinates = {x, y, z};
     					// Passes to KDTree
-    					validIDs = kdTree.searchRadius(radius, coordinates);
+    					validNodes = kdTree.searchRadius(radius, coordinates);
     				}
-    				// Prints output
-    				for (int i = 0; i < validIDs.length; i++) {
-    					System.out.println(validIDs[i]);
+    				// Prints all stars by order of nodes in PriorityQueue
+    				while (validNodes.peek() != null) {
+    					System.out.println(
+    							validNodes.remove().getNodeObject().getID());
     				}
 				}
 				// Prints error for negative radius
