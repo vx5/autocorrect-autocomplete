@@ -1,3 +1,28 @@
 input[type="number"] {
   width: 3em;
 }
+
+body {
+	background-image: url("stars_image.jpg");
+	text-align: center;
+	color: white;
+	font-size: 12px;
+}
+
+.subheader {
+	text-decoration: underline;
+}
+
+#loadconfirm {
+	color: #39FF14;
+}
+
+#loaderror, #cmderror {
+	color: #FF0000;
+}
+
+table, tr, th {
+	color: #39FF14;
+	font-weight: normal;
+	border: 1px dotted #39FF14;
+}

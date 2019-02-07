@@ -1,5 +1,6 @@
 INPUT
 stars 
 OUTPUT
-ERROR:
+ERROR: stars command expects 1 argument in format:
+stars <filepath>
 END

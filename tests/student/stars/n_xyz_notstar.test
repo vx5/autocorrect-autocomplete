@@ -1,0 +1,11 @@
+INPUT
+stars data/stars/ten-star.csv
+neighbors 5 -1 -1 -1
+OUTPUT
+Read 10 stars from data/stars/ten-star.csv
+71457
+71454
+70667
+87666
+0
+END

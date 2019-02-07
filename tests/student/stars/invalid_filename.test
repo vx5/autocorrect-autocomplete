@@ -1,0 +1,5 @@
+INPUT
+stars data/stars/america.usa
+OUTPUT
+ERROR: file data/stars/america.usa not found
+END

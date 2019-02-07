@@ -1,8 +1,8 @@
 INPUT
-stars data/ten-star.csv
+stars data/stars/ten-star.csv
 neighbors 5 "Sol"
 OUTPUT
-Read 10 stars from data/ten-star.csv
+Read 10 stars from data/stars/ten-star.csv
 70667
 71454
 71457

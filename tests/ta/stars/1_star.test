@@ -1,7 +1,7 @@
 INPUT
-stars data/one-star.csv
+stars data/stars/one-star.csv
 neighbors 1 12.0025 1.0257 -105.5236
 OUTPUT
-Read 1 stars from data/one-star.csv
+Read 1 stars from data/stars/one-star.csv
 1
 END

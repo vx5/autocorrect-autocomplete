@@ -1,34 +1,14 @@
 package edu.brown.cs.vnaraya2.stars;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Map;
-
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
+import kdtrees.KDTree;
 import repl.REPL;
-import spark.ExceptionHandler;
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Spark;
-import spark.TemplateViewRoute;
-import spark.template.freemarker.FreeMarkerEngine;
-
-import com.google.common.collect.ImmutableMap;
-
-import fileReading.CSVReader;
-import freemarker.template.Configuration;
 
 /**
- * The Main class of our project. This is where execution begins.
+ * @author vx5
  *
- * @author vnaraya2
+ *         The Main class of our project. This is where execution begins.
  */
 public final class Main {
 
@@ -37,8 +17,7 @@ public final class Main {
   /**
    * The initial method called when execution begins.
    *
-   * @param args
-   *          An array of command line arguments
+   * @param args An array of command line arguments
    */
   public static void main(String[] args) {
     new Main(args).run();
@@ -55,72 +34,18 @@ public final class Main {
     OptionParser parser = new OptionParser();
     parser.accepts("gui");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
-    .defaultsTo(DEFAULT_PORT);
+        .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
-
+    // Creates instance of AllStars, KDTree, Stars command handler
+    AllStars galaxy = new AllStars();
+    KDTree kdTree = new KDTree();
+    // Creates new instance of StarsGUI object, accesses if the GUI flagged was
+    // used
+    StarsGUI gui = new StarsGUI(galaxy, kdTree);
     if (options.has("gui")) {
-      runSparkServer((int) options.valueOf("port"));
+      gui.runSparkServer((int) options.valueOf("port"));
     }
-
-    // TODO: Process commands in a REPL
-    REPL.runREPL();
+    // Uses the REPL class's static runREPL() method do trigger the REPL
+    REPL.runREPL(galaxy, kdTree);
   }
-
-  private static FreeMarkerEngine createEngine() {
-    Configuration config = new Configuration();
-    File templates = new File("src/main/resources/spark/template/freemarker");
-    try {
-      config.setDirectoryForTemplateLoading(templates);
-    } catch (IOException ioe) {
-      System.out.printf("ERROR: Unable use %s for template loading.%n",
-          templates);
-      System.exit(1);
-    }
-    return new FreeMarkerEngine(config);
-  }
-
-  private void runSparkServer(int port) {
-    Spark.port(port);
-    Spark.externalStaticFileLocation("src/main/resources/static");
-    Spark.exception(Exception.class, new ExceptionPrinter());
-
-    FreeMarkerEngine freeMarker = createEngine();
-
-    // Setup Spark Routes
-    Spark.get("/stars", new FrontHandler(), freeMarker);
-  }
-
-  /**
-   * Handle requests to the front page of our Stars website.
-   *
-   * @author vnaraya2
-   */
-  private static class FrontHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(Request req, Response res) {
-      Map<String, Object> variables = ImmutableMap.of("title",
-          "Stars: Query the database");
-      return new ModelAndView(variables, "query.ftl");
-    }
-  }
-
-  /**
-   * Display an error page when an exception occurs in the server.
-   *
-   * @author vnaraya2
-   */
-  private static class ExceptionPrinter implements ExceptionHandler {
-    @Override
-    public void handle(Exception e, Request req, Response res) {
-      res.status(500);
-      StringWriter stacktrace = new StringWriter();
-      try (PrintWriter pw = new PrintWriter(stacktrace)) {
-        pw.println("<pre>");
-        e.printStackTrace(pw);
-        pw.println("</pre>");
-      }
-      res.body(stacktrace.toString());
-    }
-  }
-
 }
