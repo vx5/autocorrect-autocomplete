@@ -61,11 +61,13 @@ There are 3 general sets of tests to run on my Stars implementation -- JUnit tes
 
 To run the JUnit tests, I took advantage of maven's automatic test-running while building, so I simply used the terminal command "mvn package" while in my project's root directory.
 
-To run my personal system tests, I adapt the terminal command to run the TA system tests to my own test suite's location. From the project's root directory, I run "./cs32-test ./tests/student/stars/\*", which runs all of my personal system tests.
+To run my personal system tests, I adapt the terminal command to run the TA system tests to my own test suite's location. From the project's root directory, I run "./cs32-test ./tests/student/stars/\*", which runs all of my personal system tests. Some of these tests look at .csv files with errors in them, so I created some .csv files, and stored them in at the location data/stars, right where the other .csv files are.
 
 To run the TA test suite, I navigate to the project's root directory, and run "./cs32-test ./tests/ta/stars/\*", which runs the entire provided TA test suite.
 
 Please note that, in order to take advantage of the full time limits, I did sometimes add the "-t 10" flag at the end of my system test commands to make sure they did not time out (I got the instruction to do this from Piazza).
+
+
 
 **Answers to Design Questions**
 
