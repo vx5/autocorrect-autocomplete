@@ -35,8 +35,6 @@ public final class REPL {
     try (BufferedReader br = new BufferedReader(
         new InputStreamReader(System.in))) {
       // Creates instance of AllStars, KDTree, Stars command handler
-      galaxy = new AllStars();
-      kdTree = new KDTree();
       StarsREPLHandler handler = new StarsREPLHandler(galaxy, kdTree);
       // REPL loop body
       while (true) {

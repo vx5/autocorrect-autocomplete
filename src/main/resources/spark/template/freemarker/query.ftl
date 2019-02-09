@@ -11,7 +11,7 @@ Reset this page and start a completely new search
 </form>
 
 
-<p> <h2 class="subheader">Step 1: Load stars through .csv file:</h2>
+<p> <h2 class="subheader">Step 1: Load stars through .csv file:<br>(you may also use the "stars" command in the terminal REPL)</h2>
 
 <form method="POST" action="/starsloaded">
 	Choose a .csv file at the following file path:

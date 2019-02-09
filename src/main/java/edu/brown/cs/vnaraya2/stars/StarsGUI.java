@@ -45,7 +45,7 @@ public class StarsGUI {
    * Method that was in Main class in stencil code, that handles the launching
    * of the Spark Server and the setup of Spark routes.
    *
-   * @param port the port value to be used for the Spark serverr
+   * @param port the port value to be used for the Spark server
    */
   @SuppressWarnings("unchecked")
   public void runSparkServer(int port) {
@@ -80,7 +80,7 @@ public class StarsGUI {
   /**
    * @author vx5
    *
-   *         Handles the initial view of our Stars website
+   *         Handles the initial view of our Stars website.
    */
   private static class BeginHandler implements TemplateViewRoute {
     @Override
@@ -94,7 +94,7 @@ public class StarsGUI {
   /**
    * @author vx5
    *
-   *         Handles the submission and processing of the Stars Loading form
+   *         Handles the submission and processing of the Stars Loading form.
    */
   private static class LoadHandler implements TemplateViewRoute {
 
@@ -114,7 +114,7 @@ public class StarsGUI {
    * @author vx5
    *
    *         Handles the submission and processing of the command form, which
-   *         relates to either the "neighbors" or "radius" search requests
+   *         relates to either the "neighbors" or "radius" search requests.
    */
   private static class CommandHandler implements TemplateViewRoute {
 

@@ -45,7 +45,6 @@ public class StarsGUIHandler {
   private final String preCmd = "This is where the Stars will be printed";
 
   // Stores whether Stars have been loaded already
-  private boolean starsLoaded;
 
   /**
    * Constructor that initializes all instance fields, including instantiating a
@@ -79,7 +78,6 @@ public class StarsGUIHandler {
     cmderrorstr = empty;
     listheaderstr = preCmd;
     cmdoutputlist = new LinkedList<LinkedList<String>>();
-    starsLoaded = false;
   }
 
   /**
@@ -122,8 +120,6 @@ public class StarsGUIHandler {
       // Reads Stars from .csv file, adds to tree
       // Embeds entire process in desired printline
       loadconfirmstr = "Read " + op.stars(path) + " stars from " + path;
-      // Indicates that stars have now been loaded
-      starsLoaded = true;
     } catch (StarsLoadingException e) {
       // Sets the error message based on exception
       loaderrorstr = "Error in loading Stars:\n" + e.getMessage();
@@ -153,8 +149,9 @@ public class StarsGUIHandler {
     listheaderstr = empty;
     cmdoutputlist = new LinkedList<LinkedList<String>>();
     // Check that stars were successfully loaded
-    if (!starsLoaded) {
-      cmderrorstr = "Stars must first be successfully" + " loaded in Step 1";
+    if (!allStars.starsLoaded()) {
+      cmderrorstr = "Stars must first be successfully loaded in Step 1 "
+          + "or through the terminal REPL";
     } else {
       // Get which command was input
       String command = this.killTrail(qm.value("command choice"));
@@ -215,7 +212,7 @@ public class StarsGUIHandler {
     // Instantiates new list
     LinkedList<LinkedList<String>> list = new LinkedList<LinkedList<String>>();
     // If queue has at least one element,
-    // add key
+    // add key to table
     if (q.size() > 0) {
       LinkedList<String> topRow = new LinkedList<String>();
       topRow.add("<font size=\"4\">Star ID</font>");
@@ -251,6 +248,9 @@ public class StarsGUIHandler {
   }
 
   private String killTrail(String s) {
+    // Reduces whitespace off of end of String until there is none
+    // or all that is left of the String is a single space character,
+    // whichever comes first
     while (s.length() > 1 && s.charAt(s.length() - 1) == ' ') {
       s = s.substring(0, s.length() - 1);
     }

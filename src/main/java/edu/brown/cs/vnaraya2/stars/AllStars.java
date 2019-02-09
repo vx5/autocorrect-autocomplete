@@ -50,13 +50,7 @@ public class AllStars {
     }
   }
 
-  /**
-   * Constructs a Star object based on the contents of the input String[].
-   *
-   * @param starData String array of to-be-Star's ID, name, coordinates
-   * @return Star object based on starData
-   */
-  public Star makeStar(String[] starData) {
+  private Star makeStar(String[] starData) throws StarsLoadingException {
     // Check for exactly items in starInfo
     if (starData.length != 5) {
       // Returns null as signal of error
