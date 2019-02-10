@@ -102,7 +102,7 @@ I used online resources to help me review certain basic Java concepts, and under
 I also got some inspiration for my GUI (in particular, for the starry background) from the GUI we were shown during the Stars gear-up.
 
 ## Autocorrect
-_Coming soon!_
+**TODO: Fill out this section!**
 
 ## Bacon
 _Coming soon!_
