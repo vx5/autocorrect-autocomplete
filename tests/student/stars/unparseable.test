@@ -1,0 +1,7 @@
+INPUT
+stars data/stars/ten-star.csv
+neighbors 3.04 0 delta 15
+OUTPUT
+Read 10 stars from data/stars/ten-star.csv
+ERROR: an input trying to be parsed into an Integer or Float could not be parsed
+END
