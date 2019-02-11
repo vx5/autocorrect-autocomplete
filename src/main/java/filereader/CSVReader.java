@@ -7,8 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import edu.brown.cs.vnaraya2.stars.StarsLoadingException;
-
 /**
  * Houses static method that parses input CSV file.
  *
@@ -29,12 +27,10 @@ public final class CSVReader {
    * @param regex          delimiter to split each line of CSV file in String
    *                       form
    * @return ArrayList of all lines of CSV file, split
-   * @throws IOException           if there is an error in opening, reading, or
-   *                               closing the file
-   * @throws StarsLoadingException if the given file is empty
+   * @throws Exception when file is empty
    */
   public static ArrayList<String[]> readFile(String readerFilename,
-      String regex) throws IOException, StarsLoadingException {
+      String regex) throws Exception {
     try {
       // Creates BufferedReader to read the given file
       BufferedReader br = new BufferedReader(
@@ -47,7 +43,8 @@ public final class CSVReader {
         // Closes BufferedReader
         br.close();
         // Throws new error exception
-        throw new StarsLoadingException("given file is empty");
+        // generic type so it works for all types of files
+        throw new Exception("given file is empty");
       } else {
         // Triggers the proper read sequence
         // Stores string that will be used as checker

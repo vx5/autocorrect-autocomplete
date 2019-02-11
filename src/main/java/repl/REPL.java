@@ -35,7 +35,7 @@ public final class REPL {
     try (BufferedReader br = new BufferedReader(
         new InputStreamReader(System.in))) {
       // Creates instance of AllStars, KDTree, Stars command handler
-      StarsREPLHandler handler = new StarsREPLHandler(galaxy, kdTree);
+      StarsREPLHandler starHandler = new StarsREPLHandler(galaxy, kdTree);
       // REPL loop body
       while (true) {
         // Reads the command line
@@ -51,7 +51,17 @@ public final class REPL {
         if (splitLine[0].contentEquals("stars")
             || splitLine[0].contentEquals("neighbors")
             || splitLine[0].contentEquals("radius")) {
-          handler.handle(splitLine);
+          starHandler.handle(splitLine);
+          // If command is correctly related to Autocorrect,
+          // command is passed to the Autocorrect
+          // REPL handler
+        } else if (splitLine[0].contentEquals("corpus")
+            || splitLine[0].contentEquals("ac")
+            || splitLine[0].contentEquals("prefix")
+            || splitLine[0].contentEquals("whitespace")
+            || splitLine[0].contentEquals("smart")
+            || splitLine[0].contentEquals("led")) {
+
         } else {
           // If command not recognized, print error message
           System.out.println(

@@ -43,19 +43,19 @@ public class AllStarsTest {
   }
 
   @Test(expected = StarsLoadingException.class)
-  public void testAddStarsOneRow() throws StarsLoadingException, IOException {
+  public void testAddStarsOneRow() throws Exception {
     // Attempts to build Stars from .csv file with only one line
     a.addStars(CSVReader.readFile("data/stars/one-line.csv", ","));
   }
 
   @Test(expected = StarsLoadingException.class)
-  public void testAddStarsBadForm() throws StarsLoadingException, IOException {
+  public void testAddStarsBadForm() throws Exception {
     // Attempts to build Stars from .csv file with bad format
     a.addStars(CSVReader.readFile("data/stars/bad-format.csv", ","));
   }
 
   @Test
-  public void testAddStarsOneRowMsg() {
+  public void testAddStarsOneRowMsg() throws Exception {
     try {
       // Attempts to read stars from a one-line .csv file
       a.addStars(CSVReader.readFile("data/stars/one-line.csv", ","));
@@ -70,7 +70,7 @@ public class AllStarsTest {
   }
 
   @Test
-  public void testAddStarsBadFormMsg() {
+  public void testAddStarsBadFormMsg() throws Exception {
     try {
       a.addStars(CSVReader.readFile("data/stars/bad-format.csv", ","));
     } catch (StarsLoadingException e) {
@@ -182,7 +182,7 @@ public class AllStarsTest {
   }
 
   @Before
-  public void setUp() throws IOException, StarsLoadingException {
+  public void setUp() throws Exception {
     // Initializes new AllStars instance
     a = new AllStars();
     // Initializes the output from readFile() for the ten-star file

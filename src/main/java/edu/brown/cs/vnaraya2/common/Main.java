@@ -1,5 +1,6 @@
-package edu.brown.cs.vnaraya2.stars;
+package edu.brown.cs.vnaraya2.common;
 
+import edu.brown.cs.vnaraya2.stars.AllStars;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import kdtrees.KDTree;
@@ -41,7 +42,7 @@ public final class Main {
     KDTree kdTree = new KDTree();
     // Creates new instance of StarsGUI object, accesses if the GUI flagged was
     // used
-    StarsGUI gui = new StarsGUI(galaxy, kdTree);
+    GUI gui = new GUI(galaxy, kdTree);
     if (options.has("gui")) {
       gui.runSparkServer((int) options.valueOf("port"));
     }

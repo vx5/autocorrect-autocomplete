@@ -1,10 +1,12 @@
-package edu.brown.cs.vnaraya2.stars;
+package edu.brown.cs.vnaraya2.common;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import edu.brown.cs.vnaraya2.stars.AllStars;
+import edu.brown.cs.vnaraya2.stars.StarsGUIHandler;
 import freemarker.template.Configuration;
 import kdtrees.KDTree;
 import spark.ExceptionHandler;
@@ -24,20 +26,19 @@ import spark.template.freemarker.FreeMarkerEngine;
  *         handlers, and delegates the actual processing of GUI inputs to the
  *         StarsGUIHandler class
  */
-public class StarsGUI {
+public class GUI {
   // Stores the StarsGUIHandler instance
   private static StarsGUIHandler gh;
 
   /**
-   * Constructor for StarsGUI class, which simply takes in this project's
-   * instances of AllStars and KDTree so that they may be passed to the
-   * constructor of the StarsGUIHandler object, which actually processes GUI
-   * input.
+   * Constructor for GUI class, which simply takes in this project's instances
+   * of AllStars and KDTree so that they may be passed to the constructor of the
+   * StarsGUIHandler object, which actually processes GUI input.
    *
    * @param allStars object that holds and manipulates all Stars
    * @param kdTree   instance of k-d Tree used for search operations
    */
-  public StarsGUI(AllStars allStars, KDTree kdTree) {
+  public GUI(AllStars allStars, KDTree kdTree) {
     gh = new StarsGUIHandler(allStars, kdTree);
   }
 
@@ -57,7 +58,7 @@ public class StarsGUI {
 
     // Setup Spark Routes
     // Initial Spark route given by stencil code
-    Spark.get("/stars", new BeginHandler(), freeMarker);
+    Spark.get("/stars", new StarsBeginHandler(), freeMarker);
     // Additional Spark route that responds to star load form
     Spark.post("/starsloaded", new LoadHandler(), freeMarker);
     // Additional Spark route that responds to command form
@@ -82,7 +83,7 @@ public class StarsGUI {
    *
    *         Handles the initial view of our Stars website.
    */
-  private static class BeginHandler implements TemplateViewRoute {
+  private static class StarsBeginHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request req, Response res) {
       gh.resetVars();

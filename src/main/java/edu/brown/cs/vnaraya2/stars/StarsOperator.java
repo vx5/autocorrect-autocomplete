@@ -1,6 +1,5 @@
 package edu.brown.cs.vnaraya2.stars;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 
@@ -38,11 +37,9 @@ public class StarsOperator {
    *
    * @param filename the path of the file to be read
    * @return the number of Stars read
-   * @throws IOException           if there is error in opening, reading,
-   *                               closing file
-   * @throws StarsLoadingException if there is error in .csv file
+   * @throws Exception if file could not be read
    */
-  public int stars(String filename) throws IOException, StarsLoadingException {
+  public int stars(String filename) throws Exception {
     // Stores String arrays of lines in .csv file
     ArrayList<String[]> lines = CSVReader.readFile(filename, ",");
     // Uses star data to populate list of all stars

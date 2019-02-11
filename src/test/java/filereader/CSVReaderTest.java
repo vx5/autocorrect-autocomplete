@@ -15,7 +15,7 @@ import edu.brown.cs.vnaraya2.stars.StarsLoadingException;
 public class CSVReaderTest {
 
   @Test
-  public void testReadFile() throws IOException, StarsLoadingException {
+  public void testReadFile() throws Exception {
     // Stores ArrayList output from readFile() method
     ArrayList<String[]> data = CSVReader.readFile("data/stars/ten-star.csv",
         ",");
@@ -30,9 +30,8 @@ public class CSVReaderTest {
     assertEquals(solLine[4], "0");
   }
 
-  @Test(expected = StarsLoadingException.class)
-  public void testReadFileEmptyFile()
-      throws IOException, StarsLoadingException {
+  @Test(expected = Exception.class)
+  public void testReadFileEmptyFile() throws Exception {
     // Tests that readFile() throws correct Exception when empty file passed
     CSVReader.readFile("data/stars/empty.csv", ",");
   }
@@ -46,21 +45,20 @@ public class CSVReaderTest {
     } catch (IOException e) {
       // Fails test in case of IOException
       fail("IOException thrown");
-    } catch (StarsLoadingException e) {
+    } catch (Exception e) {
       // Checks that Exception's message is as desired
       assertEquals(e.getMessage(), "given file is empty");
     }
   }
 
   @Test(expected = FileNotFoundException.class)
-  public void testReadFileBadFileName()
-      throws IOException, StarsLoadingException {
+  public void testReadFileBadFileName() throws Exception {
     // Checks that invalid filename draws correct Exception
     CSVReader.readFile("fakefilename", ",");
   }
 
   @Test
-  public void testReadFileBadFileNameMsg() {
+  public void testReadFileBadFileNameMsg() throws Exception {
     try {
       // Attempts to feed invalid filename to readFile()
       // (expects Exception)

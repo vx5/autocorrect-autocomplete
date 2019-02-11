@@ -106,8 +106,9 @@ public class StarsGUIHandler {
    * @param pathEnd the end of the filepath to the .csv file
    * @return the current Map of variables in this class to the variables they
    *         represent in the GUI
+   * @throws Exception if file is empty
    */
-  public Map<String, Object> loadNeighbors(String pathEnd) {
+  public Map<String, Object> loadNeighbors(String pathEnd) throws Exception {
     // Completes the filepath specified in the form
     String path = "data/stars/" + this.killTrail(pathEnd);
     // Reset all strings
