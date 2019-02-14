@@ -1,5 +1,6 @@
 package ac;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -74,14 +75,12 @@ public class TrieTest {
   }
 
   /**
-   * Tests for Exception being thrown for invalid word being passed in.
-   *
-   * @throws Exception if word that is not part of prefix tree is passed to
-   *                   getPrefixEnds()
+   * Tests for no suggestions when invalid word passed in
    */
-  @Test(expected = Exception.class)
+  @Test
   public void testGetPrefixEndsException() throws Exception {
-    trie.getPrefixEnds("apricot");
+    HashSet<Suggestion> suggestions = trie.getPrefixEnds("apricot");
+    assertEquals(suggestions.size(), 0);
   }
 
   /**

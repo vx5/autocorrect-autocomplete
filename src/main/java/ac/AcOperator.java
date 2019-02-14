@@ -1,13 +1,19 @@
 package ac;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
+import com.google.common.collect.HashMultiset;
+
+import filereader.TXTReader;
+
 public class AcOperator {
   // Stores set of all words in corpus
-  private HashSet<String> corpusWords;
+  private HashMultiset<String> corpusWords;
   // Stores Trie for given corpora
   private Trie trie;
   // Stores Bigram Map for corpora
@@ -24,22 +30,30 @@ public class AcOperator {
    * Constructor.
    */
   public AcOperator() {
-    corpusWords = new HashSet<String>();
+    corpusWords = HashMultiset.create();
     trie = new Trie();
     corpusLoaded = false;
     bmap = new BigramMap();
   }
 
-  public boolean getPrefixStatus() {
-    return prefix;
+  public String getPrefixStatus() {
+    if (prefix) {
+      return "on";
+    } else {
+      return "off";
+    }
   }
 
   public void setPrefixStatus(boolean newStatus) {
     prefix = newStatus;
   }
 
-  public boolean getWsStatus() {
-    return whitespace;
+  public String getWsStatus() {
+    if (whitespace) {
+      return "on";
+    } else {
+      return "off";
+    }
   }
 
   public void setWsStatus(boolean newStatus) {
@@ -54,25 +68,32 @@ public class AcOperator {
     led = newSetting;
   }
 
-  public boolean getSmartStatus() {
-    return smart;
+  public String getSmartStatus() {
+    if (prefix) {
+      return "on";
+    } else {
+      return "off";
+    }
   }
 
   public void setSmartStatus(boolean newStatus) {
     smart = newStatus;
   }
 
-  public void addCorpus(String filepath) {
-    // TODO: populate this list
-    LinkedList<String> words = new LinkedList<String>();
+  public void addCorpus(String filepath) throws Exception {
+    ArrayList<String> words = TXTReader.readFile(filepath, " ");
     // Adds words to the Bigram Map
     bmap.addSequence(words);
     // Adds words to the trie
-    for (String s : words) {
-      trie.add(s);
+    Iterator<String> iterate = words.iterator();
+    while (iterate.hasNext()) {
+      String s = iterate.next();
+      // If non-empty String passed, add
+      if (s.length() != 0) {
+        trie.add(s);
+        corpusWords.add(s);
+      }
     }
-    // Adds words to the overall corpora words
-    corpusWords.addAll(words);
     // Signal that corpus has been loaded
     corpusLoaded = true;
   }
@@ -80,7 +101,7 @@ public class AcOperator {
   public LinkedList<String> ac(String[] sequence) throws Exception {
     // Throw Exception if no corpus has been loaded yet
     if (!corpusLoaded) {
-      // TODO
+      throw new Exception("no corpus has been loaded yet");
     }
     // Stores last word
     String lastWord = sequence[sequence.length - 1];
@@ -94,16 +115,32 @@ public class AcOperator {
       chosenComp = new SuggestComparator(sequence[sequence.length - 2], bmap,
           lastWord, corpusWords);
     }
-    // Instantiates PriorityQueue that will hold all suggestions
-    PriorityQueue<Suggestion> pq = new PriorityQueue<Suggestion>(10,
-        chosenComp);
+    // Instantiates HashSet that will hold all suggestions
+    HashSet<Suggestion> ideas = new HashSet<Suggestion>();
+    // Check for word's perfect match
+    if (corpusWords.contains(lastWord)) {
+      ideas.add(new Suggestion(lastWord));
+    }
     // If prefix matching is on, use it to generate suggestions
     if (prefix) {
-      pq.addAll(trie.getPrefixEnds(lastWord));
+      ideas.addAll(trie.getPrefixEnds(lastWord));
     }
     // If led is on, use it to generate suggestions
     if (led > 0) {
-      pq.addAll(Generators.getLeds(corpusWords, lastWord, led));
+      ideas.addAll(Generators.getLeds(corpusWords, lastWord, led));
+    }
+    // Instantiates HashSet that will hold all corresponding Strings
+    HashSet<String> ideaStrings = new HashSet<String>();
+    // Instantiates PriorityQueue that will hold all suggestions
+    PriorityQueue<Suggestion> pq = new PriorityQueue<Suggestion>(10,
+        chosenComp);
+    // Switches from HashSet to PriorityQueue, while checking for
+    // no duplicates based on first String
+    for (Suggestion s : ideas) {
+      if (!ideaStrings.contains(s.getFirstWord())) {
+        ideaStrings.add(s.getFirstWord());
+        pq.add(s);
+      }
     }
     // If whitespace is on, use it to generate suggestions
     if (whitespace) {

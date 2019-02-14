@@ -1,8 +1,8 @@
 package ac;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
+
+import com.google.common.collect.HashMultiset;
 
 public class SuggestComparator implements Comparator<Suggestion> {
   // Stores "before" word, if it is given
@@ -12,17 +12,18 @@ public class SuggestComparator implements Comparator<Suggestion> {
   // Stores bigram map
   private BigramMap bmap;
   // Stores full set of corpus words
-  private HashSet<String> corpusWords;
+  private HashMultiset<String> corpusWords;
 
   public SuggestComparator(String beforeWord, BigramMap newMap,
-      String givenWord, HashSet<String> givenCorpusWords) {
+      String givenWord, HashMultiset<String> givenCorpusWords) {
     before = beforeWord;
     bmap = newMap;
     given = givenWord;
     corpusWords = givenCorpusWords;
   }
 
-  public SuggestComparator(String givenWord, HashSet<String> givenCorpusWords) {
+  public SuggestComparator(String givenWord,
+      HashMultiset<String> givenCorpusWords) {
     before = null;
     bmap = null;
     given = givenWord;
@@ -57,8 +58,8 @@ public class SuggestComparator implements Comparator<Suggestion> {
     }
     // Next, try to check unigram probability
     // Calculate occurrences of each word in all corpora
-    int occursOne = Collections.frequency(corpusWords, suggestOne);
-    int occursTwo = Collections.frequency(corpusWords, suggestTwo);
+    int occursOne = corpusWords.count(suggestOne);
+    int occursTwo = corpusWords.count(suggestTwo);
     // Check for case of non-tie on unigram frequency
     if (occursOne > occursTwo) {
       return -1;

@@ -85,13 +85,16 @@ public class Trie {
     TrieNode subRoot = this.getEndNode(root, s);
     // Instantiates HashSet that stores all suggestions
     HashSet<Suggestion> suggestions = new HashSet<Suggestion>();
+    // IF end node was found,
     // Iterates through all possible suffixes, adds to suggestions
-    this.suggest(suggestions, s, subRoot);
+    if (subRoot != null) {
+      this.suggest(suggestions, s, subRoot);
+    }
     // Returns set of suggestions
     return suggestions;
   }
 
-  private TrieNode getEndNode(TrieNode n, String s) throws Exception {
+  private TrieNode getEndNode(TrieNode n, String s) {
     // Isolate first character of s
     char firstChar = s.charAt(0);
     // Check for child that matches first character
@@ -106,8 +109,8 @@ public class Trie {
         }
       }
     }
-    // If whole word is not found, throw Exception
-    throw new Exception();
+    // Return null if whole word is not found
+    return null;
   }
 
   private void suggest(HashSet<Suggestion> suggestions, String current,

@@ -7,6 +7,7 @@ public class AcCoordinator {
   private LinkedList<AcOperator> ops;
 
   public AcCoordinator() {
+    ops = new LinkedList<AcOperator>();
   }
 
   public void addOp(AcOperator op) {

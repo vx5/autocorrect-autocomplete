@@ -2,6 +2,6 @@ INPUT
 corpus data/autocorrect/error.txt
 ac hello
 OUTPUT
-ERROR:
-ac hello
+ERROR: file data/autocorrect/error.txt not found
+ERROR: no corpus has been loaded yet
 END

@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import ac.AcCoordinator;
+import ac.AcREPLHandler;
 import edu.brown.cs.vnaraya2.stars.AllStars;
 import edu.brown.cs.vnaraya2.stars.StarsREPLHandler;
 import kdtrees.KDTree;
@@ -30,12 +32,15 @@ public final class REPL {
    * @param galaxy AllStars instance specific to this run of the program
    * @param kdTree KDTree instance specific to this run of the program
    */
-  public static void runREPL(AllStars galaxy, KDTree kdTree) {
+  public static void runREPL(AllStars galaxy, KDTree kdTree,
+      AcCoordinator coord) {
     // Creates new BufferedReader to handle input
     try (BufferedReader br = new BufferedReader(
         new InputStreamReader(System.in))) {
       // Creates instance of AllStars, KDTree, Stars command handler
       StarsREPLHandler starHandler = new StarsREPLHandler(galaxy, kdTree);
+      // Creates instance of Autocorrect command handler
+      AcREPLHandler acHandler = new AcREPLHandler(coord);
       // REPL loop body
       while (true) {
         // Reads the command line
@@ -61,7 +66,7 @@ public final class REPL {
             || splitLine[0].contentEquals("whitespace")
             || splitLine[0].contentEquals("smart")
             || splitLine[0].contentEquals("led")) {
-
+          acHandler.handle(commandLine);
         } else {
           // If command not recognized, print error message
           System.out.println(

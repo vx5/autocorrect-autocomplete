@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import com.google.gson.Gson;
+
+import ac.AcCoordinator;
+import ac.AcGUIHandler;
 import edu.brown.cs.vnaraya2.stars.AllStars;
 import edu.brown.cs.vnaraya2.stars.StarsGUIHandler;
 import freemarker.template.Configuration;
@@ -14,6 +18,7 @@ import spark.ModelAndView;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
+import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
@@ -23,12 +28,17 @@ import spark.template.freemarker.FreeMarkerEngine;
  *
  *         Object that manages parts of the GUI that the stencil had contained
  *         within the Main class. Includes all Spark Routes and related
- *         handlers, and delegates the actual processing of GUI inputs to the
- *         StarsGUIHandler class
+ *         handlers, and delegates the actual processing of Stars GUI inputs to
+ *         the StarsGUIHandler class and of Autocorrect GUI inputs to the
+ *         AcGUIHandler class.
  */
 public class GUI {
   // Stores the StarsGUIHandler instance
   private static StarsGUIHandler gh;
+  // Stores the AcGUIHandler instance
+  private static AcGUIHandler ah;
+  // Stores the GSON instance
+  private static final Gson GSON = new Gson();
 
   /**
    * Constructor for GUI class, which simply takes in this project's instances
@@ -37,9 +47,12 @@ public class GUI {
    *
    * @param allStars object that holds and manipulates all Stars
    * @param kdTree   instance of k-d Tree used for search operations
+   * @param ac       instance of AcCoordinator that can manage this instance of
+   *                 Autocorrect implementation
    */
-  public GUI(AllStars allStars, KDTree kdTree) {
+  public GUI(AllStars allStars, KDTree kdTree, AcCoordinator ac) {
     gh = new StarsGUIHandler(allStars, kdTree);
+    ah = new AcGUIHandler(ac);
   }
 
   /**
@@ -56,13 +69,22 @@ public class GUI {
 
     FreeMarkerEngine freeMarker = createEngine();
 
-    // Setup Spark Routes
+    // Setup Spark Routes for Stars
     // Initial Spark route given by stencil code
     Spark.get("/stars", new StarsBeginHandler(), freeMarker);
     // Additional Spark route that responds to star load form
     Spark.post("/starsloaded", new LoadHandler(), freeMarker);
     // Additional Spark route that responds to command form
     Spark.post("/commandrun", new CommandHandler(), freeMarker);
+
+    // Setup Spark Routes for Autocorrect settings page
+    // Spark route for autocorrect front page
+    Spark.get("/autocorrect", new AcMainBeginHandler(), freeMarker);
+    // Spark route for corrections made through JS
+    Spark.post("/correct", new AcCorrectHandler());
+    // Spark route that loads settings page
+    Spark.get("/autocorrect/settings", new AcSetBeginHandler(), freeMarker);
+
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -76,6 +98,39 @@ public class GUI {
       System.exit(1);
     }
     return new FreeMarkerEngine(config);
+  }
+
+  private static class AcMainBeginHandler implements TemplateViewRoute {
+
+    @Override
+    public ModelAndView handle(Request request, Response response)
+        throws Exception {
+      ah.resetMainVars();
+      return new ModelAndView(ah.getMainMap(), "acmain.ftl");
+    }
+
+  }
+
+  private static class AcSetBeginHandler implements TemplateViewRoute {
+
+    @Override
+    public ModelAndView handle(Request request, Response response)
+        throws Exception {
+      ah.resetSetVars();
+      return new ModelAndView(ah.getSetMap(), "acsettings.ftl");
+    }
+  }
+
+  public static class AcCorrectHandler implements Route {
+
+    @Override
+    public String handle(Request request, Response response) throws Exception {
+      // Pulls the input string that was used
+      QueryParamsMap qm = request.queryMap();
+      String toCorrect = qm.value("toCorrect");
+      return GSON.toJson(ah.correct(toCorrect));
+    }
+
   }
 
   /**

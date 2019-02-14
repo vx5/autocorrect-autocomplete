@@ -20,4 +20,5 @@ public class Suggestion {
   public String getSecondWord() {
     return secondWord;
   }
+
 }
