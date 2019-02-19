@@ -1,0 +1,5 @@
+INPUT
+corpus data/autocorrect/empty.txt
+OUTPUT
+ERROR: given file is empty
+END

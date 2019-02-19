@@ -10,8 +10,6 @@
 	text-overflow: ellipsis;
 }
 
-
-
 body {
 	background-color: #39c9bb;
 	text-align: center;
@@ -45,9 +43,10 @@ body {
 
 .altButton {
 	cursor: pointer;
-	background-color: inherit;
-	border: solid;
-	color: #0047ab;
+	background-color: white;
+	border-style: solid;
+	border-color: white;
+	color: #39c9bb;
 	width: 140px;
 	height: 50px;
 	font-size: 20px;
@@ -56,7 +55,8 @@ body {
 
 #mainError {
 	color: #b90000;
-	font-family: goodTimesCustom;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-weight: normal;
 }
 
 #main-header {

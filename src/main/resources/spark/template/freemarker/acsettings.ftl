@@ -2,50 +2,88 @@
   <head>
   	<title>Settings | Autocorrect</title>
   	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/acsettings.css">
+    <link rel = "icon" href = "/css/ACLogo.png" />
   </head>
   <body>
-  	<h1 id="page-header">${title}</h1>
+    <!-- Adds the relevant JS libraries and script -->
+    <script src="/js/jquery-3.1.1.js"></script>
+    <script src="/js/acsettings.js"></script>
+  	<h1 id="settings-header">Settings</h1>
   	<!-- SECTION: Altering settings -->
-    <h4>Make your changes, and then click the Save new settings button below</h4>
-  	<form method="POST" action="/autocorrect/settings/saved" id="settings-form">
+    <h4 id="settings-subheader">Make your changes, and then click the <i>Save new settings</i> button below</h4><br>
+  	<form method="POST" action="/autocorrect/settings/save" id="settings-form">
       <!-- Inputs for altering generation / sorting settings -->
-      <h2 class="sub-heading">Generation and Sorting</h2>
+      <div id="settingsDiv">
+      <div class="subHeaderDiv">Generation and Sorting</div>
+      <!-- Input for prefix setting -->
+      <div class="settingDiv">
+      Prefix setting:
+      <select id="prefix" name="prefix">
+        <option value="off">off</option>
+        <option value="on">on</option>
+      </select>
+      </div>
+      <!-- Input for whitespace setting -->
+      <div class="settingDiv">
+      Whitespace setting: 
+      <select id="whitespace" name="whitespace">
+        <option value="off">off</option>
+        <option value="on">on</option>
+      </select>
+      </div>
+      <!-- Input for smart setting -->
+      <div id="smart" class="settingDiv">
+      Smart ranking setting:
+      <select id="smart" name="smart">
+        <option value="off">off</option>
+        <option value="on">on</option>
+      </select>
+      </div>
+      <!-- Input for led setting -->
+      <div class="settingDiv">
+      LED setting:
+      <div>
+      <b id="rangeVal"></b> &nbsp <input id="led" type="range" min="0" max="5" value="0" name="led">
+      </div>
+      </div>
+      </div><br><br>
 
+
+      <div id="corporaDiv">
       <!-- Inputs for altering corpora settings -->
-      <h2 class="sub-heading">Corpora</h2>
+      <div class="subHeaderDiv">Load Corpora</div>
       <!-- Lists all current corpora -->
-      <h4>All corpora currently loaded:</h4>
-      <p>
-        <#list corpora as corpus>
-        corpus<br>
-        </#list>
-      </p>
+      
+      <div id="corpSettingDiv">Loaded so far: (scrolls)<div id="corporaListDiv"><#list corpora as corpus><i class="corpusItem">${corpus}</i></#list></div></div>
       <!-- Asks for new corpora -->
-      List all new corpora to add by listing their filepaths, <b>separated by newlines</b>
-      <p>
-      All paths are assumed to start with "data/autocorrect/"<br>
-      <textarea name="filepaths" form="settings-form" rows="3" cols="45">filename.txt</textarea>
-      </p>
-      or example, input:<br>"sherlock.txt"<br>"norton.txt"<br>"great_expectations.txt"<br>
+      <div id="enterCorporaDiv">
+      List all new corpora to add by listing their filepaths, separated by commas.<br>
+      All paths are assumed to start with "data/autocorrect/"<br><br>
+      <textarea id="filepaths" name="filepaths" form="settings-form" rows="3" cols="45"></textarea><br><br>
+      For example, input: "sherlock.txt,great_expectations.txt,norton.txt"<br>
+      </div>
+      </div><br><br>
+      <!-- Div that holds final buttons -->
+      <div id="buttonDiv">
       <!-- Button for saving the settings -->
-      <button id = "save-settings" type="submit">
+      <button id="save-button" class = "settings-button" type="submit">
       Save new settings
-      </button>      
-    </form>
-    <!-- SECTION: Button to reset all settings to default -->
-    <form method="GET" action="/autocorrect/settings/default">
-      <button id = "reset-settings" type="submit">
-      Reset settings to default
+      </button> 
+      <form method="GET" action="/autocorrect/settings/default">
+      <button id="reset-button" class = "settings-button" type="submit">
+      Reset settings
       </button>
-    </form> 
-    <!-- Confirmation message to user -->
-    <!--<p>confirm-setting/p> -->
-  	<!-- SECTION: Return to main page -->
-    <h2 class="sub-header">Return to Main Page</h2>
-    <h4>Make sure you save your settings above first!</h4>
+      </form> 
+      </div>    
+    </form><br>
+    <!-- SECTION: Button to reset all settings to default --> 
+    <!-- Confirmation / error messages to user -->
+    <p id="win-msg">${win}</p>
+    <p id="err-msg">${err}</p>
   	<!-- Button that sends us back to the main page -->
     <form method="GET" action="/autocorrect">
-      <button id = "back-to-main" type="submit">
+      <button id="return-button" class = "settings-button" type="submit">
       Return to main
       </button>
     </form>

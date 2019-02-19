@@ -1,0 +1,13 @@
+INPUT
+corpus data/autocorrect/sherlock.txt
+led 3
+ac sherlo
+OUTPUT
+corpus data/autocorrect/sherlock.txt added
+ac sherlo
+there
+her
+she
+should
+shall
+END

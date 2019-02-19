@@ -4,6 +4,12 @@ import java.util.Comparator;
 
 import com.google.common.collect.HashMultiset;
 
+/**
+ * @author vx5
+ *
+ *         Comparator that helps compare Suggestions according to the default
+ *         ranking system from the assignment handout.
+ */
 public class SuggestComparator implements Comparator<Suggestion> {
   // Stores "before" word, if it is given
   private String before;
@@ -14,18 +20,37 @@ public class SuggestComparator implements Comparator<Suggestion> {
   // Stores full set of corpus words
   private HashMultiset<String> corpusWords;
 
+  /**
+   * Constructor used in case when the sorting order should use the bigram map
+   *
+   * @param beforeWord       the word occurring before the would-be suggestions,
+   *                         to be used with the bigram map
+   * @param newMap           the BigramMap used with the given "before word"
+   * @param givenWord        the word used as the basis for new Suggestions
+   * @param givenCorpusWords set of all the words found in the corpora
+   */
   public SuggestComparator(String beforeWord, BigramMap newMap,
       String givenWord, HashMultiset<String> givenCorpusWords) {
+    // Stores parameters in Comparator's instance fields
     before = beforeWord;
     bmap = newMap;
     given = givenWord;
     corpusWords = givenCorpusWords;
   }
 
+  /**
+   * Constructor used in case when the sorting order should not use the bigram
+   * map
+   *
+   * @param givenWord        the word used as the basis for new Suggestions
+   * @param givenCorpusWords set of all the words found in the corpora
+   */
   public SuggestComparator(String givenWord,
       HashMultiset<String> givenCorpusWords) {
+    // Signals through instance variables that bigram map should not be used
     before = null;
     bmap = null;
+    // Stores parameters in Comparator's instance fields
     given = givenWord;
     corpusWords = givenCorpusWords;
   }

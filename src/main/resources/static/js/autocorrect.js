@@ -26,6 +26,8 @@ $(document).ready(() => {
 	const suggestions = [$onerow, $tworow, $threerow, $fourrow, $fiverow];
 	// Reference to box that user types in to
 	const $acbox = $("#ac-box");
+	// Clears box, be default (for return from the settings page)
+	document.getElementById("ac-box").value = "";
 	// Bind handler to the input box
 	$("#ac-box").keyup(event => {
 		// Clear all suggestions if text box is empty
@@ -56,7 +58,7 @@ $(document).ready(() => {
 			if (event.which == 13) {
 				document.getElementById("ac-box").value = 
 					suggestions[selectionNum - 1].html();
-				// Removes all existing suggestions through a roundabout process
+				// Removes all existing suggestions through a roundabout process.
 				// I believe for timing reasons, the clearSuggestions() function
 				// failed. Instead, I pretended I was fetching a new set 
 				// of suggestions, but then ignored the response. Note that
@@ -74,25 +76,16 @@ $(document).ready(() => {
 					$fiverow.html("");
 				});
 			}
+			// If selected, toggles off selection both graphically
 			suggestions[selectionNum - 1].toggleClass('selected');
 			suggestions[selectionNum - 1].toggleClass('suggestion');
+			// and logically
 			selected = false;
 			selectionNum = 0;
 		}
 	});
 	// Bind the up, down key handlers to the document
 	$(document).keydown(event => {
-		// If up or down is pressed
-		/*
-		if (event.which == 38 || event.which == 40) {
-			if (selected) {
-				selected = false;
-				suggestions[selectionNum - 1].toggleClass('selected');
-				suggestions[selectionNum - 1].toggleClass('suggestion');
-				selectionNum = 0;
-			}
-		}
-		*/
 		// Look to change, remove, or act on selection
 		// If the up arrow is pressed
 		if (event.which == 38 && selected) {
@@ -173,7 +166,7 @@ $(document).ready(() => {
 			// If a suggestion is selected, follow through on selection
 			document.getElementById("ac-box").value = 
 				suggestions[selectionNum - 1].html();
-			// Removes all existing suggestions through a roundabout process
+			// Removes all existing suggestions through a roundabout process.
 			// I believe for timing reasons, the clearSuggestions() function
 			// failed. Instead, I pretended I was fetching a new set 
 			// of suggestions, but then ignored the response. Note that
@@ -196,7 +189,9 @@ $(document).ready(() => {
 			selectionNum = 0;
 		}
 	})
-	// Add the color changing scheme for the button
+	// Add the color changing scheme for the button through
+	// a pair of handlers that toggle the button class's 
+	// CSS settings
 	$setButton.mouseover(event => {
 		$setButton.toggleClass('toSettingsButton');
 		$setButton.toggleClass('altButton');

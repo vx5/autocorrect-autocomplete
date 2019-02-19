@@ -1,0 +1,7 @@
+INPUT
+corpus data/autocorrect/sherlock.txt
+corpus data/autocorrect/norton.txt
+OUTPUT
+corpus data/autocorrect/sherlock.txt added
+corpus data/autocorrect/norton.txt added
+END

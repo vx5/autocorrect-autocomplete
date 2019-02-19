@@ -1,0 +1,7 @@
+INPUT
+corpus data/autocorrect/sherlock.txt
+ac
+OUTPUT
+corpus data/autocorrect/sherlock.txt added
+ERROR: corpus, ac commands require at least one argument
+END

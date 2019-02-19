@@ -37,7 +37,7 @@ public class GUI {
   private static StarsGUIHandler gh;
   // Stores the AcGUIHandler instance
   private static AcGUIHandler ah;
-  // Stores the GSON instance
+  // Stores the GSON instance for Autocorrect
   private static final Gson GSON = new Gson();
 
   /**
@@ -77,14 +77,21 @@ public class GUI {
     // Additional Spark route that responds to command form
     Spark.post("/commandrun", new CommandHandler(), freeMarker);
 
-    // Setup Spark Routes for Autocorrect settings page
+    // Setup Spark Routes for Autocorrect
     // Spark route for autocorrect front page
     Spark.get("/autocorrect", new AcMainBeginHandler(), freeMarker);
     // Spark route for corrections made through JS
     Spark.post("/correct", new AcCorrectHandler());
     // Spark route that loads settings page
     Spark.get("/autocorrect/settings", new AcSetBeginHandler(), freeMarker);
-
+    // Spark route for saving settings page
+    Spark.post("/autocorrect/settings/save", new AcSetSaveHandler(),
+        freeMarker);
+    // Spark route for resetting settings page
+    Spark.post("/autocorrect/settings/default", new AcSetResetHandler(),
+        freeMarker);
+    // Spark route for getting current settings
+    Spark.get("/getsettings", new AcGetSetHandler());
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -116,9 +123,29 @@ public class GUI {
     @Override
     public ModelAndView handle(Request request, Response response)
         throws Exception {
+      return new ModelAndView(ah.getSetMap(), "acsettings.ftl");
+    }
+  }
+
+  public static class AcSetResetHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(Request request, Response response)
+        throws Exception {
       ah.resetSetVars();
       return new ModelAndView(ah.getSetMap(), "acsettings.ftl");
     }
+  }
+
+  public static class AcSetSaveHandler implements TemplateViewRoute {
+
+    @Override
+    public ModelAndView handle(Request request, Response response)
+        throws Exception {
+      // Pulls the current set of settings input
+      QueryParamsMap qm = request.queryMap();
+      return new ModelAndView(ah.fixSettings(qm), "acsettings.ftl");
+    }
+
   }
 
   public static class AcCorrectHandler implements Route {
@@ -129,6 +156,16 @@ public class GUI {
       QueryParamsMap qm = request.queryMap();
       String toCorrect = qm.value("toCorrect");
       return GSON.toJson(ah.correct(toCorrect));
+    }
+
+  }
+
+  public static class AcGetSetHandler implements Route {
+
+    @Override
+    public String handle(Request request, Response response) throws Exception {
+      // TODO Auto-generated method stub
+      return GSON.toJson(ah.getSettings());
     }
 
   }

@@ -1,0 +1,11 @@
+INPUT
+corpus data/autocorrect/sherlock.txt
+led 2
+ac sherlo
+OUTPUT
+corpus data/autocorrect/sherlock.txt added
+ac sherlo
+sherlock
+shelf
+sherry
+END

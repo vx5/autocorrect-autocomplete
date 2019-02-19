@@ -1,0 +1,15 @@
+INPUT
+prefix argOne argTwo
+whitespace argOne argTwo
+smart argOne argTwo
+led argOne argTwo
+OUTPUT
+ERROR: updates to settings require only two arguments:
+one for setting (e.g. "prefix") and one for the new status ("on" or "off")
+ERROR: updates to settings require only two arguments:
+one for setting (e.g. "prefix") and one for the new status ("on" or "off")
+ERROR: updates to settings require only two arguments:
+one for setting (e.g. "prefix") and one for the new status ("on" or "off")
+ERROR: updates to settings require only two arguments:
+one for setting (e.g. "prefix") and one for the new status ("on" or "off")
+END

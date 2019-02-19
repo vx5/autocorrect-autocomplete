@@ -4,8 +4,24 @@ import java.util.HashSet;
 
 import com.google.common.collect.HashMultiset;
 
+/**
+ * @author vx5
+ *
+ *         Class that houses static methods related to the generation of
+ *         suggestions for Autocorrect.
+ */
 public class Generators {
 
+  /**
+   * Generates Suggestions by attempting to add a single space in each possible
+   * position in the given word, and using suggestions where both resulting
+   * words are in the given corpora
+   *
+   * @param corpusWords set of all the words contained in the input corpora
+   * @param givenWord   the word to be used as the basis for new Suggestions
+   * @return a set of all valid Suggestions generated through the whitespace
+   *         method
+   */
   public static HashSet<Suggestion> whiteSpace(HashMultiset<String> corpusWords,
       String givenWord) {
     // Instantiates HashSet to be returned
@@ -23,9 +39,19 @@ public class Generators {
         suggestions.add(s);
       }
     }
+    // Returns the relevant generated suggestions
     return suggestions;
   }
 
+  /**
+   * Generate Suggestions by performing valid Levenshtein edits on a given word
+   *
+   * @param corpusWords set of all the words contained in the input corpora
+   * @param givenWord   the word to be used as the basis for new Suggestions
+   * @param dist        the maximum number of edits a suggested word can be from
+   *                    the given word
+   * @return a set of all the valid Suggestions generated
+   */
   public static HashSet<Suggestion> getLeds(HashMultiset<String> corpusWords,
       String givenWord, int dist) {
     // Create generic HashSet to hold all current suggestions
@@ -41,7 +67,7 @@ public class Generators {
         after = givenWord.substring(i);
       }
       // Iterate through all possible alphabet additions
-      for (int j = 0; j < givenWord.length(); j++) {
+      for (int j = 0; j < alphabet.length(); j++) {
         String insertion = alphabet.substring(j, j + 1);
         // Check whether word with given insertion is present
         String suggest = before + insertion + after;
@@ -113,7 +139,7 @@ public class Generators {
         scannedStrings.add(s.getFirstWord());
       }
     }
-    // Return all ideas
+    // Return all suggestion ideas
     return scannedIdeas;
   }
 

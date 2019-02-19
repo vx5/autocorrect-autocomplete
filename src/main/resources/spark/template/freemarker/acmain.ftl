@@ -3,6 +3,7 @@
   	<title>Autocorrect</title>
   	<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/acmain.css">
+    <link rel = "icon" href = "css/ACLogo.png" />
   </head>
   <body>
     <!-- Adds the relevant JS libraries and script -->

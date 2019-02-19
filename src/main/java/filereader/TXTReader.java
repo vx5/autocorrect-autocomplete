@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import stringmanipulation.StringOps;
+
 public class TXTReader {
 
   public static ArrayList<String> readFile(String filepath, String regex)

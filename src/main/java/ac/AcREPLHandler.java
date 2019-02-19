@@ -3,7 +3,7 @@ package ac;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import filereader.StringOps;
+import stringmanipulation.StringOps;
 
 public class AcREPLHandler {
   private AcCoordinator coord;
