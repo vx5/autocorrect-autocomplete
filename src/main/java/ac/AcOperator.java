@@ -10,7 +10,7 @@ import java.util.PriorityQueue;
 import com.google.common.collect.HashMultiset;
 
 import filereader.TXTReader;
-import trie.Trie;
+import trie.RadixTrie;
 
 /**
  * @author vx5
@@ -25,7 +25,7 @@ public class AcOperator {
   // Stores set of all words in dictionary
   private HashSet<String> dictionary;
   // Stores Trie for given corpora
-  private Trie trie;
+  private RadixTrie trie;
   // Stores Bigram Map for corpora
   private BigramMap bmap;
   // Stores all settings
@@ -73,7 +73,7 @@ public class AcOperator {
   public void reset() {
     // Resets core variables
     corpusWords = HashMultiset.create();
-    trie = new Trie();
+    trie = new RadixTrie();
     corpusLoaded = false;
     bmap = new BigramMap();
     filePaths = new ArrayList<String>();
