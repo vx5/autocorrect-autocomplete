@@ -11,26 +11,36 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class AcOperatorTest {
+  // Stores instance of AcOperator for tests
   private AcOperator o;
 
   @Test
   public void testConstruction() {
     AcOperator x = new AcOperator();
+    // Tests that construction yields non-null object
     assertNotNull(x);
   }
 
   @Test
   public void testReset() {
+    // Tests that reset() is properly called and that it properly resets the
+    // corpora storage (as designed)
     o.reset();
     assertEquals(o.getCorpuses().size(), 0);
   }
 
   @Test
   public void testGetCorpuses() {
+    // Tests that getCorpuses() correctly returns filepaths of corpora currently
+    // in use
     assertEquals(o.getCorpuses().size(), 1);
     assertEquals(o.getCorpuses().get(0), "data/autocorrect/sherlock.txt");
   }
 
+  /**
+   * Jointly tests the status accessors and mutators, as they rely on one
+   * another for the purpose of proper verification
+   */
   @Test
   public void testGetSetStatuses() {
     assertEquals(o.getPrefixStatus(), "off");
