@@ -67,8 +67,6 @@ To run the TA test suite, I navigate to the project's root directory, and run ".
 
 Please note that, in order to take advantage of the full time limits, I did sometimes add the "-t 10" flag at the end of my system test commands to make sure they did not time out (I got the instruction to do this from Piazza).
 
-
-
 **Answers to Design Questions**
 
 *Suppose that in addition to "neighbors" and "radius" you wanted to support 10+ more commands. How would you change your code - particularly your repl parsing - to do this? Don't worry about algorithmic details with the k-d tree, we're interested in the design*
@@ -121,11 +119,40 @@ I do not believe I have any checkstyle errors.
 
 Just as in Stars, my Main class is the highest-level class in my design. Most relevantly to Autocorrect, it stores an instance of the AcCoordinator class, which is the highest-level class of the AutoCorrect implementation. Its location at this high-level allows the GUI and REPL to both access the same instance of AcCoordinator, which allows them to make requests and changes to the same Autocorrect implementation. 
 
+The REPL, just as in Stars, parses REPL input for commands relevant to Stars and commands relevant to Autocorrect. Commands relevant to Stars are delegated to the StarsREPLHandler, and from that point, are discussed further in the above Stars portion of this README. Commands relevant to Autocorrect are delegated to the AcREPLHandler. The AcREPLHandler's handle() method parses commands into what, logically, they are asking, and then makes requests to the AcCoordinator class's AcOperator instance, which manages key operations for a given set of corpora and autocorrect settings. Design-wise, the AcCoordinator class is a class that can contain multiple AcOperators - in the scenario painted by design question #1, where multiple, wholly distinct autocorrects are desired, the AcREPLHandler (and the GUI) could understand user input so as to know which AcOperator to use.
+
+A GUI class is used to run the Spark server and launch the Spark routes necessary to support both the Stars and Autocorrect GUIs. Those routes rely on handlers defined in the GUI.java file. Those handlers take in requests from the GUI, make the appropriate requests to the AcOperator (through the AcCoordinator class, described in the paragraph above), and then returns the appropriate data, sometimes by loading a FreeMarker template, sometimes through JSON.
+
+Note that the input "cleaning" process, of removing punctuation and numbers, and of ensuring that all characters are in lowercase, is handled in the GUI and REPL handler classes. 
+
 *Core Operations*
+
+The AcOperator class manages all high-level operations related to AutoCorrect. It essentially manages a single implmementation of Autocorrect, complete with its own corpora and settings. It can accept new corpuses, by reading their contents and storing them in a RadixTrie, and can make autocorrect requests by generating suggestions via the prefix, whitespace, and Levenshtein edit methods (all of which are delegated) and then ranking them by either the default ranking method of the smart ranking method, depending on which setting is activated.
+
+Note that the prefix generation method is delegated to the RadixTrie, while the whitespace and LED generation methods are delegated to static methods outside the class. Crucially, my LED generation method works by calculating all possible Levenshtein edits from the critical word, given an edit distance, NOT by calculating the edit distance from the given word to all words fed in from the corpora.
+
+Please also note that the RadixTrie is my implementation of the compact version of the Trie. It is described in greater detail below.
 
 *RadixTrie*
 
+The RadixTrie structure starts like many tree-like structures - with a root node. From that node follow RadixTrieNodes, nodes that contain sequences of characters (stored in ArrayLists) that represent consecutive characters in a prefix tree that do not have any side-branches. Nodes are decorated as terminal if the path that follows from the root to that node spells out a word meant to be stored in the RadixTrie.
+
+Checking whether a word is contained in the RadixTrie and generating words for which a given word is a prefix in the RadixTrie both involve iterating from the root node down to the end of the given word. In the contain search, if the end of the given word is located in the RadixTrie and decorated as terminal, the word is contained. In the prefix search, the end node is used as the launching point for a recursive search through the rest of the tree that looks for other terminal-decorated nodes below and constructs the relevant Strings.
+
+Adding a word to the RadixTrie involves going as far as one can in the existing tree structure from the root node, splitting off into a new branch if and when the word is no longer contained in the RadixTrie, and then decorating the new ending node as terminal. This process complicates when the splitting-off point is within an existing node, and requires breaking that existing node into two nodes, parent and child ("de-coalescing" them, if you will), transferring the key properties (such as terminal status and the children node) to the new child node, and then extending the new branch off as a new child from the new parent node.
+
 *GUI Features*
+
+My gui can be accessed after using the "./run --gui" command in the terminal window, letting the terminal operations complete, and then opening a browser and heading to the URL "http://localhost:4567/autocorrect". The main page is simple -- users type in to the text box, and autocorrect suggestions appear in a dropdown list below the box. I did not use any pre-build dropdown, but rather built using divs. If users type more than fits in the box, the box will scroll, but the dropdown answers below will be truncated using ellipses. If the user begins typing while a corpus is not loaded, an error message appears below the box.
+
+Users can select suggestions in one of two ways. They can use the mouse to hover over one of the suggestions (anywhere on that suggestion's box, not only where the text is), in which case the suggestion's box style will change to have white text on a blue background. They can also use the down and up arrow keys to select suggestions. Pressing the up-arrow while in the suggestion box does nothing, while pressing it on the top-most suggestion deselects all suggestions. Pressing the down-arrow while on the bottom-most suggestion does nothing, and the bottom-most suggestion will remain selected. Notably, one can select a box with the mouse, and then change that selection with the arrow keys, and vice versa. 
+
+Users can click the Settings button to head to the Settings page. The Generation and Sorting section allows users to select which settings they want to use. The text next to the LED setting slider displays which LED selection is currently in use (I had to add this functionality separately). The Load Corpora section allows users to load more corpora from the data/autocorrect/ subdirectory. Corpora that are already in use are displayed in a box above, and users can scroll through the list of loaded corpora as more and more are included.
+
+Once the user is ready to save their new settings (be they changes to the generation and sorting settings, the addition of new corpora, or both), they can click "Save new settings". They can also click "Reset settings" to reset all settings to the assignment defaults. Normally, when forms submit, all of the values of inputs are reset to some default. Using JavaScript, I made sure that when new settings are saved, the form populates with the existing values in use by the underlying AcOperator, so that when users arrive at the settings page, they know what the current settings are. Additionally, if any settings are changed to a value different from the current ones, the message between the "Save new settings" and "Return to main" buttons will populate with a message telling the user that they have unsaved changes (until, of course, they click Save new settings). If the user changes their settings in the form back to the current underlying settings, the message will return to normal (a descriptive message when the page first loads, and a message that all settings are up-to-date at all other times).
+
+Most of all, I committed a lot of time to styling the pages. For both pages, a favicon I made myself appears in the browser tab. Some of the text, including the large "Autocorrect" title on the main page, is in an imported font, the "Good Times" font by Raymond Larabie. All of the buttons were styled, and JavaScript was used to make them change color and the cursor change form when the mouse hovers over them. Most of my styling effort was related to spacing items out on pages, and I made extensive use of Flexboxes to accomplish this task. All of my GUI work benefited greatly from online resources to better understand JavaScript event handlers and CSS styles. To be completely honest, I also spent a fair amount of time making design decisions (where to put elements, how to display matches).
+
 
 **Runtime/Space Optimizations**
 
@@ -179,15 +206,38 @@ Let us assume that we are using a standard Trie, in which some number n words ar
 
 My implementation uses a radix trie, but that detail should not change the answer. In the radix trie, too, there is one terminal node for each word stored in the trie, and the addition of these new words would require a new child node, containing only the character θ, to each terminal node. We would thus also need to add n nodes to the trie in the case of the radix trie.
 
-**Extra Credit (including GUI explanation)**
+**Extra Credit**
 
 I pursued two main avenues of extra credit: the compact trie optimization, and the GUI.
 
 My compact trie optimization, or radix trie, is in use in the submitted version of Autocorrect. I was somewhat familiar with the structure, which I remember in theoretical terms from CSCI 1810. It has all the same functionality as the standard trie, and is housed in the trie package, where its functionality is spread between the RadixTrie and RadixTrieNode classes, located in RadixTrie.java and RadixTrieNode.java, respectively. The inner workings of the RadixTrie are discussed in its subsection of the design details section.
 
+My GUI was one of the parts of my project I spent the most time on. A proper description of the functionality is described in the GUI subsection of the Design Details section above. Please read that section for a full description of my GUI. This section only means to list some of the tools I used in my GUI, beyond what was required. The ordering of this list is arbitrary:
+
+1. Divs (may have been necessary in some ways anyways)
+2. Flexboxes (and all associated attributes)
+3. Range inputs
+4. Favicons / icons that appear in brower tabs
+5. Importing outside fonts
+6. Handling overflowing text (CSS white-space, overflow, text-overflow attributes)
+7. Changing the type of cursor
+8. Div padding
+9. The CSS "inherit" keyword
+10. Spacing elements like width, height, and transform
+
+I also made some higher-level design choices, like:
+
+11. Making changes to a page based on mouse and key usage
+12. Making sure key selections do not interfere with other text inputs on the same page
+13. Preserving a form's inputs in the form after the form is submitted
+14. Recognizing when elements of a form have changed (using the jQuery .change() method)
+15. Design choices themself, such as making a separate settings page
+
+As stated above, my GUI can be accessed by running "./run --gui" from the command line, waiting for the setup process to complete, and then opening a browser and going to the URL "http://localhost:4567/autocorrect". In the src/main/resources folder, the .ftl templates, "acmain.ftl" and acsettings.ftl" are are in spark/template/freemarker/, while the CSS is located in static/css/ with "acmain.css" and "acsettings.css", along with the resources "goodtimes.ttf" (the imported font) and "ACLogo.png" (for the browser icon). The JavaScript is located in static/css/, with all files within being relevant to Autocorrect.
+
 **Acknowledgments**
 
-I used online resources to help me review specific types of Java errors, and for how to write in markdown language. I also used extensive resources to better understand JavaScript, jQuery, HTML, and, in particular, CSS styling. I sometimes used mainstream resources like formal jQuery documentation and w3schools (which we were directed to in CS 2), and sometimes used other, more niche resources, like css-tricks.com to understand specific topics like Flexboxes.
+I used online resources to help me review specific types of Java errors, and for how to write in markdown language. I also used extensive resources to better understand JavaScript, jQuery, HTML, and, in particular, CSS styling. I sometimes used mainstream resources such as formal jQuery documentation and w3schools (which we were directed to in CS 2), and sometimes used other, more niche resources, such as css-tricks.com, to understand specific topics like Flexboxes.
 
 ## Bacon
 _Coming soon!_
