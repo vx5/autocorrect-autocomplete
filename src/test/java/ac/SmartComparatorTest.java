@@ -19,6 +19,9 @@ public class SmartComparatorTest {
 
   @Test
   public void testCompareDomDictionary() {
+    // Looks at case where one Suggestion dominates the other in the first
+    // condition -- that one's first word appears in the dictionary, corpus, and
+    // is long, and the other's does not
     SmartComparator c = new SmartComparator(corpusWords, dictionary);
     Suggestion s1 = new Suggestion("one");
     Suggestion s2 = new Suggestion("orxqw");
@@ -27,6 +30,9 @@ public class SmartComparatorTest {
 
   @Test
   public void testCompareDomNoDiction() {
+    // Looks at case where one Suggestion beats the other in the second
+    // condition -- appearance in the corpus and sufficient length, without
+    // presence in dictionary
     SmartComparator c = new SmartComparator(corpusWords, dictionary);
     Suggestion s1 = new Suggestion("one");
     Suggestion s2 = new Suggestion("notInCorpus");
@@ -35,6 +41,8 @@ public class SmartComparatorTest {
 
   @Test
   public void testComparePoints() {
+    // Looks at case where one Suggestion must beat the other through the
+    // SmartComparator's point system
     SmartComparator c = new SmartComparator("before", bmap, corpusWords,
         dictionary);
     Suggestion s1 = new Suggestion("four");
@@ -44,9 +52,11 @@ public class SmartComparatorTest {
 
   @Test
   public void testCompareLength() {
+    // Looks at case where one Suggestion must beat the other through the
+    // SmartComparator's last non-lexicographic attribute, length
     SmartComparator c = new SmartComparator(corpusWords, dictionary);
-    Suggestion s1 = new Suggestion("four");
-    Suggestion s2 = new Suggestion("three");
+    Suggestion s1 = new Suggestion("three");
+    Suggestion s2 = new Suggestion("six");
     assertTrue(c.compare(s1, s2) < 0);
   }
 
@@ -82,6 +92,7 @@ public class SmartComparatorTest {
 
   @After
   public void tearDown() {
+    // Clears all instance variables for re-initialization in setUp()
     bmap = null;
     corpusWords = null;
     dictionary = null;

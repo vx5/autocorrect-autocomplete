@@ -1,7 +1,6 @@
 package ac;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -47,7 +46,7 @@ public class AcGUIHandler {
   /**
    * Resets all variables that represent variables on "acmain.ftl" template to
    * their default values (some of these values are altered farther in the
-   * relevant JavaScript file, autocorrect.js)
+   * relevant JavaScript file, autocorrect.js).
    */
   public void resetMainVars() {
     // Resets and populates the suggestions list
@@ -63,7 +62,7 @@ public class AcGUIHandler {
 
   /**
    * Returns a map that a Spark route can use to populate the "acmain.ftl"
-   * template which the current, desired values
+   * template which the current, desired values.
    *
    * @return Map that represents the server's current values for each of the
    *         variables to be represented on "acmain.ftl"
@@ -82,7 +81,7 @@ public class AcGUIHandler {
   /**
    * Resets all variables that represent variables on "acsettings.ftl" template
    * to their default values (some of these values are altered farther in the
-   * relevant JavaScript file, acsettings.js)
+   * relevant JavaScript file, acsettings.js).
    */
   public void resetSetVars() {
     // Resets everything at the core
@@ -96,7 +95,7 @@ public class AcGUIHandler {
 
   /**
    * Returns a map that a Spark route can use to populate the "acsettings.ftl"
-   * template which the current, desired values
+   * template which the current, desired values.
    *
    * @return Map that represents the server's current values for each of the
    *         variables to be represented on "acsettings.ftl"
@@ -113,7 +112,7 @@ public class AcGUIHandler {
   }
 
   /**
-   * Returns a map that represents the relevant AcOperator's current settings
+   * Returns a map that represents the relevant AcOperator's current settings.
    *
    * @return a map that stores all of the relevant AcOperator's current settings
    */
@@ -132,7 +131,7 @@ public class AcGUIHandler {
 
   /**
    * Processes an Autocorrect attempt into a map that represents all of the
-   * output suggestions
+   * output suggestions.
    *
    * @param toCorrect the String input to an Autocorrect attempt
    * @return a map representing the output suggestions
@@ -140,7 +139,7 @@ public class AcGUIHandler {
   public Map<String, Object> correct(String toCorrect) {
     // Cleans the string to be Autocorrected
     String[] toCorrectSplit = StringOps.cleanInput(toCorrect).split(" ");
-    LinkedList<String> output = new LinkedList<String>();
+    ArrayList<String> output = new ArrayList<String>();
     // Attempts to autocorrect if a proper String was received
     if (toCorrect.length() > 0) {
       try {
@@ -150,8 +149,9 @@ public class AcGUIHandler {
         mainErrorStr = "";
       } catch (Exception e) {
         // If corpus was not yet loaded, the
-        mainErrorStr = "Please load a corpus before typing — you can load a corpus"
-            + " by clicking <i>settings</i> or via the REPL";
+        mainErrorStr = "Please load a corpus before typing — "
+            + "you can load a corpus by clicking <i>settings</i> "
+            + "or via the REPL";
         return this.getMainMap();
       }
     }
@@ -170,7 +170,7 @@ public class AcGUIHandler {
   }
 
   /**
-   * Updates the settings of this implementation's relevant AcOperator instance
+   * Updates the settings of this implementation's relevant AcOperator instance.
    *
    * @param qm QueryParamsMap from request sent from GUI
    * @return updated map of variables for "acsettings.ftl"

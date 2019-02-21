@@ -1,17 +1,34 @@
 package ac;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 import stringmanipulation.StringOps;
 
+/**
+ * @author vx5
+ *
+ *         REPL handler for the Autocorrect project's commands. Receives and
+ *         parses commands from REPL, and then manages necessary changes.
+ */
 public class AcREPLHandler {
+  // Stores AcCoordinator instance used accessed by the handler
   private AcCoordinator coord;
 
+  /**
+   * Constructor that initializes AcCoordinator instance using parameter.
+   *
+   * @param c AcCoordinator to be used to access Autocorrect functionality
+   */
   public AcREPLHandler(AcCoordinator c) {
     coord = c;
   }
 
+  /**
+   * Parse and delegate a command from the REPL.
+   *
+   * @param command REPL command in String form
+   */
   public void handle(String command) {
     // Split command line according to spaces
     String[] splitLine = command.split(" ");
@@ -20,24 +37,26 @@ public class AcREPLHandler {
     // Check for case of simple status requests
     if (splitLine.length == 1) {
       // Get the requested status
+      //@formatter:off
       switch (splitLine[0]) {
-      case "prefix":
-        System.out.println("prefix " + o.getPrefixStatus());
-        break;
-      case "whitespace":
-        System.out.println("whitespace " + o.getWsStatus());
-        break;
-      case "smart":
-        System.out.println("smart " + o.getSmartStatus());
-        break;
-      case "led":
-        System.out.println("led " + o.getLedSetting());
-        break;
-      default:
-        System.out.println(
-            "ERROR: corpus, ac commands require at least one argument");
-        return;
+        case "prefix":
+          System.out.println("prefix " + o.getPrefixStatus());
+          break;
+        case "whitespace":
+          System.out.println("whitespace " + o.getWsStatus());
+          break;
+        case "smart":
+          System.out.println("smart " + o.getSmartStatus());
+          break;
+        case "led":
+          System.out.println("led " + o.getLedSetting());
+          break;
+        default:
+          System.out.println(
+              "ERROR: corpus, ac commands require at least one argument");
+          return;
       }
+      //@formatter:on
       // Check for case of simple status updates
     } else if (splitLine.length == 2 && (splitLine[0].contentEquals("prefix")
         || splitLine[0].contentEquals("whitespace")
@@ -75,17 +94,22 @@ public class AcREPLHandler {
           return;
         }
         // Again, use switch statement to direct command
+        //@formatter:off
         switch (splitLine[0]) {
-        case "prefix":
-          o.setPrefixStatus(onStatus);
-          break;
-        case "whitespace":
-          o.setWsStatus(onStatus);
-          break;
-        case "smart":
-          o.setSmartStatus(onStatus);
-          break;
+          case "prefix":
+            o.setPrefixStatus(onStatus);
+            break;
+          case "whitespace":
+            o.setWsStatus(onStatus);
+            break;
+          case "smart":
+            o.setSmartStatus(onStatus);
+            break;
+          default:
+            // We know that the default should never be triggered
+            break;
         }
+        //@formatter:on
       }
       // Check for corpus command
     } else if (splitLine[0].contentEquals("corpus")) {
@@ -116,7 +140,7 @@ public class AcREPLHandler {
         // Processes command list for "cleaning"
         String[] cleanSplit = StringOps.cleanInput(command).split(" ");
         // Gets the output list
-        LinkedList<String> output = o
+        ArrayList<String> output = o
             .ac(Arrays.copyOfRange(cleanSplit, 1, cleanSplit.length));
         // Print back command line
         System.out.println(command);
@@ -133,8 +157,8 @@ public class AcREPLHandler {
       // Print error message
       System.out
           .println("ERROR: updates to settings require only two arguments:\n"
-              + "one for setting (e.g. \"prefix\") and one for the new status (\"on\" or "
-              + "\"off\")");
+              + "one for setting (e.g. \"prefix\") and one for the new status "
+              + "(\"on\" or \"off\")");
     }
   }
 

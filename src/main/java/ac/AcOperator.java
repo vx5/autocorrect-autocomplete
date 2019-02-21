@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 import com.google.common.collect.HashMultiset;
@@ -37,6 +36,8 @@ public class AcOperator {
   private boolean corpusLoaded;
   // Stores list of corpus filepaths that have been loaded
   private ArrayList<String> filePaths;
+  // Stores default size of Queues to be used
+  private final int defaultQueueSize = 10;
 
   /**
    * Constructor that initializes all of the instance fields used in the core
@@ -60,15 +61,16 @@ public class AcOperator {
       // This Exception should never happen so long as the dictionary.txt file
       // is not tampered with. If it is, an error message will be printed
       // directly to the REPL
-      System.out.println(
-          "ERROR: Please ensure that the file \"data/autocorrect/dictionary.txt\" is present");
+      System.out
+          .println("ERROR: Please ensure that the file \"data/autocorrect/"
+              + "dictionary.txt\" is present");
     }
   }
 
   /**
    * Resets all the core instance variables that handle the execution of the
    * AcOperator, and resets all of the settings instance variables that dictate
-   * the generation and sorting of autocorrect options
+   * the generation and sorting of autocorrect options.
    */
   public void reset() {
     // Resets core variables
@@ -86,7 +88,7 @@ public class AcOperator {
   }
 
   /**
-   * Returns the current prefix setting
+   * Returns the current prefix setting.
    *
    * @return a String that reads either "on" or "off"
    */
@@ -99,7 +101,7 @@ public class AcOperator {
   }
 
   /**
-   * Alters the current prefix setting
+   * Alters the current prefix setting.
    *
    * @param newStatus boolean value that is true to represent "on", and false to
    *                  represent "off"
@@ -109,7 +111,7 @@ public class AcOperator {
   }
 
   /**
-   * Returns the current whitespace setting
+   * Returns the current whitespace setting.
    *
    * @return a String that reads either "on" or "off"
    */
@@ -122,7 +124,7 @@ public class AcOperator {
   }
 
   /**
-   * Alters the current whitespace setting
+   * Alters the current whitespace setting.
    *
    * @param newStatus boolean value that is true to represent "on", and false to
    *                  represent "off"
@@ -132,7 +134,7 @@ public class AcOperator {
   }
 
   /**
-   * Returns the current LED setting
+   * Returns the current LED setting.
    *
    * @return a String that reads either "on" or "off"
    */
@@ -142,17 +144,18 @@ public class AcOperator {
 
   /**
    *
-   * Alters the current whitespace setting
+   * Alters the current whitespace setting.
    *
-   * @param newStatus Integer value that represents new maximum Levenshtein edit
-   *                  distance to be used in generating suggestions via edits
+   * @param newSetting Integer value that represents new maximum Levenshtein
+   *                   edit distance to be used in generating suggestions via
+   *                   edits
    */
   public void setLedSetting(int newSetting) {
     led = newSetting;
   }
 
   /**
-   * Returns the current Smart sorting setting
+   * Returns the current Smart sorting setting.
    *
    * @return a String that reads either "on" or "off"
    */
@@ -166,7 +169,7 @@ public class AcOperator {
 
   /**
    *
-   * Alters the current smart sorting
+   * Alters the current smart sorting.
    *
    * @param newStatus boolean value that is true to represent "on", and false to
    *                  represent "off"
@@ -176,7 +179,7 @@ public class AcOperator {
   }
 
   /**
-   * Adds a corpus to be used in an Autocorrect request
+   * Adds a corpus to be used in an Autocorrect request.
    *
    * @param filepath A filepath that describes the location of a .txt file whose
    *                 words will be used as a corpus for Autocorrect requests
@@ -215,7 +218,7 @@ public class AcOperator {
 
   /**
    * Returns the filepaths of all the corpora currently being used for
-   * Autocorrect suggestions
+   * Autocorrect suggestions.
    *
    * @return an ArrayList of the String filepaths of all the current corpora
    */
@@ -224,15 +227,15 @@ public class AcOperator {
   }
 
   /**
-   * Performs an Autocorrect request, generating a maximum of 5 suggestions
+   * Performs an Autocorrect request, generating all suggestions.
    *
    * @param sequence an array of Strings where each String represents a word in
    *                 the sentence passed to Autocorrect
-   * @return a LinkedList of Strings where each String represents a suggestion
+   * @return an ArrayList of Strings where each String represents a suggestion
    *         from Autocorrect
    * @throws Exception if a corpus has not yet been loaded
    */
-  public LinkedList<String> ac(String[] sequence) throws Exception {
+  public ArrayList<String> ac(String[] sequence) throws Exception {
     // Throw Exception if no corpus has been loaded yet
     if (!corpusLoaded) {
       throw new Exception("no corpus has been loaded yet");
@@ -280,8 +283,8 @@ public class AcOperator {
     // Instantiates HashSet that will hold all corresponding Strings
     HashSet<String> ideaStrings = new HashSet<String>();
     // Instantiates PriorityQueue that will hold all suggestions
-    PriorityQueue<Suggestion> pq = new PriorityQueue<Suggestion>(10,
-        chosenComp);
+    PriorityQueue<Suggestion> pq = new PriorityQueue<Suggestion>(
+        defaultQueueSize, chosenComp);
     // Switches from HashSet to PriorityQueue, while checking for
     // no duplicates based on first String
     for (Suggestion s : ideas) {
@@ -298,10 +301,10 @@ public class AcOperator {
     return this.pqToList(sequence, pq);
   }
 
-  private LinkedList<String> pqToList(String[] sequence,
+  private ArrayList<String> pqToList(String[] sequence,
       PriorityQueue<Suggestion> pq) {
     // Instantiates list to be returned
-    LinkedList<String> suggestions = new LinkedList<String>();
+    ArrayList<String> suggestions = new ArrayList<String>();
     // Generate proper start to each recommendation from sequence
     String recStart = "";
     for (int i = 0; i < sequence.length - 1; i++) {

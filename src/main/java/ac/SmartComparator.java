@@ -20,9 +20,13 @@ public class SmartComparator implements Comparator<Suggestion> {
   private HashMultiset<String> corpusWords;
   // Stores full set of dictionary words
   private HashSet<String> dictionary;
+  // Stores constants relevant to comparison process
+  private final float bigramCutoff = (float) 0.1;
+  private final int largePointInc = 10;
+  private final int smallPointInc = 5;
 
   /**
-   * Constructor used in case when the sorting order should use the bigram map
+   * Constructor used in case when the sorting order should use the bigram map.
    *
    * @param beforeWord       the word occurring before the would-be suggestions,
    *                         to be used with the bigram map
@@ -41,7 +45,7 @@ public class SmartComparator implements Comparator<Suggestion> {
 
   /**
    * Constructor used in case when the sorting order should not use the bigram
-   * map
+   * map.
    *
    * @param givenCorpusWords set of all the words found in the corpora
    * @param givenDiction     set of all words found in the given dictionary
@@ -105,37 +109,43 @@ public class SmartComparator implements Comparator<Suggestion> {
     int twoScore = 0;
     // Assigns points based on bigram probabilities, if relevant
     if (before != null) {
-      if (bmap.getProb(before, s1.getFirstWord()) > 0.1) {
-        oneScore += 10;
+      if (bmap.getProb(before, s1.getFirstWord()) > bigramCutoff) {
+        oneScore += largePointInc;
       }
-      if (bmap.getProb(before, s2.getFirstWord()) > 0.1) {
-        twoScore += 10;
+      if (bmap.getProb(before, s2.getFirstWord()) > bigramCutoff) {
+        twoScore += largePointInc;
       }
     }
     // Assigns points based on unigram probabilities
     if (corpusWords.count(s1.getFirstWord()) > 1) {
-      oneScore += 10;
+      oneScore += largePointInc;
     } else if (corpusWords.count(s1.getFirstWord()) == 1) {
-      oneScore += 5;
+      oneScore += smallPointInc;
     }
     if (corpusWords.count(s2.getFirstWord()) > 1) {
-      oneScore += 10;
+      oneScore += largePointInc;
     } else if (corpusWords.count(s2.getFirstWord()) == 1) {
-      oneScore += 5;
+      oneScore += smallPointInc;
     }
     // Assigns points based on length
     if (s1.getFirstWord().length() > 2) {
-      oneScore += 10;
+      oneScore += largePointInc;
     }
     if (s2.getFirstWord().length() > 2) {
-      twoScore += 10;
+      twoScore += largePointInc;
     }
     // Compares points
     if (oneScore != twoScore) {
       return twoScore - oneScore;
     }
-    // If point method failed, defaults to returning based on length
-    return s2.getFirstWord().length() - s1.getFirstWord().length();
+    // If point method does not differentiate, attempt to use length
+    int lengthOne = s1.getFirstWord().length();
+    int lengthTwo = s2.getFirstWord().length();
+    if (lengthOne != lengthTwo) {
+      return lengthTwo - lengthOne;
+    }
+    // If length method does not differentiate, then compare lexicographically
+    return s1.getFirstWord().compareTo(s2.getFirstWord());
   }
 
 }

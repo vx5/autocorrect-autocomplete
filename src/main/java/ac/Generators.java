@@ -10,12 +10,18 @@ import com.google.common.collect.HashMultiset;
  *         Class that houses static methods related to the generation of
  *         suggestions for Autocorrect.
  */
-public class Generators {
+public final class Generators {
+
+  /**
+   * Empty, private constructor since this is a utility class.
+   */
+  private Generators() {
+  }
 
   /**
    * Generates Suggestions by attempting to add a single space in each possible
    * position in the given word, and using suggestions where both resulting
-   * words are in the given corpora
+   * words are in the given corpora.
    *
    * @param corpusWords set of all the words contained in the input corpora
    * @param givenWord   the word to be used as the basis for new Suggestions
@@ -44,7 +50,7 @@ public class Generators {
   }
 
   /**
-   * Generate Suggestions by performing valid Levenshtein edits on a given word
+   * Generate Suggestions by performing valid Levenshtein edits on a given word.
    *
    * @param corpusWords set of all the words contained in the input corpora
    * @param givenWord   the word to be used as the basis for new Suggestions

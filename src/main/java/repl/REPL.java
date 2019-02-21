@@ -31,6 +31,7 @@ public final class REPL {
    *
    * @param galaxy AllStars instance specific to this run of the program
    * @param kdTree KDTree instance specific to this run of the program
+   * @param coord  AcCoordinator instance specific to this run of the program
    */
   public static void runREPL(AllStars galaxy, KDTree kdTree,
       AcCoordinator coord) {

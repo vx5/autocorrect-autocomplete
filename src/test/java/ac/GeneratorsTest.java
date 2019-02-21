@@ -50,6 +50,8 @@ public class GeneratorsTest {
 
   @Before
   public void setUp() {
+    // Initializes Multisets of words, one based on simple template, another
+    // based on sherlock.txt corpus
     corpusWords = HashMultiset.create();
     corpusWords.add("a");
     corpusWords.add("ab");
@@ -66,6 +68,7 @@ public class GeneratorsTest {
 
   @After
   public void tearDown() {
+    // Clears instance field for re-initialization
     corpusWords = null;
   }
 

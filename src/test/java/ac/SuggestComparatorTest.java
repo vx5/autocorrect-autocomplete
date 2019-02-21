@@ -18,6 +18,7 @@ public class SuggestComparatorTest {
 
   @Test
   public void testComparePerfectMatch() {
+    // Tests for comparison on first case -- perfect match
     SuggestComparator c = new SuggestComparator("given", corpusWords);
     Suggestion s1 = new Suggestion("given");
     Suggestion s2 = new Suggestion("notGiven");
@@ -26,6 +27,7 @@ public class SuggestComparatorTest {
 
   @Test
   public void testCompareBigram() {
+    // Test for comparison on second criterion -- probability in the bigram map
     SuggestComparator c = new SuggestComparator("four", bmap, "given",
         corpusWords);
     Suggestion s1 = new Suggestion("five");
@@ -35,6 +37,7 @@ public class SuggestComparatorTest {
 
   @Test
   public void testCompareUnigram() {
+    // Tests for comparison on third criterion -- unigram probability in corpus
     SuggestComparator c = new SuggestComparator("given", corpusWords);
     Suggestion s1 = new Suggestion("four");
     Suggestion s2 = new Suggestion("six");
@@ -43,6 +46,7 @@ public class SuggestComparatorTest {
 
   @Test
   public void testCompareAlphabetically() {
+    // Tests for lexicographic criterion, final of the set
     SuggestComparator c = new SuggestComparator("given", corpusWords);
     Suggestion s1 = new Suggestion("four");
     Suggestion s2 = new Suggestion("six");
@@ -71,6 +75,7 @@ public class SuggestComparatorTest {
 
   @After
   public void tearDown() {
+    // Clears instance variables for re-initializations
     bmap = null;
     corpusWords = null;
   }

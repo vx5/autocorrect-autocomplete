@@ -16,14 +16,14 @@ public class AcCoordinator {
   private ArrayList<AcOperator> ops;
 
   /**
-   * Constructor that simply initializes the list of AcOperators
+   * Constructor that simply initializes the list of AcOperators.
    */
   public AcCoordinator() {
     ops = new ArrayList<AcOperator>();
   }
 
   /**
-   * Adds an AcOperator to this AcCoordinator
+   * Adds an AcOperator to this AcCoordinator.
    *
    * @param op AcOperator to be added to this AcCoordinator
    */
@@ -32,7 +32,7 @@ public class AcCoordinator {
   }
 
   /**
-   * Returns a particular AcOperator from this AcCoordinator instance
+   * Returns a particular AcOperator from this AcCoordinator instance.
    *
    * @param opNum Integer that identifies which AcOperator in the list of
    *              AcOperators to return

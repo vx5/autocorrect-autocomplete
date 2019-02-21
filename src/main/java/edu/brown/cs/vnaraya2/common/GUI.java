@@ -107,6 +107,12 @@ public class GUI {
     return new FreeMarkerEngine(config);
   }
 
+  /**
+   * @author vx5
+   *
+   *         Handler route that supplies initialized variable values for
+   *         "acmain.ftl" template.
+   */
   private static class AcMainBeginHandler implements TemplateViewRoute {
 
     @Override
@@ -118,6 +124,12 @@ public class GUI {
 
   }
 
+  /**
+   * @author vx5
+   *
+   *         Handler route that supplies initialized variable values for
+   *         "acsettings.ftl" template.
+   */
   private static class AcSetBeginHandler implements TemplateViewRoute {
 
     @Override
@@ -127,6 +139,12 @@ public class GUI {
     }
   }
 
+  /**
+   * @author vx5
+   *
+   *         Handler route that supplies default variable values for
+   *         "acsettings.ftl" template.
+   */
   public static class AcSetResetHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(Request request, Response response)
@@ -136,6 +154,13 @@ public class GUI {
     }
   }
 
+  /**
+   * @author vx5
+   *
+   *         Handler route that delegates processing and saving of new settings
+   *         values from form in "acsettings.ftl" template, as well as
+   *         population of new variable values.
+   */
   public static class AcSetSaveHandler implements TemplateViewRoute {
 
     @Override
@@ -148,6 +173,13 @@ public class GUI {
 
   }
 
+  /**
+   * @author vx5
+   *
+   *         Handler route that receives and replies to JSON request to supply
+   *         Autocorrect functionality to GUI.
+   *
+   */
   public static class AcCorrectHandler implements Route {
 
     @Override
@@ -160,6 +192,12 @@ public class GUI {
 
   }
 
+  /**
+   * @author vx5
+   *
+   *         Handler route that receives and replies to JSON request to supply
+   *         current settings values of this Autocorrect.
+   */
   public static class AcGetSetHandler implements Route {
 
     @Override

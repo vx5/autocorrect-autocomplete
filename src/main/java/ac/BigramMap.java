@@ -17,7 +17,7 @@ public class BigramMap {
   private HashMap<String, HashMultiset<String>> map;
 
   /**
-   * Constructor that initializes the internal map
+   * Constructor that initializes the internal map.
    */
   public BigramMap() {
     map = new HashMap<String, HashMultiset<String>>();
@@ -25,7 +25,7 @@ public class BigramMap {
 
   /**
    * Updates the bigram map (and, for all intents and purposes, probabilities)
-   * with the contents of a corpus text
+   * with the contents of a corpus text.
    *
    * @param list String list that contains all the words, in order, to be used
    *             in the updating of the bigram map
@@ -48,7 +48,7 @@ public class BigramMap {
 
   /**
    * Returns the probability that one word occurs after another word in all of
-   * the input sequences
+   * the input sequences.
    *
    * @param beforeWord the "before word"
    * @param afterWord  the word whose probability of occurring after the "before

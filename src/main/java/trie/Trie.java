@@ -14,7 +14,7 @@ public class Trie {
   private TrieNode root;
 
   /**
-   * Constructor that initializes the Trie by initializing the root node
+   * Constructor that initializes the Trie by initializing the root node.
    */
   public Trie() {
     // Populates root with TrieNode's root constructor
@@ -22,9 +22,9 @@ public class Trie {
   }
 
   /**
-   * Adds a given String to the Trie
+   * Adds a given String to the Trie.
    *
-   * @param s
+   * @param s Word to be added to Trie, in String form
    */
   public void add(String s) {
     // Passes to helper function, starting at root
@@ -68,7 +68,7 @@ public class Trie {
   }
 
   /**
-   * Checks whether a given word is contained in this Trie
+   * Checks whether a given word is contained in this Trie.
    *
    * @param s the word to be checked in the Trie
    * @return boolean that describes whether the word is present in the Trie
@@ -85,12 +85,7 @@ public class Trie {
       if (child.getChar() == firstChar) {
         if (s.length() == 1) {
           // If this is end of call, check for terminal decoration
-          if (child.isTerminal()) {
-            return true;
-          } else {
-            // In absence of terminal decoration, word not used
-            return false;
-          }
+          return child.isTerminal();
         } else {
           // If not, perform recursive call from child
           return containsHelper(child, s.substring(1));
@@ -104,7 +99,7 @@ public class Trie {
 
   /**
    * Returns all the words in the Trie for which a given word in the Trie is a
-   * prefix
+   * prefix.
    *
    * @param s word that is to be checked as a prefix for other words in the Trie
    * @return a set of all of the words in the Trie for which the given word is a

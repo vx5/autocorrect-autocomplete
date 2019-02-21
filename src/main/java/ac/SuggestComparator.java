@@ -21,7 +21,7 @@ public class SuggestComparator implements Comparator<Suggestion> {
   private HashMultiset<String> corpusWords;
 
   /**
-   * Constructor used in case when the sorting order should use the bigram map
+   * Constructor used in case when the sorting order should use the bigram map.
    *
    * @param beforeWord       the word occurring before the would-be suggestions,
    *                         to be used with the bigram map
@@ -40,7 +40,7 @@ public class SuggestComparator implements Comparator<Suggestion> {
 
   /**
    * Constructor used in case when the sorting order should not use the bigram
-   * map
+   * map.
    *
    * @param givenWord        the word used as the basis for new Suggestions
    * @param givenCorpusWords set of all the words found in the corpora

@@ -18,7 +18,7 @@ public class RadixTrie {
   private String startPrefixEnds;
 
   /**
-   * Constructor that simply initializes the instance variables
+   * Constructor that simply initializes the instance variables.
    */
   public RadixTrie() {
     root = new RadixTrieNode("root");
@@ -26,7 +26,7 @@ public class RadixTrie {
   }
 
   /**
-   * Adds a given word to the RadixTrie
+   * Adds a given word to the RadixTrie.
    *
    * @param word the word to be added to the RadixTrie, in String form
    */
@@ -48,7 +48,7 @@ public class RadixTrie {
   }
 
   /**
-   * Checks whether the RadixTrie contains a given word
+   * Checks whether the RadixTrie contains a given word.
    *
    * @param word the word to be checked for in the RadixTrie, in String form
    * @return true if the RadixTrie contains the word, false if not
@@ -68,7 +68,7 @@ public class RadixTrie {
   /**
    * Returns a set of all the words in a RadixTrie that start with a given word
    * (in which the given word is a prefix) by recursively searching through the
-   * RadixTrie
+   * RadixTrie.
    *
    * @param word the word to be used as the prefix to search from
    * @return a set of all the words in the RadixTrie for which the given word is

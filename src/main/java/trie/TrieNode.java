@@ -19,14 +19,14 @@ public class TrieNode {
   private boolean terminal;
 
   /**
-   * Constructor that creates a TrieNode without a character
+   * Constructor that creates a TrieNode without a character.
    */
   public TrieNode() {
     children = new HashSet<TrieNode>();
   }
 
   /**
-   * Constructor that creates a TrieNode with a given character
+   * Constructor that creates a TrieNode with a given character.
    *
    * @param c character to be stored in TrieNode
    */
@@ -36,7 +36,7 @@ public class TrieNode {
   }
 
   /**
-   * Returns the character stored in this TrieNode
+   * Returns the character stored in this TrieNode.
    *
    * @return the character stored in this TrieNode
    */
@@ -45,16 +45,16 @@ public class TrieNode {
   }
 
   /**
-   * Adds another TrieNode as a child of this node
+   * Adds another TrieNode as a child of this node.
    *
-   * @param n
+   * @param n TrieNode to be added as child of this node
    */
   public void addChild(TrieNode n) {
     children.add(n);
   }
 
   /**
-   * Returns the children of this TrieNode
+   * Returns the children of this TrieNode.
    *
    * @return a set of all the TrieNode children of this node
    */
@@ -63,14 +63,14 @@ public class TrieNode {
   }
 
   /**
-   * Signals that a word does in fact end at this TrieNode
+   * Signals that a word does in fact end at this TrieNode.
    */
   public void makeTerminal() {
     terminal = true;
   }
 
   /**
-   * Checks whether this TrieNode represents the end of a word in the Trie
+   * Checks whether this TrieNode represents the end of a word in the Trie.
    *
    * @return a boolean that represents whether this TrieNode represents the end
    *         of a word in the Trie

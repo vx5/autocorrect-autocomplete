@@ -13,7 +13,7 @@ public class Suggestion {
   private String secondWord;
 
   /**
-   * Constructor that takes in the first word of the suggestion
+   * Constructor that takes in the first word of the suggestion.
    *
    * @param word the first (and possibly only) word in the Suggestion
    */
@@ -25,7 +25,7 @@ public class Suggestion {
   }
 
   /**
-   * Returns the first (and possibly only) word in the Suggestion
+   * Returns the first (and possibly only) word in the Suggestion.
    *
    * @return the first (and possibly only) word in the Suggestion
    */
@@ -34,7 +34,7 @@ public class Suggestion {
   }
 
   /**
-   * Sets the second word in the Suggestion
+   * Sets the second word in the Suggestion.
    *
    * @param s a String that will be used as the second word in the Suggestion
    */
@@ -43,7 +43,7 @@ public class Suggestion {
   }
 
   /**
-   * Returns the second word in the Suggestion
+   * Returns the second word in the Suggestion.
    *
    * @return the String second word in the Suggestion or null, if the Suggestion
    *         has only one word

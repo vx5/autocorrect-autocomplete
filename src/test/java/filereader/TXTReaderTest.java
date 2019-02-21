@@ -12,6 +12,7 @@ public class TXTReaderTest {
   @Test
   public void testReadFile() {
     try {
+      // Test for standard read procedure
       ArrayList<String> list = TXTReader.readFile("data/autocorrect/norton.txt",
           " ");
       assertEquals(list.size(), 1);
@@ -23,6 +24,7 @@ public class TXTReaderTest {
 
   @Test
   public void testReadFileExceptionEmptyMsg() {
+    // Tests that proper Exception is thrown for empty file
     try {
       TXTReader.readFile("data/autocorrect/empty.txt", " ");
     } catch (Exception e) {
@@ -32,6 +34,7 @@ public class TXTReaderTest {
 
   @Test
   public void testReadFileExceptionNotFoundMsg() {
+    // Tests that proper Exception is thrown for nonexistent file path
     try {
       TXTReader.readFile("data/autocorrect/fakefilename.txt", " ");
     } catch (Exception e) {

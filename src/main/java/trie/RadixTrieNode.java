@@ -20,7 +20,7 @@ public class RadixTrieNode {
 
   /**
    * Constructor that initializes a node with its "coalesced" nodes, via a
-   * string
+   * string.
    *
    * @param str String used as basis for the "coalesced" nodes inside this node
    */
@@ -36,7 +36,7 @@ public class RadixTrieNode {
   }
 
   /**
-   * Adds a given RadixTrieNode as a child of this RadixTrieNode
+   * Adds a given RadixTrieNode as a child of this RadixTrieNode.
    *
    * @param newNode RadixTrieNode to be added as a child
    */
@@ -45,7 +45,7 @@ public class RadixTrieNode {
   }
 
   /**
-   * Returns reference to this node's children
+   * Returns reference to this node's children.
    *
    * @return set of RadixTrieNode children of this node
    */
@@ -54,7 +54,7 @@ public class RadixTrieNode {
   }
 
   /**
-   * Returns reference to this node's content characters
+   * Returns reference to this node's content characters.
    *
    * @return a list of Characters that represent this node's contents
    */
@@ -64,7 +64,7 @@ public class RadixTrieNode {
 
   /**
    * Returns the first character, which in essence, represents the first of the
-   * "coalesced" nodes stored in this RadixTrieNode
+   * "coalesced" nodes stored in this RadixTrieNode.
    *
    * @return the first character stored in the contents of this node
    */
@@ -75,7 +75,7 @@ public class RadixTrieNode {
   /**
    * Mutator method that allows the changing of this node's terminal decoration,
    * which is meant to signal whether a word stored in the RadixTrie ends at
-   * this node
+   * this node.
    *
    * @param newSetting the new state that the terminal decoration should be
    *                   changed to
@@ -86,7 +86,7 @@ public class RadixTrieNode {
 
   /**
    * Checks whether this RadixTrieNode represents the end of a word in the
-   * RadixTrie
+   * RadixTrie.
    *
    * @return a boolean that represents whether this TrieNode represents the end
    *         of a word in the RadixTrie
@@ -98,7 +98,7 @@ public class RadixTrieNode {
   /**
    * Adds a word to the RadixTrie as a whole, starting at this particular
    * RadixTrieNode. Note that it is assumed that the word and contents of this
-   * node share at least the first character in common
+   * node share at least the first character in common.
    *
    * @param word String form of the word to be added to the RadixTrie at the
    *             particular location of this RadixTrieNode
@@ -219,7 +219,7 @@ public class RadixTrieNode {
 
   /**
    * Checks whether a given word is contained in the sub-RadixTrie rooted at
-   * this node
+   * this node.
    *
    * @param word String form of the word to be checked in the sub-RadixTrie
    * @return true if the word is contained in the sub-RadixTrie, false if not

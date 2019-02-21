@@ -9,8 +9,35 @@ import java.util.ArrayList;
 
 import stringmanipulation.StringOps;
 
-public class TXTReader {
+/**
+ * @author vx5
+ *
+ *         Class that houses static readFile() method that reads from a file
+ *         that is readable by a BufferedReader and returns an ArrayList of the
+ *         String words in that file. Contents are sanitized by converting input
+ *         to lowercase, and removing unwanted punctuation, using the
+ *         StringOps.cleanInput() method.
+ *
+ */
+public final class TXTReader {
 
+  /**
+   * Private constructor since this is a utility class.
+   */
+  private TXTReader() {
+  }
+
+  /**
+   * Reads contents of file and returns an ArrayList of Strings that represents
+   * all the words in the file, with punctuation removed and in lower case,
+   * thanks to the StringOps.cleanInput() method.
+   *
+   * @param filepath relative filepath of file to be read (exe.
+   *                 "data/autocorrect/file.txt")
+   * @param regex    the word-separating token particular to this file
+   * @return an ArrayList of Strings that represents all the words in the file
+   * @throws Exception if file is empty or cannot be found
+   */
   public static ArrayList<String> readFile(String filepath, String regex)
       throws Exception {
     // Stores LinkedList to be populated

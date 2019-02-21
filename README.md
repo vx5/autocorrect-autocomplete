@@ -102,7 +102,92 @@ I used online resources to help me review certain basic Java concepts, and under
 I also got some inspiration for my GUI (in particular, for the starry background) from the GUI we were shown during the Stars gear-up.
 
 ## Autocorrect
-**TODO: Fill out this section!**
+
+**Introduction**
+
+This README includes sections devoted to known bugs in my project, explanations of any Checkstyle errors, design details of my project, any new runtime or space optimizations I effected, instructions on how to run all tests I wrote on my project, how to build and run my project from the command line, how my smart-ranking works, the Autocorrect project's given design questions, what I did for extra credit, and an acknowledgements section.
+
+**Known Bugs**
+
+I have no known bugs in my code.
+
+**Checkstyle Errors**
+
+I do not believe I have any checkstyle errors.
+
+**Design Details Specific to my Project**
+
+*High-Level REPL and GUI Structure*
+
+Just as in Stars, my Main class is the highest-level class in my design. Most relevantly to Autocorrect, it stores an instance of the AcCoordinator class, which is the highest-level class of the AutoCorrect implementation. Its location at this high-level allows the GUI and REPL to both access the same instance of AcCoordinator, which allows them to make requests and changes to the same Autocorrect implementation. 
+
+*Core Operations*
+
+*RadixTrie*
+
+*GUI Features*
+
+**Runtime/Space Optimizations**
+
+I did perform the suggested space optimization of implementing a compact trie, also known as a radix trie, and this Autocorrect submission, as of implementation, relies on a radix trie rather than a standard trie. The key feature of the radix trie is that consecutive, non-branching nodes can be coalesced into a single node that stores their ordered characters. This feature decreases the number of nodes required to store a given set of words in a trie. 
+
+In my implementation, whereas each node in the standard trie contained a character, each node in the radix trie contained a sequence of at least one (but possible more) characters, which, in effect, represents the coalesced nodes stored within. Unlike with the standard trie, the addition of new words into the trie may require the division, or de-coalescing, of existing nodes. After all, one of the previously consecutive non-branching fundamental nodes may now need to branch off. More specification are available above, in the design details' section RadixTrie subsection.
+
+Please note that the radix trie functionality is contained in my projects trie package, which includes the relevant RadixTrie and RadixTrieNode classes. Before implementing this optimized trie, I used a standard trie. In that same trie package, the Trie and TrieNode classes include the relevant functionality for the standard trie. If you wish to run my program with the standard trie, you need only change the data structure specified in the AcOperator class, at lines 27 and 78, from RadixTrie to Trie -- you will also need to change the import line at the top of AcOperator.java from RadixTrie to Trie.
+
+**How to Run Tests**
+
+There are 3 general sets of tests to run on my Autocorrect implementation -- JUnit tests, my personal system tests, and the TA system tests.
+
+To run the JUnit tests, I took advantage of maven's automatic test-running while building, so I simply used the terminal command "mvn package" while in my project's root directory.
+
+To run my personal system tests, I adapt the terminal command to run the TA system tests to my own test suite's location. From the project's root directory, I run "./cs32-test ./tests/student/autocorrect/\*", which runs all of my personal system tests. Some of these tests look at .txt files with errors in them, so I created some .txt files, and stored them in at the location data/autocorrect, right where the other .txt files are.
+
+To run the TA test suite, I navigate to the project's root directory, and run "./cs32-test ./tests/ta/autocorrect/\*", which runs the entire provided TA test suite.
+
+Please note that, in order to take advantage of the full time limits, I did sometimes add the "-t 10" flag at the end of my system test commands to make sure they did not time out (I got the instruction to do this from Piazza on the Stars project).
+
+**How to Run and Build Project from the Command Line**
+
+The user builds the project from the command line by building with the terminal command "mvn package".
+
+The user runs the project from the REPL with the "./run" command, which then launches the REPL, into which the user can directly type REPL commands.
+
+The user runs the GUI with its flag, which involves the "./run --gui" command in the command line. Once loaded, the user can either add a corpus through the REPL, in the terminal window, or click the "settings" button in the GUI, which takes the user to the settings page, in which the user can upload corpora. Once at least one corpus is loaded, typing into the only text box on the main Autocorrect page will produce a dropdown list of suggestions. Many more details on the GUI can be found in the GUI Features subsection of the Design Details section, above.
+
+**How my Smart-Ranking Works**
+
+My smart-ranking design process began with the core question of what I was optimizing for. What did I actually want my Autocorrect suggestions to be? I settled on two answers: 1) I want my Autocorrect answers to bend more in the direction of autocomplete, and want most to save time by having longer words be suggested (a greater emphasis on predicting the rest of a word than on correcting a given word), and 2) I want to reward suggestions that are real words. For number 2, this means making sure that suggestions are in the dictionary. In particular, because we remove punctuation from corpora when we load them, many non-words (e.g. "t" from "can't") are counted as words that are loaded into the Trie, so this also means valuing suggestions whose words are more than a character long. 
+
+I translate this system into a series of comparisons, much like the default comparator. The first comparison checks if a suggestion has all its words in the dictionary, in the corpus, and of length greater than one. If exactly one suggestion meets this bar, it beats the other suggestion, then and there. If not, the next comparison repeats that check with the same criteria except for the dictionary component. The dictionary and length-greater-than-one criteria center on goal #2.
+
+If those checks fail to offer a clear winner, then the comparator uses a point system to compare the suggestions. Points are awarded for bigram and unigram probabilities, as well as for length. The length addition meets my goal #1, as specified above, and the point system allows for the use of simultaneous criteria. I did not think that bigram probabilities, as used in the default comparator, were always more telling than unigram probabilities. If, for example, both bigram probabilities are extremely low, a slight different between them may not be the most telling sign of a good suggestion. My smart-ranking codifies this idea, by awarding points for low and high bigram probabilities on a dichotomous basis, rather than comparing them directly.
+
+If the point system fails, then, in line with goal #1, the comparator sorts suggestions by their length. Longer suggestions are more likely to fill an autocomplete roll. If that, too, fails, then the comparator falls back on the default comparator's lexicographic order method.
+
+**Answers to Design Questions**
+
+*How would you change your frontend/backend code so that you could handle autocorrecting multiple input fields on the same page? Would you need to make any changes? There are two issues: two inputs on the same page and two inputs on different pages that should autocompleted using different corpora.*
+
+First comes the case of two inputs on the same page. On the front-end, I would need to add another input text field in the "acmain.ftl" template. Assuming that this field relies on the same autocorrect (same corpora and same settings) as the first text field, in the relevant JavaScript file, I would add a POST request nearly identical to the existing one, where changes to the new text field trigger POST requests that return with autocorrect suggestions, which are then used to populate a drop-down menu similar to the one in the first text field. The drop-down menus functionality, including the divs in the .ftl template and the JavaScript, would also need to be attached to this second text field.
+
+In the case of two inputs on different pages that should be autocompleted using different corpora, I would make use of the AcCoordinator class. The AcCoordinator class can store multiple AcOperators, each of which coordinates its own autocorrects with its own set of corpora and settings. Thus, the two different inputs could make their autocorrect POST requests include information on which AcOperator is to be used, information which would be passed to the handler and then on to the AcGUIHandler class. There, some slight changes would allow it to use the information on which AcOperator is to be used to delegate autocorrect requests to the correct AcOperator, since it currently assumes it will always use the first AcOperator, which is also the only AcOperator.
+
+*Suppose some new letter, θ, has been introduced into the English alphabet. This letter can be appended to the end of any English word, to negate it. For example, badθ would mean "good". We are asking about the effects of this 1984-esque vocabularily enhanced universe on the size of your Trie. You will now need to store twice as many words in your trie as before. How many more nodes will you need to store in your trie? We are looking for you to support your answer with details about how your trie is implemented and what data it stores.*
+
+Let us assume that we are using a standard Trie, in which some number n words are stored. In this case, while the Trie will store 2n words, we will only need n additional nodes to represent these new words. This is because the new words merely result from adding a letter to every existing word. In this manner, every terminal node, or node at which a word ends, would be given a new child node, which contains the character θ, which is also terminal. Since there are n words stored in the Trie, there are n existing terminal nodes, and thus we would add n new nodes containing θ to the Trie.
+
+My implementation uses a radix trie, but that detail should not change the answer. In the radix trie, too, there is one terminal node for each word stored in the trie, and the addition of these new words would require a new child node, containing only the character θ, to each terminal node. We would thus also need to add n nodes to the trie in the case of the radix trie.
+
+**Extra Credit (including GUI explanation)**
+
+I pursued two main avenues of extra credit: the compact trie optimization, and the GUI.
+
+My compact trie optimization, or radix trie, is in use in the submitted version of Autocorrect. I was somewhat familiar with the structure, which I remember in theoretical terms from CSCI 1810. It has all the same functionality as the standard trie, and is housed in the trie package, where its functionality is spread between the RadixTrie and RadixTrieNode classes, located in RadixTrie.java and RadixTrieNode.java, respectively. The inner workings of the RadixTrie are discussed in its subsection of the design details section.
+
+**Acknowledgments**
+
+I used online resources to help me review specific types of Java errors, and for how to write in markdown language. I also used extensive resources to better understand JavaScript, jQuery, HTML, and, in particular, CSS styling. I sometimes used mainstream resources like formal jQuery documentation and w3schools (which we were directed to in CS 2), and sometimes used other, more niche resources, like css-tricks.com to understand specific topics like Flexboxes.
 
 ## Bacon
 _Coming soon!_
