@@ -115,6 +115,10 @@ I do not believe I have any checkstyle errors.
 
 **Design Details Specific to my Project**
 
+*Package Structure*
+
+Most of the functionality in this project goes in the "ac" (short for Autocorrect) package. The exceptions are a new "common" package, which houses the Main and GUI class, which are common to Stars, Autocorrect, and (I am guessing) Bacon, a "trie" package, which houses all functionality related to the standard trie and radix trie, the "filereader" package, which houses utility classes related to reading files, including the TXTReader class that is relevant to this project, "repl" package, which houses the REPL used in both Stars and Autocorrect, and the "stringmanipulation" package, which houses the utility StringOps class, which allows for certain types of relevant String manipulation that might be useful in the future.
+
 *High-Level REPL and GUI Structure*
 
 Just as in Stars, my Main class is the highest-level class in my design. Most relevantly to Autocorrect, it stores an instance of the AcCoordinator class, which is the highest-level class of the AutoCorrect implementation. Its location at this high-level allows the GUI and REPL to both access the same instance of AcCoordinator, which allows them to make requests and changes to the same Autocorrect implementation. 
@@ -227,11 +231,11 @@ My GUI was one of the parts of my project I spent the most time on. A proper des
 
 I also made some higher-level design choices, like:
 
-11. Making changes to a page based on mouse and key usage
-12. Making sure key selections do not interfere with other text inputs on the same page
-13. Preserving a form's inputs in the form after the form is submitted
-14. Recognizing when elements of a form have changed (using the jQuery .change() method)
-15. Design choices themself, such as making a separate settings page
+1. Making changes to a page based on mouse and key usage
+2. Making sure key selections do not interfere with other text inputs on the same page
+3. Preserving a form's inputs in the form after the form is submitted
+4. Recognizing when elements of a form have changed (using the jQuery .change() method)
+5. Design choices themself, such as making a separate settings page
 
 As stated above, my GUI can be accessed by running "./run --gui" from the command line, waiting for the setup process to complete, and then opening a browser and going to the URL "http://localhost:4567/autocorrect". In the src/main/resources folder, the .ftl templates, "acmain.ftl" and acsettings.ftl" are are in spark/template/freemarker/, while the CSS is located in static/css/ with "acmain.css" and "acsettings.css", along with the resources "goodtimes.ttf" (the imported font) and "ACLogo.png" (for the browser icon). The JavaScript is located in static/css/, with all files within being relevant to Autocorrect.
 
