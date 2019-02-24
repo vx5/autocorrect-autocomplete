@@ -244,4 +244,4 @@ As stated above, my GUI can be accessed by running "./run --gui" from the comman
 I used online resources to help me review specific types of Java errors, and for how to write in markdown language. I also used extensive resources to better understand JavaScript, jQuery, HTML, and, in particular, CSS styling. I sometimes used mainstream resources such as formal jQuery documentation and w3schools (which we were directed to in CS 2), and sometimes used other, more niche resources, such as css-tricks.com, to understand specific topics like Flexboxes.
 
 ## Bacon
-_Coming soon!_
+**TODO: Fill out this section!**
