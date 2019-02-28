@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 
 import ac.AcCoordinator;
 import ac.AcREPLHandler;
+import bacon.BaconREPLHandler;
 import edu.brown.cs.vnaraya2.stars.AllStars;
 import edu.brown.cs.vnaraya2.stars.StarsREPLHandler;
 import kdtrees.KDTree;
@@ -68,6 +69,9 @@ public final class REPL {
             || splitLine[0].contentEquals("smart")
             || splitLine[0].contentEquals("led")) {
           acHandler.handle(commandLine);
+        } else if (splitLine[0].contentEquals("mdb")
+            || splitLine[0].contentEquals("connect")) {
+          BaconREPLHandler.handle(splitLine);
         } else {
           // If command not recognized, print error message
           System.out.println(

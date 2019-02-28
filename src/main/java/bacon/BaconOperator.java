@@ -1,12 +1,13 @@
 package bacon;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import com.google.common.io.Files;
 
-import paths.PathFinder;
 import paths.PathNode;
+import paths.PathOrg;
 
 /**
  * @author vx5
@@ -19,10 +20,12 @@ public final class BaconOperator {
   private static final BaconOperator baconOp = new BaconOperator();
   // Stores instance of BaconDbOp used to fulfill PathDbOp implementation
   private final BaconDbOp op = new BaconDbOp();
-  // Stores instance of PathFinder that is used for paths
-  private final PathFinder finder = new PathFinder(op);
+  // Stores instance of PathOrg that is used for paths
+  private final PathOrg finder = new PathOrg();
 
   private BaconOperator() {
+    // Adds Dijkstra to the PathOrg instance
+    // TODO
   }
 
   /**
@@ -55,18 +58,17 @@ public final class BaconOperator {
     op.setSqlDb(dbPath);
   }
 
-  /**
-   * Returns an ordered list of PathNodes that correspond to a set of ordered
-   * actors that map a path from one given actor to another.
-   *
-   * @param fromActor String name of actor path should be mapped from
-   * @param toActor   String name of actor path should be mapped to
-   * @return list of PathNodes representing
-   * @throws Exception
-   */
-  public ArrayList<PathNode> getPath(String fromActor, String toActor)
+  public ArrayList<PathNode> getPath(String fromName, String toName)
       throws Exception {
-    return finder.findPath("dijkstra", fromActor, toActor);
+    return finder.findPath("dijkstra", op.actorNameToId(fromName),
+        op.actorNameToId(toName));
   }
 
+  public String actorIdToName(String actorId) throws SQLException {
+    return op.actorIdToName(actorId);
+  }
+
+  public String filmIdToName(String filmId) throws SQLException {
+    return op.filmIdToName(filmId);
+  }
 }

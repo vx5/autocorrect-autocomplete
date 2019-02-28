@@ -2,11 +2,7 @@ package paths;
 
 public interface PathNode {
 
-  String getName();
+  String getId();
 
-  float getDist();
-
-  String getPrevEdgeName();
-
-  String getPrevName();
+  PathEdge getPrevEdge();
 }

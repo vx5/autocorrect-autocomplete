@@ -9,11 +9,9 @@ import java.sql.Statement;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import paths.DijkstraNode;
-import paths.PathDbOp;
-import paths.PathNode;
+import dijkstra.DijkstraDbOp;
 
-public class BaconDbOp implements PathDbOp {
+public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
   // Stores connection to be used to access database
   private Connection conn = null;
 
@@ -58,11 +56,10 @@ public class BaconDbOp implements PathDbOp {
   }
 
   @Override
-  public boolean validNeighbors(PathNode from, PathNode to) {
+  public boolean validNeighbors(ActorVertex from, ActorVertex to) {
     // Bacon's criteria for valid neighbors is that the last initial of the from
     // node (donor)'s name is the same as the first initial of the to node
     // (recipient)'s name
-    // Identify the relevant character for the donor
     String[] nameArray = from.getName().split(" ");
     String lastName = nameArray[nameArray.length - 1];
     char donorRelChar = lastName.charAt(0);
@@ -73,13 +70,11 @@ public class BaconDbOp implements PathDbOp {
   }
 
   @Override
-  public HashSet<PathNode> getNeighbors(PathNode fromNode) {
+  public void giveNeighbors(ActorVertex origin) throws Exception {
     try {
-      String actorId = actorNameToId(fromNode.getName());
+      String actorId = origin.getId();
       HashSet<String> filmIds = actorIdToFilmIds(actorId);
       Iterator<String> i = filmIds.iterator();
-      // Creates set to populate
-      HashSet<PathNode> neighborNodes = new HashSet<PathNode>();
       while (i.hasNext()) {
         String filmId = i.next();
         HashSet<String> actorIds = filmIdToActorIds(filmId);
@@ -89,21 +84,28 @@ public class BaconDbOp implements PathDbOp {
         float plusDist = 1 / (float) actorIds.size();
         Iterator<String> j = actorIds.iterator();
         while (j.hasNext()) {
-          String actorName = actorNameToId(j.next());
-          // Creates new node
-          DijkstraNode newNode = new DijkstraNode(actorName,
-              fromNode.getDist() + plusDist, filmName, fromNode.getName());
-          // Adds new node to PathNodes
-          neighborNodes.add(newNode);
+          // Creates new Edge
+          FilmEdge newEdge = new FilmEdge(filmName, filmId, plusDist, origin);
+          // Stores neighbor actor ID
+          String neighborId = j.next();
+          // Creates new Vertex
+          String neighborName = actorNameToId(neighborId);
+          ActorVertex newVert = new ActorVertex(neighborName, neighborId,
+              origin.getDist() + newEdge.getWeight());
+          // Adds vertex to given edge
+          newEdge.setTail(newVert);
+          // Adds edge as previous of vertex
+          newVert.setPrevEdge(newEdge);
+          // Adds edge to vertex
+          origin.addEdge(newEdge);
         }
       }
-      return neighborNodes;
     } catch (SQLException e) {
-      return null;
+      throw new Exception("could not populate neighbors");
     }
   }
 
-  private String actorNameToId(String name) throws SQLException {
+  public String actorNameToId(String name) throws SQLException {
     // Gets actor's ID
     PreparedStatement prep = conn
         .prepareStatement("SELECT * FROM actor WHERE name=?;");
@@ -119,7 +121,7 @@ public class BaconDbOp implements PathDbOp {
     return actorId;
   }
 
-  private String actorIdToName(String id) throws SQLException {
+  public String actorIdToName(String id) throws SQLException {
     PreparedStatement prep = conn
         .prepareStatement("SELECT * FROM actor WHERE id=?;");
     prep.setString(1, id);
@@ -175,7 +177,7 @@ public class BaconDbOp implements PathDbOp {
     return filmId;
   }
 
-  private String filmIdToName(String id) throws SQLException {
+  public String filmIdToName(String id) throws SQLException {
     PreparedStatement prep = conn
         .prepareStatement("SELECT * FROM film WHERE id=?;");
     prep.setString(1, id);
@@ -185,6 +187,16 @@ public class BaconDbOp implements PathDbOp {
     rs.close();
     prep.close();
     return filmName;
+  }
+
+  @Override
+  public ActorVertex makeVertex(String id, float dist) {
+    try {
+      String name = actorIdToName(id);
+      return new ActorVertex(name, id, dist);
+    } catch (SQLException e) {
+      return null;
+    }
   }
 
 }
