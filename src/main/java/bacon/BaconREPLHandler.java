@@ -40,8 +40,6 @@ public class BaconREPLHandler {
               + op.filmIdToName(path.get(i - 1).getPrevEdge().getId()));
         }
       } catch (Exception e) {
-        e.printStackTrace();
-
         if (e.getMessage().contentEquals("path not found")) {
           System.out.println(names[0] + " -/- " + names[1]);
         } else {

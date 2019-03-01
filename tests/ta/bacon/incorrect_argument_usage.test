@@ -1,5 +1,5 @@
 INPUT
 connect "the rick man" "the morty dude"
 OUTPUT
-ERROR:
+ERROR: no database has been loaded yet
 END
