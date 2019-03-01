@@ -92,6 +92,12 @@ public class GUI {
         freeMarker);
     // Spark route for getting current settings
     Spark.get("/getsettings", new AcGetSetHandler());
+
+    // Setup Spark Routes for Bacon
+    // Spark route for Bacon front page
+    Spark.get("/bacon", new BaconBeginHandler(), freeMarker);
+    // Spark route for Bacon path found through JS
+    Spark.post("/path", new BaconPathHandler());
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -106,6 +112,31 @@ public class GUI {
     }
     return new FreeMarkerEngine(config);
   }
+
+  // THIS IS THE START OF THE BACON PROJECT HANDLERS
+
+  private static class BaconBeginHandler implements TemplateViewRoute {
+
+    @Override
+    public ModelAndView handle(Request request, Response response)
+        throws Exception {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+  }
+
+  private static class BaconPathHandler implements Route {
+
+    @Override
+    public String handle(Request request, Response response) throws Exception {
+      // TODO Auto-generated method stub
+      return null;
+    }
+
+  }
+
+  // THIS IS THE END OF THE BACON PROJECT HANDLERS
 
   /**
    * @author vx5
