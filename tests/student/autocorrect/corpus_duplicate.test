@@ -1,0 +1,7 @@
+INPUT
+corpus data/autocorrect/sherlock.txt
+corpus data/autocorrect/sherlock.txt
+OUTPUT
+corpus data/autocorrect/sherlock.txt added
+ERROR: file data/autocorrect/sherlock.txt has already been loaded to corpora
+END

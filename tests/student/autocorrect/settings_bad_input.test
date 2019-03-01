@@ -1,0 +1,13 @@
+INPUT
+prefix hello
+whitespace hello
+smart hello
+led hello
+led -2
+OUTPUT
+ERROR: "on" or "off" argument expected
+ERROR: "on" or "off" argument expected
+ERROR: "on" or "off" argument expected
+ERROR: argument to 'led' could not be parsed to an Integer
+ERROR: argument to 'led' cannot be negative
+END

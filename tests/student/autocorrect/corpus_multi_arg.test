@@ -1,0 +1,5 @@
+INPUT
+corpus argOne argTwo
+OUTPUT
+ERROR: corpus requires one argument, a filepath
+END

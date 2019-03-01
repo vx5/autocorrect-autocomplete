@@ -1,0 +1,9 @@
+INPUT
+corpus data/autocorrect/sherlock.txt
+smart on
+ac     sherlock     holmes
+OUTPUT
+corpus data/autocorrect/sherlock.txt added
+ac     sherlock     holmes
+sherlock holmes
+END

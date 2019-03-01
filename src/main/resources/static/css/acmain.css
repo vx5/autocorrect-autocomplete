@@ -1,0 +1,93 @@
+.selected {
+	color: white;
+	background-color: #0047ab;
+
+	font-family: arial;
+	font-size: 13px;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+body {
+	background-color: #39c9bb;
+	text-align: center;
+	vertical-align: middle;
+}
+
+@font-face {
+	font-family: goodTimesCustom;
+	src: url("goodtimes.ttf");
+}
+
+#buttonDiv {
+	text-align: center;
+
+	left: 50%;
+	transform: translate(-50%, -45%);
+	position: fixed;
+	bottom: 20px;
+}
+
+.toSettingsButton {
+	cursor: pointer;
+	background-color: inherit;
+	border: solid;
+	width: 140px;
+	height: 50px;
+	font-size: 20px;
+	color: white;
+	font-family: goodTimesCustom;
+}
+
+.altButton {
+	cursor: pointer;
+	background-color: white;
+	border-style: solid;
+	border-color: white;
+	color: #39c9bb;
+	width: 140px;
+	height: 50px;
+	font-size: 20px;
+	font-family: goodTimesCustom;
+}
+
+#mainError {
+	color: #b90000;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-weight: normal;
+}
+
+#main-header {
+	position: relative;
+	top: 20px;
+	color: white;
+	font-family: goodTimesCustom;
+	font-size: 70px;
+}
+
+#ac-box {
+	font-family: arial;
+	font-size: 13px;
+}
+
+.suggestion {
+	font-family: arial;
+	font-size: 13px;
+	text-align: left;
+	background-color: white;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#parent-div {
+	margin: auto;
+	margin-left: 150px;
+	margin-right: 150px;
+	text-align: center;
+	display: flex;	
+	flex-direction: column;
+	justify-content: flex-start;
+}

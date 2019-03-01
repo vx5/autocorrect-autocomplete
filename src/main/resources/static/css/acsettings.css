@@ -1,0 +1,142 @@
+@font-face {
+	font-family: goodTimesCustom;
+	src: url("goodtimes.ttf");
+}
+
+body {
+	color: white;
+	background-color: #39c9bb;
+	text-align: center;
+	vertical-align: top;
+	font-family: Tahoma, Geneva, sans-serif;
+}
+
+#err-msg {
+	color: #b90000;
+}
+
+#buttonDiv {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	margin: auto;
+	width: 550px;
+}
+
+.settings-button {
+	cursor: pointer;
+	background-color: inherit;
+	border: solid;
+	width: 170px;
+	height: 70px;
+	font-size: 18px;
+	color: white;
+	font-family: goodTimesCustom;
+}
+
+.altButton {
+	cursor: pointer;
+	background-color: white;
+	border-style: solid;
+	border-color: white;
+	color: #39c9bb;
+	width: 170px;
+	height: 70px;
+	font-size: 18px;
+	font-family: goodTimesCustom;
+}
+
+#settings-header {
+	position: relative;
+	top: 0px;
+	color: white;
+	font-family: goodTimesCustom;
+	font-size: 50px;
+}
+
+#settings-subheader {
+	font-weight: normal;
+	font-size: 14px;
+}
+
+.subHeaderDiv {
+	text-align: left;
+	font-family: goodTimesCustom;
+	font-size: 25px;
+
+}
+
+#corporaListDiv {
+	text-align: right;
+	white-space: nowrap;
+	overflow: scroll;
+	width: 550px;
+}
+
+.corpusItem {
+	padding-right: 4em;
+}
+
+#corpSettingDiv {
+	font-size: 14px;
+	padding: 5px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: inherit - 10px;
+	background-color: #20B2AA;
+	height: 40px;
+}
+
+#enterCorporaDiv {
+	text-align: left;
+	font-size: 14px;
+	padding: 5px;
+	width: inherit - 10px;
+	background-color: #20B2AA;
+}
+
+.settingDiv {
+	font-size: 14px;
+	padding: 5px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: inherit - 10px;
+	background-color: #20B2AA;
+}
+
+#corporaDiv {
+	margin-top: 30px;
+	padding: 10px;
+	padding-right: 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: white;
+	height: 300px;
+	margin: auto;
+	width: 750px;
+	vertical-align: middle;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+#settingsDiv {
+	padding: 10px;
+	padding-right: 10px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: white;
+	margin: auto;
+	height: 300px;
+	width: 750px;
+	vertical-align: middle;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+#return-header {
+	font-weight: normal;
+}

@@ -1,0 +1,5 @@
+INPUT
+corpus
+OUTPUT
+ERROR: corpus, ac commands require at least one argument
+END
