@@ -56,8 +56,6 @@ public class Dijkstra<V extends DVertex<V, E>, E extends DEdge<V, E>>
         E thisEdge = iter.next();
         // Get vertex on other side of edge
         V neighbor = thisEdge.getOtherNode(currVert);
-        // Mark vertex as visited
-        visited.add(neighbor.getId());
         // Remove this edge (no longer needs to be checked)
         iter.remove();
         // Check for validity (with outside validity conditions, and
@@ -82,6 +80,8 @@ public class Dijkstra<V extends DVertex<V, E>, E extends DEdge<V, E>>
         } else {
           // Otherwise, add new vertex reference to map
           map.put(neighbor.getId(), neighbor);
+          // Add the vertex to the priorityQueue
+          pq.add(neighbor);
         }
       }
     }
@@ -98,6 +98,8 @@ public class Dijkstra<V extends DVertex<V, E>, E extends DEdge<V, E>>
       path.add(currNode);
       currNode = currNode.getPrevEdge().getOtherNode(terminal);
     }
+    // Adds final node
+    path.add(currNode);
     // Returns path
     return path;
   }

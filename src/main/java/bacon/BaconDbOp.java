@@ -13,7 +13,11 @@ import dijkstra.DijkstraDbOp;
 
 public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
   // Stores connection to be used to access database
-  private Connection conn = null;
+  private Connection conn;
+
+  public BaconDbOp() {
+    conn = null;
+  }
 
   public boolean hasDb() {
     return conn != null;
@@ -71,37 +75,37 @@ public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
 
   @Override
   public void giveNeighbors(ActorVertex origin) throws Exception {
-    try {
-      String actorId = origin.getId();
-      HashSet<String> filmIds = actorIdToFilmIds(actorId);
-      Iterator<String> i = filmIds.iterator();
-      while (i.hasNext()) {
-        String filmId = i.next();
-        HashSet<String> actorIds = filmIdToActorIds(filmId);
-        // Identifies film's name
-        String filmName = filmIdToName(filmId);
-        // For each film id, get all the actor IDs
-        float plusDist = 1 / (float) actorIds.size();
-        Iterator<String> j = actorIds.iterator();
-        while (j.hasNext()) {
-          // Creates new Edge
-          FilmEdge newEdge = new FilmEdge(filmName, filmId, plusDist, origin);
-          // Stores neighbor actor ID
-          String neighborId = j.next();
-          // Creates new Vertex
-          String neighborName = actorNameToId(neighborId);
-          ActorVertex newVert = new ActorVertex(neighborName, neighborId,
-              origin.getDist() + newEdge.getWeight());
-          // Adds vertex to given edge
-          newEdge.setTail(newVert);
-          // Adds edge as previous of vertex
-          newVert.setPrevEdge(newEdge);
-          // Adds edge to vertex
-          origin.addEdge(newEdge);
+    String actorId = origin.getId();
+    HashSet<String> filmIds = actorIdToFilmIds(actorId);
+    Iterator<String> i = filmIds.iterator();
+    while (i.hasNext()) {
+      String filmId = i.next();
+      HashSet<String> actorIds = filmIdToActorIds(filmId);
+      // Identifies film's name
+      String filmName = filmIdToName(filmId);
+      // For each film id, get all the actor IDs
+      float plusDist = 1 / (float) actorIds.size();
+      Iterator<String> j = actorIds.iterator();
+      while (j.hasNext()) {
+        // Creates new Edge
+        FilmEdge newEdge = new FilmEdge(filmName, filmId, plusDist, origin);
+        // Stores neighbor actor ID
+        String neighborId = j.next();
+        // If the received ID is the same as the origins, move on
+        if (neighborId.contentEquals(origin.getId())) {
+          continue;
         }
+        // Creates new Vertex
+        String neighborName = actorIdToName(neighborId);
+        ActorVertex newVert = new ActorVertex(neighborName, neighborId,
+            origin.getDist() + newEdge.getWeight());
+        // Adds vertex to given edge
+        newEdge.setTail(newVert);
+        // Adds edge as previous of vertex
+        newVert.setPrevEdge(newEdge);
+        // Adds edge to vertex
+        origin.addEdge(newEdge);
       }
-    } catch (SQLException e) {
-      throw new Exception("could not populate neighbors");
     }
   }
 
@@ -113,7 +117,8 @@ public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
     ResultSet rs = prep.executeQuery();
     // Actor was not found
     if (!rs.next()) {
-      return null;
+      throw new SQLException(
+          "actor with name \"" + name + "\" could not be found");
     }
     String actorId = rs.getString(1);
     rs.close();
@@ -128,7 +133,7 @@ public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
     ResultSet rs = prep.executeQuery();
     // Id was not found
     if (!rs.next()) {
-      return null;
+      throw new SQLException("actor with ID \"" + id + "\" could not be found");
     }
     String name = rs.getString(2);
     rs.close();

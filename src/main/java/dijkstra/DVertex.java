@@ -20,6 +20,8 @@ public class DVertex<V extends DVertex<V, E>, E extends DEdge<V, E>>
     id = newId;
     currDist = newDist;
     prevEdge = null;
+    //
+    edges = new HashSet<E>();
   }
 
   @Override

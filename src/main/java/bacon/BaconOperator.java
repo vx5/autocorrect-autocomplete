@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.google.common.io.Files;
 
+import dijkstra.Dijkstra;
 import paths.PathNode;
 import paths.PathOrg;
 
@@ -19,13 +20,13 @@ public final class BaconOperator {
   // Stores instance of this object for singleton pattern
   private static final BaconOperator baconOp = new BaconOperator();
   // Stores instance of BaconDbOp used to fulfill PathDbOp implementation
-  private final BaconDbOp op = new BaconDbOp();
+  private final BaconDbOp op = new BaconDbOp();;
   // Stores instance of PathOrg that is used for paths
-  private final PathOrg finder = new PathOrg();
+  private final PathOrg finder = new PathOrg();;
 
   private BaconOperator() {
     // Adds Dijkstra to the PathOrg instance
-    // TODO
+    finder.addMethod("dijkstra", new Dijkstra<ActorVertex, FilmEdge>(op));
   }
 
   /**
@@ -60,6 +61,9 @@ public final class BaconOperator {
 
   public ArrayList<PathNode> getPath(String fromName, String toName)
       throws Exception {
+    if (!op.hasDb()) {
+      throw new Exception("no database has been loaded yet");
+    }
     return finder.findPath("dijkstra", op.actorNameToId(fromName),
         op.actorNameToId(toName));
   }

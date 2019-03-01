@@ -1,6 +1,7 @@
 package bacon;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import paths.PathNode;
 
@@ -25,27 +26,51 @@ public class BaconREPLHandler {
         System.out.println("ERROR: " + e.getMessage());
       }
     } else {
-      if (splitLine.length != 3) {
-        System.out.println("ERROR: connect command requires two arguments, "
-            + "names of actors to connect");
-      }
+      String[] names = {};
       try {
+        // Store the names
+        names = getInQuotes(splitLine);
         // Gets path
-        ArrayList<PathNode> path = op.getPath(splitLine[1], splitLine[2]);
+        ArrayList<PathNode> path = op.getPath(names[0], names[1]);
         //
-        for (int i = 0; i < path.size() - 1; i++) {
+        for (int i = path.size() - 1; i > 0; i--) {
           // Prints desired output
           System.out.println(op.actorIdToName(path.get(i).getId()) + " -> "
-              + op.actorIdToName(path.get(i + 1).getId()) + " : "
-              + op.filmIdToName(path.get(i).getPrevEdge().getId()));
+              + op.actorIdToName(path.get(i - 1).getId()) + " : "
+              + op.filmIdToName(path.get(i - 1).getPrevEdge().getId()));
         }
       } catch (Exception e) {
+        e.printStackTrace();
+
         if (e.getMessage().contentEquals("path not found")) {
-          System.out.println(splitLine[1] + " -/- " + splitLine[2]);
+          System.out.println(names[0] + " -/- " + names[1]);
+        } else {
+          // Prints standard error message
+          System.out.println("ERROR: " + e.getMessage());
         }
-        // Prints standard error message
-        System.out.println("ERROR: " + e.getMessage());
       }
     }
+  }
+
+  private static String[] getInQuotes(String[] splitLine) throws Exception {
+    String[] nameSplit = Arrays.copyOfRange(splitLine, 1, splitLine.length);
+    // Reconstruct all input
+    String fullStr = "";
+    for (int i = 0; i < nameSplit.length; i++) {
+      fullStr += nameSplit[i] + " ";
+    }
+    // Splits string based on quotation marks
+    nameSplit = fullStr.split("\"");
+    // Checks for 5 arguments, signaling two properly built Strings
+    if (nameSplit.length != 5) {
+      throw new Exception(
+          "two names required, each bounded by quotation marks");
+    }
+    // Creates end String
+    String[] names = {
+        nameSplit[1], nameSplit[3]
+    };
+    // Returns the name String
+    return names;
   }
 }

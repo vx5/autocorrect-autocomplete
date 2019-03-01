@@ -31,17 +31,17 @@ public class DEdge<V extends DVertex<V, E>, E extends DEdge<V, E>>
   @Override
   public PathNode getOtherNode(PathNode givenNode) {
     if (givenNode.getId().contentEquals(vertOne.getId())) {
-      return vertOne;
-    } else {
       return vertTwo;
+    } else {
+      return vertOne;
     }
   }
 
   public V getOtherNode(DVertex<V, E> givenVert) {
     if (givenVert.getId().contentEquals(vertOne.getId())) {
-      return vertOne;
-    } else {
       return vertTwo;
+    } else {
+      return vertOne;
     }
   }
 
