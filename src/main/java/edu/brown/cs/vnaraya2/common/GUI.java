@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import ac.AcCoordinator;
 import ac.AcGUIHandler;
+import bacon.BaconGUIHandler;
 import edu.brown.cs.vnaraya2.stars.AllStars;
 import edu.brown.cs.vnaraya2.stars.StarsGUIHandler;
 import freemarker.template.Configuration;
@@ -37,6 +38,8 @@ public class GUI {
   private static StarsGUIHandler gh;
   // Stores the AcGUIHandler instance
   private static AcGUIHandler ah;
+  // Stores the BaconGUIHandler instance
+  private static BaconGUIHandler bh;
   // Stores the GSON instance for Autocorrect
   private static final Gson GSON = new Gson();
 
@@ -53,6 +56,7 @@ public class GUI {
   public GUI(AllStars allStars, KDTree kdTree, AcCoordinator ac) {
     gh = new StarsGUIHandler(allStars, kdTree);
     ah = new AcGUIHandler(ac);
+    bh = new BaconGUIHandler();
   }
 
   /**
@@ -98,6 +102,11 @@ public class GUI {
     Spark.get("/bacon", new BaconBeginHandler(), freeMarker);
     // Spark route for Bacon path found through JS
     Spark.post("/path", new BaconPathHandler());
+    // Spark route for Bacon actor pages
+    Spark.get("/bacon/actor/:actorencodedid", new BaconActorHandler(),
+        freeMarker);
+    // Spark route for Bacon film pages
+    Spark.get("/bacon/film/:filmencodedid", new BaconFilmHandler(), freeMarker);
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -120,8 +129,8 @@ public class GUI {
     @Override
     public ModelAndView handle(Request request, Response response)
         throws Exception {
-      // TODO Auto-generated method stub
-      return null;
+      bh.resetMainVars();
+      return new ModelAndView(bh.getMainMap(), "baconmain.ftl");
     }
 
   }
@@ -130,8 +139,35 @@ public class GUI {
 
     @Override
     public String handle(Request request, Response response) throws Exception {
-      // TODO Auto-generated method stub
-      return null;
+      // Pulls the input string that was used
+      QueryParamsMap qm = request.queryMap();
+      String firstActor = qm.value("firstActor");
+      String secondActor = qm.value("secondActor");
+      return GSON.toJson(bh.path(firstActor, secondActor));
+    }
+
+  }
+
+  private static class BaconActorHandler implements TemplateViewRoute {
+
+    @Override
+    public ModelAndView handle(Request request, Response response)
+        throws Exception {
+      // Stores Actor name
+      String actorEncodedId = request.params(":actorencodedid");
+      return new ModelAndView(bh.loadActorPage(actorEncodedId),
+          "baconpage.ftl");
+    }
+
+  }
+
+  private static class BaconFilmHandler implements TemplateViewRoute {
+
+    @Override
+    public ModelAndView handle(Request request, Response response)
+        throws Exception {
+      String filmEncodedId = request.params(":filmencodedid");
+      return new ModelAndView(bh.loadFilmPage(filmEncodedId), "baconpage.ftl");
     }
 
   }

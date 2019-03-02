@@ -37,28 +37,6 @@ public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
     stat.executeUpdate("PRAGMA foreign_keys = ON;");
   }
 
-  public HashSet<String> getFilms(String actorName) throws SQLException {
-    String actorId = actorNameToId(actorName);
-    HashSet<String> filmIds = actorIdToFilmIds(actorId);
-    Iterator<String> i = filmIds.iterator();
-    HashSet<String> filmNames = new HashSet<String>();
-    while (i.hasNext()) {
-      filmNames.add(filmIdToName(i.next()));
-    }
-    return filmNames;
-  }
-
-  public HashSet<String> getActors(String filmName) throws SQLException {
-    String filmId = filmNameToId(filmName);
-    HashSet<String> actorIds = filmIdToActorIds(filmId);
-    Iterator<String> i = actorIds.iterator();
-    HashSet<String> actorNames = new HashSet<String>();
-    while (i.hasNext()) {
-      actorNames.add(actorIdToName(i.next()));
-    }
-    return actorNames;
-  }
-
   @Override
   public boolean validNeighbors(ActorVertex from, ActorVertex to) {
     // Bacon's criteria for valid neighbors is that the last initial of the from
@@ -141,7 +119,7 @@ public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
     return name;
   }
 
-  private HashSet<String> actorIdToFilmIds(String actorId) throws SQLException {
+  public HashSet<String> actorIdToFilmIds(String actorId) throws SQLException {
     // Get all the film IDs that that actor was in
     PreparedStatement prep = conn
         .prepareStatement("SELECT * FROM actor_film WHERE actor=?;");
@@ -156,7 +134,7 @@ public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
     return filmIds;
   }
 
-  private HashSet<String> filmIdToActorIds(String filmId) throws SQLException {
+  public HashSet<String> filmIdToActorIds(String filmId) throws SQLException {
     PreparedStatement prep = conn
         .prepareStatement("SELECT * FROM actor_film WHERE film=?;");
     prep.setString(1, filmId);

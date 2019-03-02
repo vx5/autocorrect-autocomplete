@@ -3,6 +3,7 @@ package bacon;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import com.google.common.io.Files;
 
@@ -74,5 +75,13 @@ public final class BaconOperator {
 
   public String filmIdToName(String filmId) throws SQLException {
     return op.filmIdToName(filmId);
+  }
+
+  public HashSet<String> getFilmIds(String actorId) throws SQLException {
+    return op.actorIdToFilmIds(actorId);
+  }
+
+  public HashSet<String> getActorIds(String filmId) throws SQLException {
+    return op.filmIdToActorIds(filmId);
   }
 }
