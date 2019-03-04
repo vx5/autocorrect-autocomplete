@@ -107,6 +107,8 @@ public class GUI {
         freeMarker);
     // Spark route for Bacon film pages
     Spark.get("/bacon/film/:filmencodedid", new BaconFilmHandler(), freeMarker);
+    // Spark route for Bacon actor autocorrect
+    Spark.post("/actorcorrect", new BaconAcHandler());
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -144,6 +146,21 @@ public class GUI {
       String firstActor = qm.value("firstActor");
       String secondActor = qm.value("secondActor");
       return GSON.toJson(bh.path(firstActor, secondActor));
+    }
+
+  }
+
+  private static class BaconAcHandler implements Route {
+
+    @Override
+    public String handle(Request request, Response response) throws Exception {
+      // Pulls the input string that was used
+      QueryParamsMap qm = request.queryMap();
+      //
+      int boxType = Integer.parseInt(qm.value("boxType"));
+      String currentStr = qm.value("currentStr");
+      //
+      return GSON.toJson(bh.correct(boxType, currentStr));
     }
 
   }

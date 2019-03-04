@@ -2,6 +2,7 @@
 	<head>
 		<title>Bacon</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="css/baconmain.css">
 	</head>
 	<body>
 		<!-- Adds the relevant JS libraries and script -->
@@ -30,16 +31,16 @@
       	<div class="suggestion" id="5Brow">${FiveBrow}</div>
     	</div>
 
-    	<h4 id="pathError">${pathError}</h4>
+    	</div>
 
         <button id="pathbutton" class="baconbutton">
-       	Find path!
+       	Find path (might take a minute)!
         </button>
         <br><br>
+
+        <h4 id="pathError">${pathError}</h4>
      	<!-- Where results will be stored via innerHTML -->
      	<div id="pathResults">${pathResults}</div>
-
-     	</div>
 
 	</body>
 </html>

@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 import com.google.common.collect.HashMultiset;
 
 import filereader.TXTReader;
-import trie.RadixTrie;
+import trie.Trie;
 
 /**
  * @author vx5
@@ -24,7 +24,7 @@ public class AcOperator {
   // Stores set of all words in dictionary
   private HashSet<String> dictionary;
   // Stores Trie for given corpora
-  private RadixTrie trie;
+  private Trie trie;
   // Stores Bigram Map for corpora
   private BigramMap bmap;
   // Stores all settings
@@ -75,7 +75,7 @@ public class AcOperator {
   public void reset() {
     // Resets core variables
     corpusWords = HashMultiset.create();
-    trie = new RadixTrie();
+    trie = new Trie();
     corpusLoaded = false;
     bmap = new BigramMap();
     filePaths = new ArrayList<String>();
@@ -213,6 +213,33 @@ public class AcOperator {
       }
     }
     // Signal that corpus has been loaded
+    corpusLoaded = true;
+  }
+
+  /**
+   * Alternate to add words to form the basis corpus of autocorrecting, through
+   * a set of String words.
+   *
+   * @param wordSet HashSet of Strings to be used as basis corpus of
+   *                autocorrecting.
+   */
+  public void addWordsCorpus(HashSet<String> wordSet) {
+    // Iterates through all words in set
+    Iterator<String> wordIter = wordSet.iterator();
+    while (wordIter.hasNext()) {
+      // Is sure to break any composite-word strings into multiple Strings
+      String s = wordIter.next();
+      String[] sSplit = s.split(" ");
+      // Adds all valid words to both the prefix trie and the set of all current
+      // words in the corpus
+      for (String k : sSplit) {
+        if (k.length() != 0 && !corpusWords.contains(k)) {
+          trie.add(k);
+          corpusWords.add(k);
+        }
+      }
+    }
+    // Signals that corpus has been loaded
     corpusLoaded = true;
   }
 

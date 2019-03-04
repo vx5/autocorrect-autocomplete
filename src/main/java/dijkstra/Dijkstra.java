@@ -9,11 +9,28 @@ import java.util.PriorityQueue;
 import paths.PathFinder;
 import paths.PathNode;
 
+/**
+ * @author vx5
+ *
+ * @param <V> the specific subclass of DVertex to be used for this particular
+ *        implementation of Dijkstra
+ * @param <E> the specific subclass of DEdge to be used for this particular
+ *        implementation of Dijkstra
+ *
+ *        Object responsible for coordination of performing Dijkstra's algorithm
+ *        to return a shortest path.
+ */
 public class Dijkstra<V extends DVertex<V, E>, E extends DEdge<V, E>>
     implements PathFinder {
   // Stores database operator instance
   private DijkstraDbOp<V, E> op;
 
+  /**
+   * Constructor that only accepts instance of DijkstraDbOp that allows this
+   * class to perform key operations.
+   *
+   * @param newOp instance of DijkstraDbOp to be used by this Dijkstra class
+   */
   public Dijkstra(DijkstraDbOp<V, E> newOp) {
     op = newOp;
   }

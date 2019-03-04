@@ -7,13 +7,13 @@
 
 		<h1 id="main-header">${targetName}</h1>
 
-
+		<h3>${targetCounterType}:</h3>
      	<!-- Where results will be stored via innerHTML -->
      	<div id="targetLinks">
      	${targetLinks}
      	</div>
      	<br><br>
-     	<form method="GET" action="/path">
+     	<form method="GET" action="/bacon">
 		<button class="returnbutton" type="submit">
        	Perform another bacon request
         </button>

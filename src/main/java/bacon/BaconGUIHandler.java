@@ -11,11 +11,15 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+import ac.AcOperator;
 import paths.PathNode;
 
 public class BaconGUIHandler {
   // Stores BaconOperator instance that empowers this handler
   private final BaconOperator op = BaconOperator.getInst();
+  // Stores AcCoordinator that manages autocorrecting functionality
+  private AcOperator aCop = new AcOperator();
+  private boolean corpusLoaded;
   // Stores main page variables
   private ArrayList<String> topAc;
   private ArrayList<String> bottomAc;
@@ -27,9 +31,40 @@ public class BaconGUIHandler {
   // Stores back page variables
   private String targetName;
   private String targetLinks;
+  private String targetCounterType;
 
   public BaconGUIHandler() {
     resetMainVars();
+    corpusLoaded = false;
+  }
+
+  public Map<String, Object> correct(int box, String toCorrect) {
+    try {
+      resetMainVars();
+      if (!corpusLoaded) {
+        // Loads actor corpus
+        aCop.addWordsCorpus(op.getActorNames());
+        aCop.setPrefixStatus(true);
+      }
+      // Funnel actual corrections
+      ArrayList<String> suggestions = aCop.ac(toCorrect.split(" "));
+      // Fills remainder
+      while (suggestions.size() < 5) {
+        suggestions.add("");
+      }
+      if (box == 0) {
+        topAc = suggestions;
+      } else {
+        bottomAc = suggestions;
+      }
+    } catch (Exception e) {
+      if (e.getMessage() == null) {
+        pathError = "Please load a database of actors through the REPL!";
+      } else {
+        pathError = e.getMessage();
+      }
+    }
+    return getMainMap();
   }
 
   public void resetMainVars() {
@@ -47,11 +82,13 @@ public class BaconGUIHandler {
   private void resetBPVars() {
     targetName = "";
     targetLinks = "";
+    targetCounterType = "";
   }
 
   public Map<String, Object> loadActorPage(String actorEncodedId) {
     resetBPVars();
     try {
+      targetCounterType = "Films";
       String targetId = URLDecoder.decode(actorEncodedId, "UTF-8");
       targetName = op.actorIdToName(targetId);
       HashSet<String> filmIds = op.getFilmIds(targetId);
@@ -72,6 +109,7 @@ public class BaconGUIHandler {
   public Map<String, Object> loadFilmPage(String filmEncodedId) {
     resetBPVars();
     try {
+      targetCounterType = "Actors";
       String filmId = URLDecoder.decode(filmEncodedId, "UTF-8");
       targetName = op.filmIdToName(filmId);
       HashSet<String> actorIds = op.getActorIds(filmId);
@@ -91,7 +129,8 @@ public class BaconGUIHandler {
 
   private Map<String, Object> getBPMap() {
     Map<String, Object> m = new ImmutableMap.Builder<String, Object>()
-        .put("targetName", targetName).put("targetLinks", targetLinks).build();
+        .put("targetName", targetName).put("targetLinks", targetLinks)
+        .put("targetCounterType", targetCounterType).build();
     return m;
   }
 
