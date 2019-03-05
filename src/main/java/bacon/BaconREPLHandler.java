@@ -11,7 +11,10 @@ import paths.PathNode;
  *         Class that houses static handle() message which orchestrates how
  *         Bacon responds to relevant REPL commands.
  */
-public class BaconREPLHandler {
+public final class BaconREPLHandler {
+
+  private BaconREPLHandler() {
+  }
 
   /**
    * Parses input commands from REPL, sends appropriate instructions to core

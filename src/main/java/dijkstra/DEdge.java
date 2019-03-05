@@ -14,12 +14,12 @@ import paths.PathNode;
 public class DEdge<V extends DVertex<V, E>, E extends DEdge<V, E>>
     implements PathEdge {
   // Stores edge ID
-  protected String id;
+  private String id;
   // Stores edge weight
-  protected float weight;
+  private float weight;
   // Stores vertices on either end of edge
-  protected V vertOne;
-  protected V vertTwo;
+  private V vertOne;
+  private V vertTwo;
 
   /**
    * Constructor that stores edge's id, weight, and starting vertex.

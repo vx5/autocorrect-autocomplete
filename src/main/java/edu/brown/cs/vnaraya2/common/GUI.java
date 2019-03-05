@@ -126,6 +126,11 @@ public class GUI {
 
   // THIS IS THE START OF THE BACON PROJECT HANDLERS
 
+  /**
+   * @author vx5
+   *
+   *         Handler for loading the main Bacon page.
+   */
   private static class BaconBeginHandler implements TemplateViewRoute {
 
     @Override
@@ -137,6 +142,11 @@ public class GUI {
 
   }
 
+  /**
+   * @author vx5
+   *
+   *         Handler for obtaining shortest path between two actors via JSON.
+   */
   private static class BaconPathHandler implements Route {
 
     @Override
@@ -150,6 +160,11 @@ public class GUI {
 
   }
 
+  /**
+   * @author vx5
+   *
+   *         Handler for autocorrecting user entries into actor boxes.
+   */
   private static class BaconAcHandler implements Route {
 
     @Override
@@ -165,6 +180,11 @@ public class GUI {
 
   }
 
+  /**
+   * @author vx5
+   *
+   *         Handler for loading Bacon actor pages.
+   */
   private static class BaconActorHandler implements TemplateViewRoute {
 
     @Override
@@ -178,6 +198,11 @@ public class GUI {
 
   }
 
+  /**
+   * @author vx5
+   *
+   *         Handler for loading Bacon film pages.
+   */
   private static class BaconFilmHandler implements TemplateViewRoute {
 
     @Override

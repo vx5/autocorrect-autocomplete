@@ -32,9 +32,9 @@ public interface DijkstraDbOp<V extends DVertex<V, E>, E extends DEdge<V, E>> {
   /**
    * Makes a new vertex (of the parametrized type).
    *
-   * @param Id   String form of id of new vertex
+   * @param id   String form of id of new vertex
    * @param dist distance of new vertex from the start of the search
    * @return the new vertex, constructed as specified
    */
-  V makeVertex(String Id, float dist);
+  V makeVertex(String id, float dist);
 }

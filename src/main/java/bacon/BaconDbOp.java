@@ -265,7 +265,7 @@ public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
   }
 
   /**
-   * Uses database to find a film's name, given its id
+   * Uses database to find a film's name, given its id.
    *
    * @param id String form of film id to be used
    * @return String form of given film's name
@@ -293,7 +293,7 @@ public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
   }
 
   /**
-   * Returns all actor names in the database
+   * Returns all actor names in the database.
    *
    * @return HashSet of all actors' names in the database, in String form
    * @throws SQLException if there is error in interactions with database

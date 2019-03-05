@@ -75,6 +75,8 @@ $(document).ready(() => {
 	});
 	// Places clickhandler on the path generation button
 	document.getElementById("pathbutton").addEventListener("click",function() {
+		// Informs user that path is loading
+		$pathError.html("Path is loading...");
 		// Constructs object for POST request that stores input String
 		const postParameters = {
 			firstActor: $firstActor.val(),

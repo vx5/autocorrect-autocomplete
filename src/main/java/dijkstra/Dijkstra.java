@@ -120,5 +120,4 @@ public class Dijkstra<V extends DVertex<V, E>, E extends DEdge<V, E>>
     // Returns path
     return path;
   }
-
 }

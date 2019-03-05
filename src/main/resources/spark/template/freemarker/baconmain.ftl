@@ -14,7 +14,8 @@
 		<div id="overDiv">
 
     	<div id="topDiv">
-      	<input type="text" id="topBox" name="topBox" size="40">
+    	Enter the actor who is the start of the path:
+      	<input type="text" id="topBox" name="topBox" size="45">
       	<div class="suggestion" id="1Trow">${OneTrow}</div>
       	<div class="suggestion" id="2Trow">${TwoTrow}</div>
       	<div class="suggestion" id="3Trow">${ThreeTrow}</div>
@@ -23,7 +24,8 @@
     	</div>
 
     	<div id="botDiv">
-      	<input type="text" id="botBox" name="botBox" size="40">
+    	Enter the actor whom you want the path to end at:
+      	<input type="text" id="botBox" name="botBox" size="45">
       	<div class="suggestion" id="1Brow">${OneBrow}</div>
       	<div class="suggestion" id="2Brow">${TwoBrow}</div>
       	<div class="suggestion" id="3Brow">${ThreeBrow}</div>
@@ -34,7 +36,7 @@
     	</div>
 
         <button id="pathbutton" class="baconbutton">
-       	Find path (might take a minute)!
+       	Find path!
         </button>
         <br><br>
 

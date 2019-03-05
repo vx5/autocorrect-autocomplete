@@ -14,6 +14,12 @@ import com.google.common.collect.ImmutableMap;
 import ac.AcOperator;
 import paths.PathNode;
 
+/**
+ * @author vx5
+ *
+ *         Class that handles all variables used for population of .ftl
+ *         templates relevant to Bacon GUI.
+ */
 public class BaconGUIHandler {
   // Stores BaconOperator instance that empowers this handler
   private final BaconOperator op = BaconOperator.getInst();
@@ -33,17 +39,33 @@ public class BaconGUIHandler {
   private String targetLinks;
   private String targetCounterType;
 
+  /**
+   * Constructor that initializes all variables on main page, and stores that
+   * corpus has not yet been loaded.
+   */
   public BaconGUIHandler() {
     resetMainVars();
     corpusLoaded = false;
   }
 
+  /**
+   * Process all autocorrecting functionality by directing String to be
+   * autocorrected to AcOperator instance.
+   *
+   * @param box       integer represeting which box is being autocorrected, 0
+   *                  for the first box, 1 for the second box
+   * @param toCorrect the String to be autocorrected
+   * @return appropriate set of variable suggestions from AcOperator
+   */
   public Map<String, Object> correct(int box, String toCorrect) {
     try {
+      // Re-checks all variables on main page
       resetMainVars();
+      // If corpus is not loaded, perform loading operation
       if (!corpusLoaded) {
         // Loads actor corpus
         aCop.addWordsCorpus(op.getActorNames());
+        // This autocorrect will only use the prefix method
         aCop.setPrefixStatus(true);
       }
       // Funnel actual corrections
@@ -52,27 +74,37 @@ public class BaconGUIHandler {
       while (suggestions.size() < 5) {
         suggestions.add("");
       }
+      // Assigns suggestions to appropriate box's variable
       if (box == 0) {
         topAc = suggestions;
       } else {
         bottomAc = suggestions;
       }
     } catch (Exception e) {
+      // Handles exceptions appropriately, by submitting most errors, but by
+      // recognizing the null error as corresponding to the absence of a
+      // database
       if (e.getMessage() == null) {
         pathError = "Please load a database of actors through the REPL!";
       } else {
         pathError = e.getMessage();
       }
     }
+    // Returns requisite main page map
     return getMainMap();
   }
 
+  /**
+   * Resets all variables pertinent to main Bacon page.
+   */
   public void resetMainVars() {
     pathError = "";
     pathResults = "";
+    // Clears ArrayList variables
     topAc = new ArrayList<String>();
     bottomAc = new ArrayList<String>();
     paths = new ArrayList<ArrayList<String>>();
+    // Populates boths suggestion variables with empty Strings
     for (int i = 0; i < 5; i++) {
       topAc.add("");
       bottomAc.add("");
@@ -85,12 +117,23 @@ public class BaconGUIHandler {
     targetCounterType = "";
   }
 
+  /**
+   * Loads an actor page (that lists all films the actor was in).
+   *
+   * @param actorEncodedId the id of the actor to be used as the basis for this
+   *                       page, in encoded form (from the page URL)
+   * @return map that specifies appropriate variable values for page
+   */
   public Map<String, Object> loadActorPage(String actorEncodedId) {
+    // Resets variables for page
     resetBPVars();
     try {
+      // Specifies type of page being loaded
       targetCounterType = "Films";
+      // Decodes the URL to the actor's id, name
       String targetId = URLDecoder.decode(actorEncodedId, "UTF-8");
       targetName = op.actorIdToName(targetId);
+      // Accesses and stores all references to films as links in HTML
       HashSet<String> filmIds = op.getFilmIds(targetId);
       Iterator<String> i = filmIds.iterator();
       while (i.hasNext()) {
@@ -103,9 +146,17 @@ public class BaconGUIHandler {
     } catch (SQLException | UnsupportedEncodingException e) {
       // No exception should ever occur here
     }
+    // Returns requisite backpage map
     return getBPMap();
   }
 
+  /**
+   * Loads a film page (that lists all actors in the film).
+   *
+   * @param filmEncodedId the id of the film to be used as the page basis, in
+   *                      encoded form (from the page URL)
+   * @return map that specifies appropriate variable values for page
+   */
   public Map<String, Object> loadFilmPage(String filmEncodedId) {
     resetBPVars();
     try {
@@ -134,6 +185,11 @@ public class BaconGUIHandler {
     return m;
   }
 
+  /**
+   * Returns map of variables specific to main Bacon page.
+   *
+   * @return map of variables specific to main Bacon page
+   */
   public Map<String, Object> getMainMap() {
     Map<String, Object> m = new ImmutableMap.Builder<String, Object>()
         .put("pathError", pathError).put("pathResults", pathResults)
@@ -152,6 +208,16 @@ public class BaconGUIHandler {
     return m;
   }
 
+  /**
+   * Returns map of variables in main page that represents the outcome of a
+   * search for the path between two actors.
+   *
+   * @param firstActor  the name of the actor to be used as the start of the
+   *                    path
+   * @param secondActor the name of the actor the path should end at
+   * @return map of variables in main page that represent a successful OR
+   *         unsuccessful outcome of the path search
+   */
   public Map<String, Object> path(String firstActor, String secondActor) {
     // Clear all existing main page variables
     resetMainVars();
@@ -163,7 +229,9 @@ public class BaconGUIHandler {
       for (int i = pathNodes.size() - 1; i > 0; i--) {
         // Generates new ArrayList to store each row
         ArrayList<String> row = new ArrayList<String>();
-        // Adds all important elements to row
+        // Includes all information required to populate rows
+        // with both actor's name, joint film name, and links to
+        // their respective pages
         row.add(op.actorIdToName(pathNodes.get(i).getId()));
         row.add(URLEncoder.encode(pathNodes.get(i).getId(), "UTF-8"));
         row.add(op.actorIdToName(pathNodes.get(i - 1).getId()));
@@ -175,6 +243,7 @@ public class BaconGUIHandler {
         paths.add(row);
       }
     } catch (Exception e) {
+      // If Exception is thrown, populate pathError variable
       pathError = e.getMessage();
     }
     // Finally, return required object

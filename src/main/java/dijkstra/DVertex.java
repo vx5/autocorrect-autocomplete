@@ -17,13 +17,13 @@ import paths.PathNode;
 public class DVertex<V extends DVertex<V, E>, E extends DEdge<V, E>>
     implements PathNode, Comparable<DVertex<V, E>> {
   // Stores vertex name
-  protected String id;
+  private String id;
   // Stores current best previous edge
-  protected DEdge<V, E> prevEdge;
+  private DEdge<V, E> prevEdge;
   // Stores all outgoing edges from this vertex
-  protected HashSet<E> edges;
+  private HashSet<E> edges;
   // Stores current distance of this word
-  protected float currDist;
+  private float currDist;
 
   /**
    * Constructor that uses id, distance from origin or shortest path search,

@@ -19,7 +19,7 @@ import paths.PathOrg;
  */
 public final class BaconOperator {
   // Stores instance of this object for singleton pattern
-  private static final BaconOperator baconOp = new BaconOperator();
+  private static final BaconOperator BACON_OP = new BaconOperator();
   // Stores instance of BaconDbOp used to fulfill PathDbOp implementation
   private final BaconDbOp op = new BaconDbOp();
   // Stores instance of PathOrg that is used for paths
@@ -36,14 +36,14 @@ public final class BaconOperator {
    * @return reference to the only BaconOperator instance
    */
   public static BaconOperator getInst() {
-    return baconOp;
+    return BACON_OP;
   }
 
   /**
    * Assigns a new database to this implementation of the Bacon project.
    *
    * @param dbPath filepath to the new database
-   * @throws Exception
+   * @throws Exception if there is problem with given file path
    */
   public void setDb(String dbPath) throws Exception {
     // Checks that file exists
@@ -115,7 +115,7 @@ public final class BaconOperator {
   }
 
   /**
-   * Wrapper method that returns all actors (by id) that were in a film (by id)
+   * Wrapper method that returns all actors (by id) that were in a film (by id).
    *
    * @param filmId basis film's id
    * @return HashSet of ids of all actors that were in the given film
@@ -126,7 +126,7 @@ public final class BaconOperator {
   }
 
   /**
-   * Wrapper method that returns all actor's names in the database
+   * Wrapper method that returns all actor's names in the database.
    *
    * @return HashSet of names of all actors in the database
    * @throws SQLException if there is error in interactions with the database

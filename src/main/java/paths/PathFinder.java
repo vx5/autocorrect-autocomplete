@@ -19,6 +19,6 @@ public interface PathFinder {
    * @throws Exception if there is any error in finding the path, including if
    *                   no path exists
    */
-  public ArrayList<PathNode> getPath(String startVert, String endVert)
+  ArrayList<PathNode> getPath(String startVert, String endVert)
       throws Exception;
 }
