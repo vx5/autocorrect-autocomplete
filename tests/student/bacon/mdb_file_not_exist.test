@@ -1,0 +1,5 @@
+INPUT
+mdb data/bacon/fakefilename
+OUTPUT
+ERROR: file "data/bacon/fakefilename" could not be found
+END

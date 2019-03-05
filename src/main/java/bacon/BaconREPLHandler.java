@@ -49,6 +49,12 @@ public final class BaconREPLHandler {
       // Initializes array to hold names of actors
       String[] names = {};
       try {
+        // Check for ending in quotation marks
+        if (splitLine[splitLine.length - 1]
+            .charAt(splitLine[splitLine.length - 1].length() - 1) != '\"') {
+          throw new Exception(
+              "two names required, each bounded by quotation marks");
+        }
         // Store the names of actors (based on location of quotations)
         names = getInQuotes(splitLine);
         // Gets path using operator class

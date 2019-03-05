@@ -284,6 +284,10 @@ public class BaconDbOp implements DijkstraDbOp<ActorVertex, FilmEdge> {
     ResultSet rs = prep.executeQuery();
     rs.next();
     String filmName = rs.getString(2);
+    // Replace empty name with the id itself
+    if (filmName.length() == 0) {
+      filmName = id;
+    }
     // Stores newly found value in cache, if necessary
     filmIdNameCache.put(id, filmName);
     // Close all SQL interactions and return name

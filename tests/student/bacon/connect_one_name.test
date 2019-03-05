@@ -1,0 +1,5 @@
+INPUT
+connect "ant"
+OUTPUT
+ERROR: two names required, each bounded by quotation marks
+END

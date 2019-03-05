@@ -1,0 +1,5 @@
+INPUT
+fakecommand a b c
+OUTPUT
+ERROR: command 'fakecommand' not recognized
+END

@@ -1,0 +1,8 @@
+INPUT
+mdb data/bacon/smallBacon.sqlite3
+connect "ant" "bear" "crow"
+connect "ant" "bear" crow
+OUTPUT
+db set to data/bacon/smallBacon.sqlite3
+ERROR: two names required, each bounded by quotation marks
+END

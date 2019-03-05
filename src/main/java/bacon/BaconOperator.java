@@ -76,6 +76,10 @@ public final class BaconOperator {
     if (!op.hasDb()) {
       throw new Exception("no database has been loaded yet");
     }
+    // Checks that names are not the same
+    if (fromName.contentEquals(toName)) {
+      throw new Exception("two different names must be entered");
+    }
     // Finds path, relying on database to convert given names to actor ids
     return finder.findPath("dijkstra", op.actorNameToId(fromName),
         op.actorNameToId(toName));
