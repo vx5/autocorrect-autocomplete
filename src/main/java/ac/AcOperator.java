@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
 import com.google.common.collect.HashMultiset;
 
 import filereader.TXTReader;
-import trie.Trie;
+import trie.RadixTrie;
 
 /**
  * @author vx5
@@ -24,7 +24,7 @@ public class AcOperator {
   // Stores set of all words in dictionary
   private HashSet<String> dictionary;
   // Stores Trie for given corpora
-  private Trie trie;
+  private RadixTrie trie;
   // Stores Bigram Map for corpora
   private BigramMap bmap;
   // Stores all settings
@@ -75,7 +75,7 @@ public class AcOperator {
   public void reset() {
     // Resets core variables
     corpusWords = HashMultiset.create();
-    trie = new Trie();
+    trie = new RadixTrie();
     corpusLoaded = false;
     bmap = new BigramMap();
     filePaths = new ArrayList<String>();
@@ -265,7 +265,10 @@ public class AcOperator {
   public ArrayList<String> ac(String[] sequence) throws Exception {
     // Throw Exception if no corpus has been loaded yet
     if (!corpusLoaded) {
-      throw new Exception("no corpus has been loaded yet");
+      // The below change was made to bring this project to minimum
+      // functionality
+      // throw new Exception("no corpus has been loaded yet");
+      return new ArrayList<String>();
     }
     // Stores last word
     String lastWord = sequence[sequence.length - 1];
