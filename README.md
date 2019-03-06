@@ -295,7 +295,7 @@ I did not effect any additional runtime or space optimizations. The ones I did e
 
 There are 3 general sets of tests to run on my Bacon implementation -- JUnit tests, my personal system tests, and the TA system tests.
 
-To run the JUnit tests, I took advantage of maven's automatic test-running while building, so I simply used the terminal command "mvn package" while in my project's root directory.
+To run the JUnit tests, I took advantage of maven's automatic test-running while building, so I simply used the terminal command "mvn package" while in my project's root directory. While I did not test every single method in every single class and interface, I tried to focus on the most important areas, such as database interaction, and the contents of the dijkstra package, which houses the core functionality of Dijkstra's shortest-path algorithm.
 
 To run my personal system tests, I adapt the terminal command to run the TA system tests to my own test suite's location. From the project's root directory, I run "./cs32-test ./tests/student/bacon/\*", which runs all of my personal system tests. Please note that one of my personal tests uses the large bacon.sqlite3 database, and will timeout. This is expected -- it must be run separately, using the command "./cs32-test ./tests/student/bacon/connect_no_name_actor_large_db.test -t 60". I use 60 as the time cutoff, because a TA told me it was the maximum time allowed for path requests when using the large database.
 

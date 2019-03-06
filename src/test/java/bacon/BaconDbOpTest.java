@@ -7,7 +7,6 @@ import static org.junit.Assert.fail;
 
 import java.sql.SQLException;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import org.junit.After;
 import org.junit.Before;
@@ -133,11 +132,6 @@ public class BaconDbOpTest {
     }
     // Test that names are, in fact, included
     assertTrue(actorNames.contains("Taylor Swift"));
-    // TEST
-    Iterator<String> i = actorNames.iterator();
-    while (i.hasNext()) {
-      System.out.println(i.next());
-    }
     // Test for correct number of names
     assertEquals(actorNames.size(), 32);
   }
