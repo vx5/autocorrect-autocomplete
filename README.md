@@ -244,4 +244,91 @@ As stated above, my GUI can be accessed by running "./run --gui" from the comman
 I used online resources to help me review specific types of Java errors, and for how to write in markdown language. I also used extensive resources to better understand JavaScript, jQuery, HTML, and, in particular, CSS styling. I sometimes used mainstream resources such as formal jQuery documentation and w3schools (which we were directed to in CS 2), and sometimes used other, more niche resources, such as css-tricks.com, to understand specific topics like Flexboxes.
 
 ## Bacon
-**TODO: Fill out this section!**
+
+**Introduction**
+
+This README includes sections devoted to known bugs in my project, explanations of any Checkstyle errors, design details of my project, any new runtime or space optimizations I effected, instructions on how to run all tests I wrote on my project, how to build and run my project from the command line, the Bacon project's given design questions, and an acknowledgements section.
+
+**Known Bugs**
+
+I have no known bugs in my code.
+
+**Checkstyle Errors**
+
+I do not believe I have any checkstyle errors.
+
+**Design Details Specific to my Project**
+
+*High-Level REPL and GUI Structure*
+
+Just as in Stars and Autocorrect, my Main class is the highest-level class in my design. The REPL, just as before, parses REPL input for commands relevant to Stars, Autocorrect, and Bacon. Commands relevant to Stars are delegated to the StarsREPLHandler, and from that point, are discussed further in the above Stars portion of this README. Commands relevant to Autocorrect are delegated to the AcREPLHandler, and from that point, are discussed further in the Autocorrect portion of this README. The BaconREPLHandler's handle() method parses commands into what, logically, they are asking, and then makes requests to the BaconOperator instance, which manages the setting of databases and the construction of BaconPaths. For design purposes, there is exactly one instance of BaconOperator, a design achieved through a singleton pattern, which allows both the GUI and REPL to access it without it being passed as an argument through a method or constructor.
+
+A GUI class is used to run the Spark server and launch the Spark routes necessary to support the Stars, Autocorrect, and Bacon GUIs. For Bacon, those routes rely on handlers defined in the GUI.java file. Those handlers take in requests from the GUI, and make appropriate requests to the methods of the BaconGUIHandler class, which stores variables relevant to the population of all Bacon-related GUI pages. Those methods, in turn, make the appropriate requests to the BaconOperator, and then returns the appropriate data. The GUI handler sometimes loads a FreeMarker template, and sometimes returns through JSON.
+
+*Core Operations*
+
+The BaconOperator class manages all high-level operations related to Bacon. It delegates requests related to database access to the BaconDbOp class, and delegates requests related to pathfinding to a wrapper PathOrg class, which contains a Dijkstra's object. The PathOrg class is used to find new paths, given a method to use -- it was inspired by the 1st design question, since other methods of finding paths could easily be added if they, like Dijkstra, implement the PathFinder interface.
+
+My Dijkstra's implementation's generic (parametrized) form is found in the dijkstra package. Central are the DVertex and DEdge classes, which represent vertex and edges in a Dijkstra graph. The Dijkstra object manages the actual pathfinding process. When it needs to expand the graph by looking at new edges and nodes, it relies on an implementation using the DijkstraDbOp interface, which was inspired by the 2nd design question, since the interface leaves ambiguous how new edges and vertexes are obtained up to the specific implementation. In this project, the class implementing DijkstraDbOp is BaconDbOp, which handles the interactions with the SQL database needed for Dijkstra's, among other functions.
+
+The specific extensions of DVertex and DEdge used by Bacon are called ActorVertex and FilmEdge. Their only added functionality (beyond the superclass's) is the inclusion of a name which, in this project, refers to Actor's names and Film's names (as opposed to their ids). Additionally, because the PathOrg returns a sequence of nodes (containing references to edges) called PathNodes (and PathEdges), meant to be generic across all pathfinding methods, DVertex and DEdge must implement these interfaces. This, too, was inspired by the 1st design question.
+
+*Caching*
+
+I implemented caching in this project. Because I was told that the most time-consuming aspect of my code was likely its interactions with the SQL database, I used caches in the BaconDbOp class. The methods in that class rely on several "building-block" methods that represent basic interactions with the database, of which there are 5. I thus made 5 caches, one for each of these basic operations. In each case, the building block method stores new SQL request results in the cache, and uses the cache instead of making a SQL request when possible.
+
+*Runtime / Space Optimizations*
+
+The only runtime or space optimizations I performed were caching, described above, and the use of a graph that incrementally loads information from the database as necessary, rather than all at once. I did not effect any optimizations beyond those discussed in the assignment handout, and do not believe any of them qualify for extra credit.
+
+*GUI*
+
+My GUI can be run by typing "./run --gui" into the command line from the project directory, and then navigating in a browser to "http://localhost:4567/bacon". Users should first load a SQLite database through the REPL, which can be done with the command "mdb pathname", where "pathname" is the file path from the project directory to the database (e.g. "mdb data/bacon/smallBacon.sqlite3"). If they miss this step, the GUI will display an error message. They can then type the names of the actors they want to connect into the two given boxes, and press the "Find path!" button. Please note two things: 1) when a path is not found, an error message is displayed (that still says "path not found"), which was a personal choice on my part. 2) when using the large database, the autocorrecting is very slow and lags behind the key-presses quite a bit. I showed it in TA hours to a TA, who told me it still met minimum functionality, but I wanted to document that slowness here for clarity. Because path requests on the large database take time, the page displays a loading message while the server processes the request.
+
+On the actor and film pages, a button at the bottom allows the user the return to the original Bacon search page.
+
+**Extra Runtime / Space Optimizations**
+
+I did not effect any additional runtime or space optimizations. The ones I did effect are documented in the design details section's "runtime / space optimizations" subsections.
+
+**How to Run Tests**
+
+There are 3 general sets of tests to run on my Bacon implementation -- JUnit tests, my personal system tests, and the TA system tests.
+
+To run the JUnit tests, I took advantage of maven's automatic test-running while building, so I simply used the terminal command "mvn package" while in my project's root directory.
+
+To run my personal system tests, I adapt the terminal command to run the TA system tests to my own test suite's location. From the project's root directory, I run "./cs32-test ./tests/student/bacon/\*", which runs all of my personal system tests. Please note that one of my personal tests uses the large bacon.sqlite3 database, and will timeout. This is expected -- it must be run separately, using the command "./cs32-test ./tests/student/bacon/connect_no_name_actor_large_db.test -t 60". I use 60 as the time cutoff, because a TA told me it was the maximum time allowed for path requests when using the large database.
+
+To run the TA test suite, I navigate to the project's root directory, and run "./cs32-test ./tests/ta/bacon/\*", which runs the entire provided TA test suite.
+
+Please note that, in order to take advantage of the full time limits, I did sometimes add the "-t 10" flag at the end of my system test commands (except for the large database test) to make sure they did not time out (I got the instruction to do this from Piazza on the Stars project, and am doing that again here).
+
+**How to Run and Build Project from the Command Line**
+
+The user builds the project from the command line by building with the terminal command "mvn package".
+
+The user runs the project from the REPL with the "./run" command, which then launches the REPL, into which the user can directly type REPL commands.
+
+The user runs the GUI with its flag, which involves the "./run --gui" command in the command line. Once loaded, the user can add a database through the repl using the "mdb" command with the file path of the desired database, e.g. "mdb data/bacon/smallBacon.sqlite3". Once loaded, the user can navigate to the Bacon page in a browser, type in actor's names, and search for a path between them. More detail on GUI functionality is available in the GUI subsection of the design details section above.
+
+**Answers to Design Questions**
+
+*How could you modify your project, so other developers can easily add new graph search algorithms without having to worry about other constraints of the project (e.g. structure of the database, first initial -> last initial)?*
+
+My project uses a PathOrg object which holds all of the different pathfinding methods -- method calls need only specify the name of the method to be used, as well as the starting and ending details, and a path built using the specified method is returned. The path returned by this object is made up of PathNodes (an interface), which contain references to PathEdges (also an interface). Thus, adding a new graph search method would require a new object for the new method, an object that must implement the PathFinder vertex, and that thus must implement a pathfinding method that returns a sequences of nodes, containing references to their previous edges, that implement the PathNode and PathEdge interfaces, respectively.
+
+That class itself would deal with the database structure and valid neighbor criteria, likely using an interface like Dijkstra's DijkstraDbOp, which a specific implementation of the algorithm would implement and populate.
+
+*How could you improve your code to make it able to accept multiple types of files? For example, what if you wanted your program to be able to accept both a SQL database or a number of CSV files containing the same data?*
+
+My Dijkstra's implementation uses a DijkstraDbOp interface, with methods relating to getting the neighbors of a particular vertex and creating new vertices. A specific project using Dijkstra's would require a class that implements this interface, with contents for the interface's methods that specify how to get the needed information. This implementing class would store references to the database, whether it be a SQL database, or a set of different .csv files. Its methods would handle interactions with the database, whether they involved making requests of a database or reading from a .csv file. Notably, the interface would need to know what types of vertexes and edges the specific project is using, as some of the database interaction methods require the construction of new vertexes and edges (hence the DijkstraDbOp interface's parametrization).
+
+*What would you need to change if movies now had an associated year of release and the chain of movies had to go in chronological order?*
+
+This question is a question or altering Dijkstra's algorithm. Ostensibly, this new requirement is a requirement analogous to the last initial-first initial requirement this project already uses; each vertex carries an attribute, in this case, the year of the movie whose edge represents the current best path to this vertex, and that attribute has to be compared between nodes to understand if a path segment is valid. But unlike the initial's of an actor's name, the year of the movie whose edge represents the current best path to the vertex is not known from the moment the vertex is constructed. Treating this new requirement as analogous to the initials requirement could lead to a scenario where a vertex V, currently best-reached by X-Men (2000), only checks neighbors when the connecting movie was released in 2000 or later. Later on, however, V's path is updated, so that it is best-reached by First Contact (1996). All of V's neighbors released betweeb 1996 and 1999 should now be considered, but will not be, because V is visited.
+
+My solution involves, as described above, vertices storing the year in which they are best-reached. It recognizes, however, that vertexes where the stored year is changed essentially need to be "re-visited", or again check what the valid neighbors are. This can be accomplished through brute force: the algorithm could add any node whose stored year is changed back to the front of the PriorityQueue, where a special condition would check which of its successive nodes require updating, which of their nodes require updating, and so forth. 
+
+**Acknowledgements**
+
+I used online resources to help me review specific types of Java errors, how to use parametrized classes, and for how to write in markdown language. I also used online resources regarding HTML, CSS, and JavaScript, mostly the same resources I used on Autocorrect.
