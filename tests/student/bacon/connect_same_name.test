@@ -1,0 +1,7 @@
+INPUT
+mdb data/bacon/smallBacon.sqlite3
+connect "Amy Stiller" "Amy Stiller"
+OUTPUT
+db set to data/bacon/smallBacon.sqlite3
+ERROR: two different names must be entered
+END

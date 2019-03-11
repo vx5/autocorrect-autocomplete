@@ -1,0 +1,21 @@
+#overDiv {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 700px;
+}
+
+#pathbutton {
+	position: fixed;
+	top: 250px;
+}
+
+#pathError {
+	position: fixed;
+	top: 300px;
+}
+
+#pathResults {
+	position: fixed;
+	top: 350px;
+}

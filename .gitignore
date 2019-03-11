@@ -2,4 +2,6 @@ target/
 .mvn-classpath
 .classpath
 .idea/
+data/bacon/
+bacon.sqlite3
 **.DS_Store**

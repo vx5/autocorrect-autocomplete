@@ -1,0 +1,5 @@
+INPUT
+mdb data/autocorrect/sherlock.txt
+OUTPUT
+ERROR: file at "data/autocorrect/sherlock.txt" is not of type .sqlite3
+END

@@ -3,5 +3,5 @@ corpus data/autocorrect/error.txt
 ac hello
 OUTPUT
 ERROR: file data/autocorrect/error.txt not found
-ERROR: no corpus has been loaded yet
+ac hello
 END

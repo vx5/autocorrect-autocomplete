@@ -217,6 +217,33 @@ public class AcOperator {
   }
 
   /**
+   * Alternate to add words to form the basis corpus of autocorrecting, through
+   * a set of String words.
+   *
+   * @param wordSet HashSet of Strings to be used as basis corpus of
+   *                autocorrecting.
+   */
+  public void addWordsCorpus(HashSet<String> wordSet) {
+    // Iterates through all words in set
+    Iterator<String> wordIter = wordSet.iterator();
+    while (wordIter.hasNext()) {
+      // Is sure to break any composite-word strings into multiple Strings
+      String s = wordIter.next();
+      String[] sSplit = s.split(" ");
+      // Adds all valid words to both the prefix trie and the set of all current
+      // words in the corpus
+      for (String k : sSplit) {
+        if (k.length() != 0 && !corpusWords.contains(k)) {
+          trie.add(k);
+          corpusWords.add(k);
+        }
+      }
+    }
+    // Signals that corpus has been loaded
+    corpusLoaded = true;
+  }
+
+  /**
    * Returns the filepaths of all the corpora currently being used for
    * Autocorrect suggestions.
    *
@@ -238,7 +265,10 @@ public class AcOperator {
   public ArrayList<String> ac(String[] sequence) throws Exception {
     // Throw Exception if no corpus has been loaded yet
     if (!corpusLoaded) {
-      throw new Exception("no corpus has been loaded yet");
+      // The below change was made to bring this project to minimum
+      // functionality
+      // throw new Exception("no corpus has been loaded yet");
+      return new ArrayList<String>();
     }
     // Stores last word
     String lastWord = sequence[sequence.length - 1];

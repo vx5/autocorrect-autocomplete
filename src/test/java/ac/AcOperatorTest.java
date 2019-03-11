@@ -2,9 +2,11 @@ package ac;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.junit.After;
 import org.junit.Before;
@@ -69,6 +71,25 @@ public class AcOperatorTest {
           "data/autocorrect/great_expectations.txt");
     } catch (Exception e) {
       fail("Issue reading great_expectations.txt");
+    }
+  }
+
+  @Test
+  public void testAddWordsCorpus() {
+    // Adds new set of words to the AcOperator
+    HashSet<String> setWords = new HashSet<String>();
+    setWords.add("ant");
+    setWords.add("bear");
+    setWords.add("cat");
+    o.addWordsCorpus(setWords);
+    // Tests that corpus has indeed been loaded
+    String[] toCorrect = {
+        "ant"
+    };
+    try {
+      assertTrue(o.ac(toCorrect).size() > 0);
+    } catch (Exception e) {
+      fail("Exceptiont thrown");
     }
   }
 
