@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *         Intermediary class that allows an Autocorrect implementation to
  *         handle more than one Autocorrecting operator (such as if we want to
  *         have two entirely different autocorrects on the same implementation,
- *         such as in the same FreeMarker template).
+ *         such as in the same FreeMarker template). Edit?
  *
  */
 public class AcCoordinator {
