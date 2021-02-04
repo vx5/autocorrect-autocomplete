@@ -33,7 +33,8 @@
       </select>
       </div>
       <!-- Input for smart setting -->
-      <div id="smart" class="settingDiv">
+      <!-- TEST id="smart" before class def below -->
+      <div class="settingDiv">
       Smart ranking setting:
       <select id="smart" name="smart">
         <option value="off">off</option>
