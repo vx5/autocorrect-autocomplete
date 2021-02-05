@@ -6,8 +6,6 @@ import org.junit.Test;
 
 import ac.AcCoordinator;
 import ac.AcOperator;
-import edu.brown.cs.vnaraya2.stars.AllStars;
-import kdtrees.KDTree;
 
 public class GUITest {
 
@@ -16,7 +14,7 @@ public class GUITest {
     // Add operator to AcCoordinator
     AcCoordinator c = new AcCoordinator();
     c.addOp(new AcOperator());
-    GUI sg = new GUI(new AllStars(), new KDTree(), c);
+    GUI sg = new GUI(c);
     // Tests construction
     assertNotNull(sg);
   }

@@ -1,7 +1,0 @@
-INPUT
-mdb data/bacon/smallBacon.sqlite3
-connect "Harry Potter" "Sylvester Stallone"
-OUTPUT
-db set to data/bacon/smallBacon.sqlite3
-ERROR: actor with name "Harry Potter" could not be found
-END

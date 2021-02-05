@@ -10,8 +10,6 @@ import java.util.ArrayList;
 
 import org.junit.Test;
 
-import edu.brown.cs.vnaraya2.stars.StarsLoadingException;
-
 public class CSVReaderTest {
 
   @Test
@@ -66,7 +64,7 @@ public class CSVReaderTest {
     } catch (FileNotFoundException e) {
       // Verifies that correct message was stored in Exception
       assertEquals(e.getMessage(), "file fakefilename not found");
-    } catch (IOException | StarsLoadingException e) {
+    } catch (IOException e) {
       // Fails test if one of these unexpected exceptions was thrown
       fail("Unexpected exception was thrown");
     }

@@ -6,10 +6,6 @@ import java.io.InputStreamReader;
 
 import ac.AcCoordinator;
 import ac.AcREPLHandler;
-import bacon.BaconREPLHandler;
-import edu.brown.cs.vnaraya2.stars.AllStars;
-import edu.brown.cs.vnaraya2.stars.StarsREPLHandler;
-import kdtrees.KDTree;
 
 /**
  * Class that holds store static runREPL() method triggers a command REPL that
@@ -30,17 +26,12 @@ public final class REPL {
    * Triggers command REPL that parses input to the terminal's command line and
    * directs it to a handler as necessary.
    *
-   * @param galaxy AllStars instance specific to this run of the program
-   * @param kdTree KDTree instance specific to this run of the program
-   * @param coord  AcCoordinator instance specific to this run of the program
+   * @param coord AcCoordinator instance specific to this run of the program
    */
-  public static void runREPL(AllStars galaxy, KDTree kdTree,
-      AcCoordinator coord) {
+  public static void runREPL(AcCoordinator coord) {
     // Creates new BufferedReader to handle input
     try (BufferedReader br = new BufferedReader(
         new InputStreamReader(System.in))) {
-      // Creates instance of AllStars, KDTree, Stars command handler
-      StarsREPLHandler starHandler = new StarsREPLHandler(galaxy, kdTree);
       // Creates instance of Autocorrect command handler
       AcREPLHandler acHandler = new AcREPLHandler(coord);
       // REPL loop body
@@ -55,31 +46,19 @@ public final class REPL {
         String[] splitLine = commandLine.split(" ");
         // If command is correctly related to Stars project,
         // command is passed to the Stars command handler
-        if (splitLine[0].contentEquals("stars")
-            || splitLine[0].contentEquals("neighbors")
-            || splitLine[0].contentEquals("radius")) {
-          starHandler.handle(splitLine);
-          // If command is correctly related to Autocorrect,
-          // command is passed to the Autocorrect
-          // REPL handler
-        } else if (splitLine[0].contentEquals("corpus")
+        if (splitLine[0].contentEquals("corpus")
             || splitLine[0].contentEquals("ac")
             || splitLine[0].contentEquals("prefix")
             || splitLine[0].contentEquals("whitespace")
             || splitLine[0].contentEquals("smart")
             || splitLine[0].contentEquals("led")) {
           acHandler.handle(commandLine);
-        } else if (splitLine[0].contentEquals("mdb")
-            || splitLine[0].contentEquals("connect")) {
-          BaconREPLHandler.handle(splitLine);
         } else {
           // If command not recognized, print error message
           System.out.println(
               "ERROR: command \'" + splitLine[0] + "\' not recognized");
         }
       }
-      // Clears the stars after end of loop
-      galaxy.clearStars();
     } catch (IOException ioe) {
       // Print error message
       System.out.println("ERROR: IOError in parsing command line");

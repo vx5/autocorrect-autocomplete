@@ -2,10 +2,8 @@ package edu.brown.cs.vnaraya2.common;
 
 import ac.AcCoordinator;
 import ac.AcOperator;
-import edu.brown.cs.vnaraya2.stars.AllStars;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
-import kdtrees.KDTree;
 import repl.REPL;
 
 /**
@@ -39,19 +37,16 @@ public final class Main {
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
         .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
-    // Creates instance of AllStars, KDTree, Stars command handler
-    AllStars galaxy = new AllStars();
-    KDTree kdTree = new KDTree();
     // Creates instance of AcCoordinator and AcOperator for Autocorrect
     AcCoordinator coordinator = new AcCoordinator();
     coordinator.addOp(new AcOperator());
     // Creates new instance of GUI object, accesses if the gui flagged was
-    // used, passes essential objects for Stars, Autocorrect project
-    GUI gui = new GUI(galaxy, kdTree, coordinator);
+    // used, passes essential objects for Autocorrect
+    GUI gui = new GUI(coordinator);
     if (options.has("gui")) {
       gui.runSparkServer((int) options.valueOf("port"));
     }
     // Uses the REPL class's static runREPL() method do trigger the REPL
-    REPL.runREPL(galaxy, kdTree, coordinator);
+    REPL.runREPL(coordinator);
   }
 }

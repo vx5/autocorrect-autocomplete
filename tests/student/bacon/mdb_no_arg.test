@@ -1,5 +1,0 @@
-INPUT
-mdb
-OUTPUT
-ERROR: mdb command requires one argument, file path to SQLite database
-END

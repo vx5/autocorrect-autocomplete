@@ -1,5 +1,0 @@
-INPUT
-stars data/stars/one-line.csv
-OUTPUT
-ERROR: at least one star required in file
-END

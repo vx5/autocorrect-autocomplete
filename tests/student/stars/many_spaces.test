@@ -1,8 +1,0 @@
-INPUT
-stars data/stars/ten-star.csv
-radius     5      "Sol"
-OUTPUT
-Read 10 stars from data/stars/ten-star.csv
-ERROR: command must be in format:
-<command> <bound> <"star-name">
-END

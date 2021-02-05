@@ -1,5 +1,0 @@
-INPUT
-stars data/stars/bad-format.csv
-OUTPUT
-ERROR: Star in row 7 of .csv file could not be constructed
-END

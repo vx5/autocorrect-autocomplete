@@ -9,11 +9,7 @@ import com.google.gson.Gson;
 
 import ac.AcCoordinator;
 import ac.AcGUIHandler;
-import bacon.BaconGUIHandler;
-import edu.brown.cs.vnaraya2.stars.AllStars;
-import edu.brown.cs.vnaraya2.stars.StarsGUIHandler;
 import freemarker.template.Configuration;
-import kdtrees.KDTree;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
@@ -34,12 +30,8 @@ import spark.template.freemarker.FreeMarkerEngine;
  *         AcGUIHandler class.
  */
 public class GUI {
-  // Stores the StarsGUIHandler instance
-  private static StarsGUIHandler gh;
   // Stores the AcGUIHandler instance
   private static AcGUIHandler ah;
-  // Stores the BaconGUIHandler instance
-  private static BaconGUIHandler bh;
   // Stores the GSON instance for Autocorrect
   private static final Gson GSON = new Gson();
 
@@ -48,15 +40,11 @@ public class GUI {
    * of AllStars and KDTree so that they may be passed to the constructor of the
    * StarsGUIHandler object, which actually processes GUI input.
    *
-   * @param allStars object that holds and manipulates all Stars
-   * @param kdTree   instance of k-d Tree used for search operations
-   * @param ac       instance of AcCoordinator that can manage this instance of
-   *                 Autocorrect implementation
+   * @param ac instance of AcCoordinator that can manage this instance of
+   *           Autocorrect implementation
    */
-  public GUI(AllStars allStars, KDTree kdTree, AcCoordinator ac) {
-    gh = new StarsGUIHandler(allStars, kdTree);
+  public GUI(AcCoordinator ac) {
     ah = new AcGUIHandler(ac);
-    bh = new BaconGUIHandler();
   }
 
   /**
@@ -73,14 +61,6 @@ public class GUI {
 
     FreeMarkerEngine freeMarker = createEngine();
 
-    // Setup Spark Routes for Stars
-    // Initial Spark route given by stencil code
-    Spark.get("/stars", new StarsBeginHandler(), freeMarker);
-    // Additional Spark route that responds to star load form
-    Spark.post("/starsloaded", new LoadHandler(), freeMarker);
-    // Additional Spark route that responds to command form
-    Spark.post("/commandrun", new CommandHandler(), freeMarker);
-
     // Setup Spark Routes for Autocorrect
     // Spark route for autocorrect front page
     Spark.get("/autocorrect", new AcMainBeginHandler(), freeMarker);
@@ -96,19 +76,6 @@ public class GUI {
         freeMarker);
     // Spark route for getting current settings
     Spark.get("/getsettings", new AcGetSetHandler());
-
-    // Setup Spark Routes for Bacon
-    // Spark route for Bacon front page
-    Spark.get("/bacon", new BaconBeginHandler(), freeMarker);
-    // Spark route for Bacon path found through JS
-    Spark.post("/path", new BaconPathHandler());
-    // Spark route for Bacon actor pages
-    Spark.get("/bacon/actor/:actorencodedid", new BaconActorHandler(),
-        freeMarker);
-    // Spark route for Bacon film pages
-    Spark.get("/bacon/film/:filmencodedid", new BaconFilmHandler(), freeMarker);
-    // Spark route for Bacon actor autocorrect
-    Spark.post("/actorcorrect", new BaconAcHandler());
   }
 
   private static FreeMarkerEngine createEngine() {
@@ -123,98 +90,6 @@ public class GUI {
     }
     return new FreeMarkerEngine(config);
   }
-
-  // THIS IS THE START OF THE BACON PROJECT HANDLERS
-
-  /**
-   * @author vx5
-   *
-   *         Handler for loading the main Bacon page.
-   */
-  private static class BaconBeginHandler implements TemplateViewRoute {
-
-    @Override
-    public ModelAndView handle(Request request, Response response)
-        throws Exception {
-      bh.resetMainVars();
-      return new ModelAndView(bh.getMainMap(), "baconmain.ftl");
-    }
-
-  }
-
-  /**
-   * @author vx5
-   *
-   *         Handler for obtaining shortest path between two actors via JSON.
-   */
-  private static class BaconPathHandler implements Route {
-
-    @Override
-    public String handle(Request request, Response response) throws Exception {
-      // Pulls the input string that was used
-      QueryParamsMap qm = request.queryMap();
-      String firstActor = qm.value("firstActor");
-      String secondActor = qm.value("secondActor");
-      return GSON.toJson(bh.path(firstActor, secondActor));
-    }
-
-  }
-
-  /**
-   * @author vx5
-   *
-   *         Handler for autocorrecting user entries into actor boxes.
-   */
-  private static class BaconAcHandler implements Route {
-
-    @Override
-    public String handle(Request request, Response response) throws Exception {
-      // Pulls the input string that was used
-      QueryParamsMap qm = request.queryMap();
-      //
-      int boxType = Integer.parseInt(qm.value("boxType"));
-      String currentStr = qm.value("currentStr");
-      //
-      return GSON.toJson(bh.correct(boxType, currentStr));
-    }
-
-  }
-
-  /**
-   * @author vx5
-   *
-   *         Handler for loading Bacon actor pages.
-   */
-  private static class BaconActorHandler implements TemplateViewRoute {
-
-    @Override
-    public ModelAndView handle(Request request, Response response)
-        throws Exception {
-      // Stores Actor name
-      String actorEncodedId = request.params(":actorencodedid");
-      return new ModelAndView(bh.loadActorPage(actorEncodedId),
-          "baconpage.ftl");
-    }
-
-  }
-
-  /**
-   * @author vx5
-   *
-   *         Handler for loading Bacon film pages.
-   */
-  private static class BaconFilmHandler implements TemplateViewRoute {
-
-    @Override
-    public ModelAndView handle(Request request, Response response)
-        throws Exception {
-      String filmEncodedId = request.params(":filmencodedid");
-      return new ModelAndView(bh.loadFilmPage(filmEncodedId), "baconpage.ftl");
-    }
-
-  }
-
-  // THIS IS THE END OF THE BACON PROJECT HANDLERS
 
   /**
    * @author vx5
@@ -315,57 +190,6 @@ public class GUI {
       return GSON.toJson(ah.getSettings());
     }
 
-  }
-
-  /**
-   * @author vx5
-   *
-   *         Handles the initial view of our Stars website.
-   */
-  private static class StarsBeginHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(Request req, Response res) {
-      gh.resetVars();
-      // Initializes values for stars-loading section
-      return new ModelAndView(gh.getMap(), "query.ftl");
-    }
-  }
-
-  /**
-   * @author vx5
-   *
-   *         Handles the submission and processing of the Stars Loading form.
-   */
-  private static class LoadHandler implements TemplateViewRoute {
-
-    @Override
-    public ModelAndView handle(Request request, Response response)
-        throws Exception {
-      // Gets the query map
-      QueryParamsMap qm = request.queryMap();
-      // Pulls the end of the filepath input
-      String pathend = qm.value("filename");
-      // Returns with map generated by GUI handler
-      return new ModelAndView(gh.loadNeighbors(pathend), "query.ftl");
-    }
-  }
-
-  /**
-   * @author vx5
-   *
-   *         Handles the submission and processing of the command form, which
-   *         relates to either the "neighbors" or "radius" search requests.
-   */
-  private static class CommandHandler implements TemplateViewRoute {
-
-    @Override
-    public ModelAndView handle(Request request, Response response)
-        throws Exception {
-      // Gets the query map
-      QueryParamsMap qm = request.queryMap();
-      // Returns with map generated by GUI handler
-      return new ModelAndView(gh.doCommand(qm), "query.ftl");
-    }
   }
 
   /**
