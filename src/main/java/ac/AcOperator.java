@@ -27,6 +27,8 @@ public class AcOperator {
   private RadixTrie trie;
   // Stores Bigram Map for corpora
   private BigramMap bmap;
+  // Stores set of previously "selected" words
+  private HashSet<String> selected;
   // Stores all settings
   private boolean prefix;
   private boolean whitespace;
@@ -78,6 +80,7 @@ public class AcOperator {
     trie = new RadixTrie();
     corpusLoaded = false;
     bmap = new BigramMap();
+    selected = new HashSet<String>();
     filePaths = new ArrayList<String>();
     dictionary = new HashSet<String>();
     // Reset all settings
@@ -279,7 +282,7 @@ public class AcOperator {
     if (sequence.length == 1) {
       // Choose comparator based on whether smart setting is set
       if (smart) {
-        chosenComp = new SmartComparator(corpusWords, dictionary);
+        chosenComp = new SmartComparator(selected, corpusWords, dictionary);
       } else {
         chosenComp = new SuggestComparator(lastWord, corpusWords);
       }
@@ -287,7 +290,7 @@ public class AcOperator {
       // Choose comparator based on whether smart setting is set
       if (smart) {
         chosenComp = new SmartComparator(sequence[sequence.length - 2], bmap,
-            corpusWords, dictionary);
+            selected, corpusWords, dictionary);
       } else {
         chosenComp = new SuggestComparator(sequence[sequence.length - 2], bmap,
             lastWord, corpusWords);
@@ -329,6 +332,16 @@ public class AcOperator {
     }
     // Returns list of suggestions from PriorityQueue
     return this.pqToList(sequence, pq);
+  }
+
+  /**
+   * Inputs a user's selected words for higher weighting in the future.
+   *
+   * @param selected word suggestion chosen by user (GUI only)
+   */
+  public void addSelected(String selection) {
+    // Adds latest word to the selection pile
+    selected.add(selection);
   }
 
   private ArrayList<String> pqToList(String[] sequence,

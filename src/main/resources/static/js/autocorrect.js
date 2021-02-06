@@ -65,9 +65,9 @@ $(document).ready(() => {
 				// manually setting all five html()s, as is done below, did
 				// not work without the POST request.
 				// Constructs object for POST request that stores input String
-				const postResetParameters = {toCorrect: $acbox.val()};
+				const postResetParameters = {selection: $acbox.val()};
 				// Passes new String value to the AcHandler
-				$.post("/correct", postResetParameters, responseJSON => {
+				$.post("/select", postResetParameters, responseJSON => {
 					// Completely resets all values
 					$onerow.html("");
 					$tworow.html("");

@@ -16,6 +16,8 @@ public class SmartComparator implements Comparator<Suggestion> {
   private String before;
   // Stores bigram map
   private BigramMap bmap;
+  // Stores previously chosen word
+  private HashSet<String> selected;
   // Stores full set of corpus words
   private HashMultiset<String> corpusWords;
   // Stores full set of dictionary words
@@ -31,14 +33,17 @@ public class SmartComparator implements Comparator<Suggestion> {
    * @param beforeWord       the word occurring before the would-be suggestions,
    *                         to be used with the bigram map
    * @param newMap           the BigramMap used with the given "before word"
+   * @param selectedWords    the set of all words the user has selected so far
    * @param givenCorpusWords set of all the words found in the corpora
    * @param givenDiction     set of all words found in the given dictionary
    */
   public SmartComparator(String beforeWord, BigramMap newMap,
-      HashMultiset<String> givenCorpusWords, HashSet<String> givenDiction) {
+      HashSet<String> selectedWords, HashMultiset<String> givenCorpusWords,
+      HashSet<String> givenDiction) {
     // Stores parameters in Comparator's instance fields
     before = beforeWord;
     bmap = newMap;
+    selected = selectedWords;
     corpusWords = givenCorpusWords;
     dictionary = givenDiction;
   }
@@ -47,15 +52,17 @@ public class SmartComparator implements Comparator<Suggestion> {
    * Constructor used in case when the sorting order should not use the bigram
    * map.
    *
+   * @param selectedWords    set of all words the user has selected so far
    * @param givenCorpusWords set of all the words found in the corpora
    * @param givenDiction     set of all words found in the given dictionary
    */
-  public SmartComparator(HashMultiset<String> givenCorpusWords,
-      HashSet<String> givenDiction) {
+  public SmartComparator(HashSet<String> selectedWords,
+      HashMultiset<String> givenCorpusWords, HashSet<String> givenDiction) {
     // Signals through instance variables that bigram map should not be used
     before = null;
     bmap = null;
     // Stores parameters in Comparator's instance fields
+    selected = selectedWords;
     corpusWords = givenCorpusWords;
     dictionary = givenDiction;
   }
@@ -133,6 +140,25 @@ public class SmartComparator implements Comparator<Suggestion> {
     }
     if (s2.getFirstWord().length() > 2) {
       twoScore += largePointInc;
+    }
+    // Assigns points based on previous user input
+    if (s1.getSecondWord() == null) {
+      if (selected.contains(s1.getFirstWord())) {
+        oneScore += largePointInc;
+      }
+    } else {
+      if (selected.contains(s1.getSecondWord())) {
+        oneScore += largePointInc;
+      }
+    }
+    if (s2.getSecondWord() == null) {
+      if (selected.contains(s2.getFirstWord())) {
+        twoScore += largePointInc;
+      }
+    } else {
+      if (selected.contains(s2.getSecondWord())) {
+        twoScore += largePointInc;
+      }
     }
     // Compares points
     if (oneScore != twoScore) {

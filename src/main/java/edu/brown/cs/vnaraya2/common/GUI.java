@@ -66,6 +66,8 @@ public class GUI {
     Spark.get("/autocorrect", new AcMainBeginHandler(), freeMarker);
     // Spark route for corrections made through JS
     Spark.post("/correct", new AcCorrectHandler());
+    // Spark route for tracking user selections
+    Spark.post("/select", new AcSelectHandler());
     // Spark route that loads settings page
     Spark.get("/autocorrect/settings", new AcSetBeginHandler(), freeMarker);
     // Spark route for saving settings page
@@ -89,6 +91,30 @@ public class GUI {
       System.exit(1);
     }
     return new FreeMarkerEngine(config);
+  }
+
+  /**
+   * @author vx5
+   *
+   *         Handler route that intakes, stores option selected by user.
+   */
+  private static class AcSelectHandler implements Route {
+
+    @Override
+    public String handle(Request request, Response response) throws Exception {
+      // Pulls the input string that was used
+      QueryParamsMap qm = request.queryMap();
+      String selection = qm.value("selection");
+      // If valid word, add to word tracker
+      if (selection != null) {
+        // Obtains last word
+        String[] splitSelection = selection.split(" ");
+        String lastWord = splitSelection[splitSelection.length - 1];
+        // Adds last word to selected word tracker
+        ah.addSelectedWord(lastWord);
+      }
+      return GSON.toJson(ah.correct(selection));
+    }
   }
 
   /**

@@ -130,6 +130,15 @@ public class AcGUIHandler {
   }
 
   /**
+   * Adds selected word to tracker in AcOperator.
+   *
+   * @param selected word selected by user in GUI
+   */
+  public void addSelectedWord(String selected) {
+    c.getOp(0).addSelected(selected);
+  }
+
+  /**
    * Processes an Autocorrect attempt into a map that represents all of the
    * output suggestions.
    *
