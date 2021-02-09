@@ -77,6 +77,8 @@ public class RadixTrie {
   public HashSet<String> getPrefixEnds(String word) {
     // Initializes the node at/in which the given word ends
     RadixTrieNode endNode = null;
+    // Clears the word identified so far in the tree
+    startPrefixEnds = "";
     // Obtains the relevant ending node, for the start of the recursive search
     for (RadixTrieNode child : root.getChildren()) {
       // If a path for the given word exists from the root node
