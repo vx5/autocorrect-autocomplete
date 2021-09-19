@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Some edits made since original version
+
 # To run our code, we must have it in our classpath.
 # We use $(ls target/*.jar) so that
 # this script can be reused in other projects more easily.
