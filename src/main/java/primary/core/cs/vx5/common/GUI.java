@@ -1,4 +1,4 @@
-package primary.core.cs.vnaraya2.common;
+package primary.core.cs.vx5.common;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,7 +55,7 @@ public class GUI {
    */
   @SuppressWarnings("unchecked")
   public void runSparkServer(int port) {
-    Spark.port(port);
+    Spark.port(Main.getHerokuAssignedPort());
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
 

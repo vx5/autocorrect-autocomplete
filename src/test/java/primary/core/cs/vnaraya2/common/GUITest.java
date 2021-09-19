@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import ac.AcCoordinator;
 import ac.AcOperator;
-import primary.core.cs.vnaraya2.common.GUI;
+import primary.core.cs.vx5.common.GUI;
 
 public class GUITest {
 

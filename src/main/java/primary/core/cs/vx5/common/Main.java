@@ -1,4 +1,4 @@
-package primary.core.cs.vnaraya2.common;
+package primary.core.cs.vx5.common;
 
 import ac.AcCoordinator;
 import ac.AcOperator;
@@ -33,7 +33,7 @@ public final class Main {
   private void run() {
     // Parse command line arguments
     OptionParser parser = new OptionParser();
-    parser.accepts("gui");
+    parser.accepts("repl");
     parser.accepts("port").withRequiredArg().ofType(Integer.class)
         .defaultsTo(DEFAULT_PORT);
     OptionSet options = parser.parse(args);
@@ -43,10 +43,20 @@ public final class Main {
     // Creates new instance of GUI object, accesses if the gui flagged was
     // used, passes essential objects for Autocorrect
     GUI gui = new GUI(coordinator);
-    if (options.has("gui")) {
-      gui.runSparkServer((int) options.valueOf("port"));
+    if (options.has("repl")) {
+      // Uses the REPL class's static runREPL() method do trigger the REPL
+      REPL.runREPL(coordinator);
     }
-    // Uses the REPL class's static runREPL() method do trigger the REPL
-    REPL.runREPL(coordinator);
+    // Default to GUI for deployment
+    gui.runSparkServer((int) options.valueOf("port"));
+  }
+
+  static int getHerokuAssignedPort() {
+    ProcessBuilder processBuilder = new ProcessBuilder();
+    if (processBuilder.environment().get("PORT") != null) {
+      return Integer.parseInt(processBuilder.environment().get("PORT"));
+    }
+    return 4567; // return default port if heroku-port isn't set (i.e. on
+                 // localhost)
   }
 }
