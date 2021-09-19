@@ -1,6 +1,3 @@
-// INPUT: Array of suggestions
-// OUTPUT: Nothing
-// ACTION: Clears all suggestion texts
 function clearSuggestions(suggestions) {
 	for (let i = 0; i < suggestions.length; i++) {
 		suggestions[i].html("");

@@ -67,6 +67,12 @@ body {
 	font-size: 70px;
 }
 
+#load-instruction {
+	color: white;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-weight: normal;
+}
+
 #ac-box {
 	font-family: arial;
 	font-size: 13px;

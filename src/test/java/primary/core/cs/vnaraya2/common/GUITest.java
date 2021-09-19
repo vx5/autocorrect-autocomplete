@@ -1,4 +1,4 @@
-package edu.brown.cs.vnaraya2.common;
+package primary.core.cs.vnaraya2.common;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import ac.AcCoordinator;
 import ac.AcOperator;
+import primary.core.cs.vnaraya2.common.GUI;
 
 public class GUITest {
 

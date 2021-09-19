@@ -185,7 +185,7 @@ if __name__ == '__main__':
   parser = OptionParser()
   parser.add_option('-t', '--timeout', dest='timeout',
       help=("The timeout (in seconds) to use when waiting for each test to run."
-            " 5 by default."), type='float', default=5.0)
+            " 10 by default."), type='float', default=10.0)
   parser.add_option('-e', '--executable', dest='executable',
       help=("The executable to test. `./run` by default."), 
       type='string', default='./run')

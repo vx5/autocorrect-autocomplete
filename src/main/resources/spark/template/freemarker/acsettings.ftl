@@ -60,9 +60,9 @@
       <!-- Asks for new corpora -->
       <div id="enterCorporaDiv">
       List all new corpora to add by listing their filepaths, separated by commas.<br>
-      All paths are assumed to start with "data/autocorrect/"<br><br>
+      For those with server access, all paths are assumed to start with "data/autocorrect/"<br><br>
       <textarea id="filepaths" name="filepaths" form="settings-form" rows="3" cols="45"></textarea><br><br>
-      For example, input: "sherlock.txt,great_expectations.txt,norton.txt"<br>
+      For example, users can enter "sherlock.txt", then click "save new settings"<br>
       </div>
       </div><br><br>
       <!-- Div that holds final buttons -->
@@ -89,6 +89,4 @@
       </button>
     </form>
   </body>
-  <!-- See http://html5boilerplate.com/ for a good place to start
-       dealing with real world issues like old browsers.  -->
 </html>

@@ -12,6 +12,8 @@
     <!-- Main area of Autocorrect box -->
     <!-- Please note that the title is styled with the "Good Times" font by Raymond Larabie -->
   	<h1 id="main-header">Autocorrect</h1>
+    <h4 id="load-instruction">Please remember to visit the settings page before trying to obtain suggestions<br>
+    You should load at least one corpora, and turn on at least 1 of the 4 generation and sorting settings</h4>
     <div id="parent-div">
       <input type="text" id="ac-box" name="toCorrect" size="75">
       <div class="suggestion" id="onerow">${oneRow}</div>
@@ -29,6 +31,4 @@
       </form>
     </div>
   </body>
-  <!-- See http://html5boilerplate.com/ for a good place to start
-       dealing with real world issues like old browsers.  -->
 </html>

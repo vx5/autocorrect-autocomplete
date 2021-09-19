@@ -19,7 +19,7 @@
 
     - some best practices
 
-    - changes for cs32 are marked CS32
+    - changes for course are marked COURSE
 
   Checkstyle is very configurable. Be sure to read the documentation at
   http://checkstyle.sf.net (or in your downloaded distribution).
@@ -155,7 +155,7 @@
 
         <!-- Checks for common coding problems               -->
         <!-- See http://checkstyle.sf.net/config_coding.html -->
-        <!-- CS32 <module name="AvoidInlineConditionals"/> -->
+        <!-- COURSE <module name="AvoidInlineConditionals"/> -->
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
         <module name="HiddenField">
@@ -173,7 +173,7 @@
 
         <!-- Checks for class design                         -->
         <!-- See http://checkstyle.sf.net/config_design.html -->
-        <!-- CS32 <module name="DesignForExtension"/> -->
+        <!-- COURSE <module name="DesignForExtension"/> -->
         <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>

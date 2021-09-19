@@ -1,4 +1,4 @@
-package edu.brown.cs.vnaraya2.common;
+package primary.core.cs.vnaraya2.common;
 
 import ac.AcCoordinator;
 import ac.AcOperator;
