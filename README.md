@@ -22,7 +22,7 @@ First, users should visit the settings page, and ensure that a corpus is loaded,
 
 I used online resources to help me review specific types of Java errors, and for how to write in markdown language. I also used extensive resources to better understand JavaScript, jQuery, HTML, and, in particular, CSS styling. I sometimes used mainstream resources such as formal jQuery documentation and w3schools, and sometimes used other, more niche resources, such as css-tricks.com, to understand specific topics like Flexboxes. The primary title font "goodtimes.ttf" is by Raymond Larabie.
 
-This project's first iteration was submitted as part a course at Brown University, though subsequent iterations were developed after completing the course. As such, some of the skeleton content used (e.g., run file, pom.xml, parts of directory structure) are adapted/taken from content provided by the course. I modified some of these files after the fact, so that the app would stand distinct from the course.
+This project's first iteration was submitted as part a course at Brown University, though subsequent changes were made developed after completing the course. As such, some of the skeleton content used (e.g., run file, pom.xml, parts of directory structure) are adapted/taken from content provided by the course. I modified some of these files after the fact, so that the app would stand distinct from the course.
 
 I obtained written permission from the course instructor to share the project publicly. Please let me know if there are any issues or questions!
 
