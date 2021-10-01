@@ -43,12 +43,22 @@ public class AcOperator {
 
   /**
    * Constructor that initializes all of the instance fields used in the core
-   * operations and all of the settings instance fields.
+   * operations and all of the settings instance fields. /**
+   *
+   * @throws Exception if "sherlock.txt" filepath has already been added to the
+   *                   collective corpora or if there is an error in reading
+   *                   from the filepath, such as because the file does not
+   *                   exist, or the file is empty
    */
-  public AcOperator() {
+  public AcOperator() throws Exception {
     // Uses reset function to populate instance functions and
     // reset settings fields
     this.reset();
+    // Initialize with sherlock.txt and starting settings
+    this.addCorpus("data/autocorrect/sherlock.txt");
+    this.setPrefixStatus(true);
+    this.setSmartStatus(true);
+    this.setLedSetting(2);
     // Loads given dictionary's words into a HashSet
     ArrayList<String> words;
     try {

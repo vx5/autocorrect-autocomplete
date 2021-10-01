@@ -2,6 +2,7 @@ package ac;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import org.junit.After;
 import org.junit.Before;
@@ -24,10 +25,15 @@ public class AcCoordinatorTest {
   @Test
   public void testAddGetOp() {
     // Creates and adds instance of AcOperator
-    AcOperator o = new AcOperator();
-    c.addOp(o);
-    // Checks that AcOperator is accessible via getOp() method
-    assertEquals(c.getOp(0), o);
+    try {
+      AcOperator o = new AcOperator();
+      c.addOp(o);
+      // Checks that AcOperator is accessible via getOp() method
+      assertEquals(c.getOp(0), o);
+    } catch (Exception e) {
+      // TODO Auto-generated catch block
+      fail("No exception expected");
+    }
   }
 
   @Before

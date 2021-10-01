@@ -13,7 +13,7 @@ import repl.REPL;
  */
 public final class Main {
 
-  private static final int DEFAULT_PORT = 4567;
+  private static final int DEFAULT_PORT = 5555;
 
   /**
    * The initial method called when execution begins.
@@ -39,7 +39,11 @@ public final class Main {
     OptionSet options = parser.parse(args);
     // Creates instance of AcCoordinator and AcOperator for Autocorrect
     AcCoordinator coordinator = new AcCoordinator();
-    coordinator.addOp(new AcOperator());
+    try {
+      coordinator.addOp(new AcOperator());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     // Creates new instance of GUI object, accesses if the gui flagged was
     // used, passes essential objects for Autocorrect
     GUI gui = new GUI(coordinator);
@@ -56,7 +60,7 @@ public final class Main {
     if (processBuilder.environment().get("PORT") != null) {
       return Integer.parseInt(processBuilder.environment().get("PORT"));
     }
-    return 4567; // return default port if heroku-port isn't set (i.e. on
+    return 5555; // return default port if heroku-port isn't set (i.e. on
                  // localhost)
   }
 }

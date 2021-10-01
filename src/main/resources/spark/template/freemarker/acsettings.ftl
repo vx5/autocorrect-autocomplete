@@ -62,7 +62,7 @@
       List all new corpora to add by listing their filepaths, separated by commas.<br>
       For those with server access, all paths are assumed to start with "data/autocorrect/"<br><br>
       <textarea id="filepaths" name="filepaths" form="settings-form" rows="3" cols="45"></textarea><br><br>
-      For example, users can enter "sherlock.txt", then click "save new settings"<br>
+      Options include sherlock.txt, great_expectations.txt, restaurants.txt<br>
       </div>
       </div><br><br>
       <!-- Div that holds final buttons -->

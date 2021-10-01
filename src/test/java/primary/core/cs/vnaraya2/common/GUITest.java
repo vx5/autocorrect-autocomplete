@@ -1,6 +1,7 @@
 package primary.core.cs.vnaraya2.common;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
@@ -14,7 +15,11 @@ public class GUITest {
   public void testConstruction() {
     // Add operator to AcCoordinator
     AcCoordinator c = new AcCoordinator();
-    c.addOp(new AcOperator());
+    try {
+      c.addOp(new AcOperator());
+    } catch (Exception e) {
+      fail("Exception should not be thrown");
+    }
     GUI sg = new GUI(c);
     // Tests construction
     assertNotNull(sg);

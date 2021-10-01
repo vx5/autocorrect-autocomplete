@@ -40,7 +40,15 @@ public class AcGUIHandler {
     c = coord;
     // Initialize all String variables
     this.resetMainVars();
-    this.resetSetVars();
+    this.initSetVars();
+  }
+
+  private void initSetVars() {
+    // Resets all superficial display variables
+    setErrorStr = "";
+    setWinStr = "[Message will display here after you attempt to change "
+        + "the settings]";
+    filepaths = c.getOp(0).getCorpuses();
   }
 
   /**

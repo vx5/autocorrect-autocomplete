@@ -24,7 +24,7 @@ public class AcGUIHandlerTest {
   private AcGUIHandler ah;
 
   @Test
-  public void testConstruction() {
+  public void testConstruction() throws Exception {
     // Initializes AcGUIHandler instance
     AcCoordinator ac = new AcCoordinator();
     ac.addOp(new AcOperator());
@@ -49,6 +49,7 @@ public class AcGUIHandlerTest {
   @Test
   public void testGetSetMap() {
     Map<String, Object> m = ah.getSetMap();
+    System.out.println(m.toString());
     // Checks that all fields designated for "acsettings.ftl" template are
     // initialized as expected
     assertEquals(m.get("win"),
@@ -62,10 +63,10 @@ public class AcGUIHandlerTest {
   public void testGetSettings() {
     Map<String, Object> m = ah.getSettings();
     // Checks that all retrieved settings values for Autocorrect are as expected
-    assertEquals(m.get("prefixVal"), "off");
+    assertEquals(m.get("prefixVal"), "on");
     assertEquals(m.get("whitespaceVal"), "off");
-    assertEquals(m.get("smartVal"), "off");
-    assertEquals(m.get("ledVal"), "0");
+    assertEquals(m.get("smartVal"), "on");
+    assertEquals(m.get("ledVal"), "2");
   }
 
   /**
@@ -84,7 +85,7 @@ public class AcGUIHandlerTest {
   }
 
   @Test
-  public void testCorrectExceptionMsg() {
+  public void testCorrectExceptionMsg() throws Exception {
     // Initializes new AcGUIHandler instance
     AcCoordinator ac = new AcCoordinator();
     ac.addOp(new AcOperator());
@@ -101,17 +102,11 @@ public class AcGUIHandlerTest {
   }
 
   @Before
-  public void setUp() {
+  public void setUp() throws Exception {
     // Fully initializes functional AcHUIHandler instance
     AcCoordinator ac = new AcCoordinator();
     ac.addOp(new AcOperator());
     ah = new AcGUIHandler(ac);
-    // Loads sherlock.txt corpus as basis for the above tests
-    try {
-      ac.getOp(0).addCorpus("data/autocorrect/sherlock.txt");
-    } catch (Exception e) {
-      fail("Could not load \"sherlock.txt\"");
-    }
   }
 
   @After
