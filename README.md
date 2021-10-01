@@ -16,7 +16,7 @@ There are multiple ways in which suggestions can be generated including the word
 
 The deployed app can be accessed at the web address: [https://autocorrect-autocomplete-vx5.herokuapp.com/autocorrect](https://autocorrect-autocomplete-vx5.herokuapp.com/autocorrect)
 
-First, users should visit the settings page, and ensure that a corpus is loaded, and that at least some of the autocorrect/autocommplete strategies are activated. Then, on the main page, the user can type and observe suggestions. The user can navigate through suggestions using the mouse or using arrow keys, and can click or press 'enter' to select a suggestion for inclusion in the main input bar.
+On the main page, the user can type and observe suggestions. The user can navigate through suggestions using the mouse or using arrow keys, and can click or press 'enter' to select a suggestion, so that it will be included in the main input bar.
 
 #### Acknowledgments
 
