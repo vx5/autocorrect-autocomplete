@@ -6,9 +6,9 @@ Autocorrect and autocomplete is an application designed to offer autocorrect/aut
 
 There are multiple ways in which suggestions can be generated including the word typed so far (use as a prefix for possible suggestions), and making edits to the word typed so far (Levenshtein Edit Distance or LED, potentially including whitespace). Users are able to adjust these settings, and how they are ranked (only the top 5 suggestions are displayed) on a dedicated settings page. 
 
-![Main page screenshot](https://github.com/vx5/autocorrect-autocomplete/blob/master/main_page_screenshot.png?raw=true)
+![Main page screenshot](https://github.com/vx5/autocorrect-autocomplete/blob/master/images/main_page_screenshot.png?raw=true)
 
-![Settings page screenshot](https://github.com/vx5/autocorrect-autocomplete/blob/master/settings_page_screenshot.png?raw=true)
+![Settings page screenshot](https://github.com/vx5/autocorrect-autocomplete/blob/master/images/settings_page_screenshot.png?raw=true)
 
 ## Key details
 
