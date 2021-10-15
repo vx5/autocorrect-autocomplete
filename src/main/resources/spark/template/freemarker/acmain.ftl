@@ -12,7 +12,7 @@
     <!-- Main area of Autocorrect box -->
     <!-- Please note that the title is styled with the "Good Times" font by Raymond Larabie -->
   	<h1 id="main-header">Autocorrect</h1>
-    <h4 id="load-instruction">Please remember to visit the settings page to try out different settings!</h4>
+    <h4 id="load-instruction">This page displays best on a personal computer</h4>
     <div id="parent-div">
       <input type="text" id="ac-box" name="toCorrect" size="75">
       <div class="suggestion" id="onerow">${oneRow}</div>

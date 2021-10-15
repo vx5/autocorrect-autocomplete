@@ -14,7 +14,7 @@ There are multiple ways in which suggestions can be generated including the word
 
 #### How to access
 
-The deployed app can be accessed at the web address: [https://autocorrect-autocomplete-vx5.herokuapp.com/autocorrect](https://autocorrect-autocomplete-vx5.herokuapp.com/autocorrect)
+The deployed app can be accessed at the web address: [https://autocorrect-autocomplete-vx5.herokuapp.com/autocorrect](https://autocorrect-autocomplete-vx5.herokuapp.com/autocorrect). The page is best viewed on a personal computer.
 
 On the main page, the user can type and observe suggestions. The user can navigate through suggestions using the mouse or using arrow keys, and can click or press 'enter' to select a suggestion, so that it will be included in the main input bar.
 
