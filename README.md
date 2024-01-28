@@ -28,7 +28,7 @@ I obtained written permission from the course instructor to share the project pu
 
 #### Package structure
 
-Most of the functionality in this project goes in the "ac" (short for Autocorrect) package. The exceptions are a new "common" package, which houses the Main and GUI class, which are common to Autocorrect and other full stack applications I may work on, a "trie" package, which houses all functionality related to the standard trie and radix trie, the "filereader" package, which houses utility classes related to reading files, including the TXTReader class that is relevant to this project, "repl" package, which houses the REPL (not in use in the deployed app), and the "stringmanipulation" package, which houses the utility StringOps class, which allows for certain types of relevant String manipulation.
+Most of the functionality in this project goes in the "ac" (short for Autocorrect) package. The exceptions are a new "common" package, which houses the Main and GUI class, which are common to Autocorrect and other full stack applications I may work on, a "trie" package, which houses all functionality related to the standard trie and radix trie, the "filereader" package, which houses utility classes related to reading files, including the TXTReader class that is relevant to this project, "repl" package, which houses the REPL (not in use when the full app -- including GUI -- is running), and the "stringmanipulation" package, which houses the utility StringOps class, which allows for certain types of relevant String manipulation.
 
 #### High-level GUI Structure
 
