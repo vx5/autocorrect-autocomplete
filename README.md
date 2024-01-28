@@ -12,9 +12,7 @@ There are multiple ways in which suggestions can be generated including the word
 
 ## Key details
 
-#### How to access
-
-The deployed app can be accessed at the web address: [https://autocorrect-autocomplete-vx5.herokuapp.com/autocorrect](https://autocorrect-autocomplete-vx5.herokuapp.com/autocorrect). The page is best viewed on a personal computer.
+#### User basics
 
 On the main page, the user can type and observe suggestions. The user can navigate through suggestions using the mouse or using arrow keys, and can click or press 'enter' to select a suggestion, so that it will be included in the main input bar.
 
@@ -52,7 +50,7 @@ For both GUI pages, a favicon I made myself appears in the browser tab. Some of 
 
 #### How my Smart-Ranking works
 
-My smart-ranking design process began with the core question of what to optimize for. What did I actually want my Autocorrect suggestions to be? I settled on tree factors: 1) I want my Autocorrect answers to bend more in the direction of autocomplete, and want most to save time by having longer words be suggested (a greater emphasis on predicting the rest of a word than on correcting a given word), 2) I want to reward suggestions that are real words, and 3) I want to reward suggestions that the user has previously suggested. For number 2, this means making sure that suggestions are in the dictionary. In particular, because we remove punctuation from corpora when we load them, many non-words (e.g. "t" from "can't") are counted as words that are loaded into the Trie, so this also means valuing suggestions whose words are more than a character long. 
+My smart-ranking design process began with the core question of what to optimize for. What did I actually want my Autocorrect suggestions to be? I settled on three factors: 1) I want my Autocorrect answers to bend more in the direction of autocomplete, and want most to save time by having longer words be suggested (a greater emphasis on predicting the rest of a word than on correcting a given word), 2) I want to reward suggestions that are real words, and 3) I want to reward suggestions that the user has previously suggested. For number 2, this means making sure that suggestions are in the dictionary. In particular, because we remove punctuation from corpora when we load them, many non-words (e.g. "t" from "can't") are counted as words that are loaded into the Trie, so this also means valuing suggestions whose words are more than a character long. 
 
 I translate this system into a series of comparisons, much like the default comparator. The first comparison checks if a suggestion has all its words in the dictionary, in the corpus, and of length greater than one. If exactly one suggestion meets this bar, it beats the other suggestion, then and there. If not, the next comparison repeats that check with the same criteria except for the dictionary component. The dictionary and length-greater-than-one criteria center on goal #2.
 
